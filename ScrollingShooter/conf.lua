@@ -3,7 +3,7 @@ function love.conf(t)
   t.title = "Scrolling Shooter Tutorial"
 
   -- The Love version this game was made for
-  t.version = "0.9.1"
+  t.version = "11.2"
 
   -- window size
   t.window.width    = 480
