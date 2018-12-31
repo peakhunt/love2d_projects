@@ -13,9 +13,9 @@ function love.load()
 		contents = "error loading file" .. filename
 		return
 	end
-	
+	 
 	maxheight=0							--this should help us in the scrolling thingy
-	for t in contents:gfind("\n") do
+	for t in contents:gmatch("\n") do
 		maxheight=maxheight+fontheight		
 	end
 	
