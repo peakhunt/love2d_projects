@@ -4,7 +4,7 @@
 local hero = require('entities/hero')
 
 local entities = {
-  hero(100, 100),
+  hero(150, 150),
 }
 
 return entities
