@@ -4,6 +4,7 @@
 local world = require('world')
 local asset_conf = require('asset_conf')
 local utils = require('utils')
+local state = require('state')
 
 return function(pos_x, pos_y)
   local entity = {}
@@ -21,6 +22,9 @@ return function(pos_x, pos_y)
 
   entity.currentAnim = entity.walkingAnim
 
+  entity.stateIdle = function(self, dt)
+  begin
+
   entity.draw = function(self)
     local x, y = self.body:getWorldPoints(self.shape:getPoints())
 
@@ -29,12 +33,23 @@ return function(pos_x, pos_y)
   end
 
   entity.update = function(self, dt)
+    -- movement
+    if state.button_left then
+    elseif state.button_right then
+    elseif state.button_down then
+    elseif state.button_up then
+    end
+
+    -- kick and punch
+    if state.button_kick then
+    elseif state.button_punch then
+    end
+
     entity.currentAnim.currentTime = entity.currentAnim.currentTime + dt
     if entity.currentAnim.currentTime >= entity.currentAnim.duration then
       entity.currentAnim.currentTime = entity.currentAnim.currentTime - entity.currentAnim.duration
     end
   end
 
-  print('init dne')
   return entity
 end

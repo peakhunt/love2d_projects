@@ -1,6 +1,7 @@
 local world = require('world')
 local entities = require('entities')
 local asset_conf = require('asset_conf')
+local input = require('input')
 
 function love.load()
 end
@@ -19,9 +20,11 @@ function love.focus(focused)
 end
 
 function love.keypressed(pressed_key)
+  input.press(pressed_key)
 end
 
 function love.keyreleased(released_key)
+  input.release(released_key)
 end
 
 function love.update(dt)
@@ -38,4 +41,5 @@ function love.update(dt)
   end
 
   world:update(dt)
+  input.update(dt)
 end
