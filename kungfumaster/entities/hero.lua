@@ -16,6 +16,15 @@ function moveState(entity, newState)
   entity.currentState:enter()
 end
 
+function commonUpdate(entity, dt)
+  entity.currentAnim.currentTime = entity.currentAnim.currentTime + dt
+  if entity.currentAnim.currentTime >= entity.currentAnim.duration then
+    entity.currentAnim.currentTime = entity.currentAnim.currentTime - entity.currentAnim.duration
+    return true
+  end
+  return false
+end
+
 return function(pos_x, pos_y)
   local entity = {}
 
@@ -73,12 +82,7 @@ return function(pos_x, pos_y)
         moveState(entity, entity.stateStandJumping)
       end
 
-      -- kick and punch
-
-      entity.standingAnim.currentTime = entity.standingAnim.currentTime + dt
-      if entity.standingAnim.currentTime >= entity.standingAnim.duration then
-        entity.standingAnim.currentTime = entity.standingAnim.currentTime - entity.standingAnim.duration
-      end
+      commonUpdate(entity, dt)
     end,
     enter = function(self)
       entity.standingAnim.currentTime = 0
@@ -134,10 +138,7 @@ return function(pos_x, pos_y)
       elseif state.button_punch then
       end
 
-      entity.walkingAnim.currentTime = entity.walkingAnim.currentTime + dt
-      if entity.walkingAnim.currentTime >= entity.walkingAnim.duration then
-        entity.walkingAnim.currentTime = entity.walkingAnim.currentTime - entity.walkingAnim.duration
-      end
+      commonUpdate(entity, dt)
     end,
     enter = function(self)
       entity.walkingAnim.currentTime = 0
@@ -172,10 +173,7 @@ return function(pos_x, pos_y)
         moveState(entity, entity.stateStanding)
       end
 
-      entity.sittingAnim.currentTime = entity.sittingAnim.currentTime + dt
-      if entity.sittingAnim.currentTime >= entity.sittingAnim.duration then
-        entity.sittingAnim.currentTime = entity.sittingAnim.currentTime - entity.sittingAnim.duration
-      end
+      commonUpdate(entity, dt)
     end,
     enter = function(self)
       entity.sittingAnim.currentTime = 0
@@ -191,8 +189,7 @@ return function(pos_x, pos_y)
       y = 0,
     },
     update = function(self, dt)
-      entity.standJumpingAnim.currentTime = entity.standJumpingAnim.currentTime + dt
-      if entity.standJumpingAnim.currentTime >= entity.standJumpingAnim.duration then
+      if commonUpdate(entity, dt) == true then
         -- animation over
         moveState(entity, entity.stateStanding)
         entity:setPos(entity.stateStandJumping.savedPos.x, entity.stateStandJumping.savedPos.y)
@@ -223,8 +220,7 @@ return function(pos_x, pos_y)
   entity.stateWalkJumping = {
     savedPosY = 0,
     update = function(self, dt)
-      entity.walkJumpingAnim.currentTime = entity.walkJumpingAnim.currentTime + dt
-      if entity.walkJumpingAnim.currentTime >= entity.walkJumpingAnim.duration then
+      if commonUpdate(entity, dt) == true then
         -- animation over
         moveState(entity, entity.stateWalking)
 
@@ -261,8 +257,7 @@ return function(pos_x, pos_y)
 
   entity.stateStandPunching = {
     update = function(self, dt)
-      entity.standPunchAnim.currentTime = entity.standPunchAnim.currentTime + dt
-      if entity.standPunchAnim.currentTime >= entity.standPunchAnim.duration then
+      if commonUpdate(entity, dt) == true then
         -- animation over
         moveState(entity, entity.stateStanding)
       end
@@ -277,8 +272,7 @@ return function(pos_x, pos_y)
 
   entity.stateStandKicking = {
     update = function(self, dt)
-      entity.standKickAnim.currentTime = entity.standKickAnim.currentTime + dt
-      if entity.standKickAnim.currentTime >= entity.standKickAnim.duration then
+      if commonUpdate(entity, dt) == true then
         -- animation over
         moveState(entity, entity.stateStanding)
       end
@@ -293,8 +287,7 @@ return function(pos_x, pos_y)
 
   entity.stateSitPunching = {
     update = function(self, dt)
-      entity.sitPunchAnim.currentTime = entity.sitPunchAnim.currentTime + dt
-      if entity.sitPunchAnim.currentTime >= entity.sitPunchAnim.duration then
+      if commonUpdate(entity, dt) == true then
         -- animation over
         moveState(entity, entity.stateSitting)
       end
@@ -309,8 +302,7 @@ return function(pos_x, pos_y)
 
   entity.stateSitKicking = {
     update = function(self, dt)
-      entity.sitKickAnim.currentTime = entity.sitKickAnim.currentTime + dt
-      if entity.sitKickAnim.currentTime >= entity.sitKickAnim.duration then
+      if commonUpdate(entity, dt) == true then
         -- animation over
         moveState(entity, entity.stateSitting)
       end
