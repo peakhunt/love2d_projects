@@ -176,6 +176,54 @@ local asset_conf = {
           },
         },
       },
+      sitPunching = {
+        duration = 0.125,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 108,
+            pos_y = 683,
+            width = 23,
+            height = 48,
+          },
+          [1] = {
+            pos_x = 71,
+            pos_y = 683,
+            width = 29,
+            height = 48,
+          },
+          [3] = {
+            pos_x = 108,
+            pos_y = 683,
+            width = 23,
+            height = 48,
+          },
+        },
+      },
+      sitKicking = {
+        duration = 0.125,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 323,
+            pos_y = 688,
+            width = 31,
+            height = 43,
+          },
+          [1] = {
+            pos_x = 362,
+            pos_y = 689,
+            width = 49,
+            height = 42,
+          },
+          [3] = {
+            pos_x = 323,
+            pos_y = 688,
+            width = 31,
+            height = 43,
+          },
+        },
+      },
     },
   },
 }
