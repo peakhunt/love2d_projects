@@ -42,4 +42,15 @@ module.newAnimationFromConf = function(image, conf)
   return animation;
 end
 
+module.drawAnimation = function(anim, x, y, rotation, scale_x, scale_y)
+  local spriteNum = math.floor(anim.currentTime / anim.duration * #anim.quads) + 1
+  local _,_,_,h = anim.quads[spriteNum]:getViewport()
+  local px, py
+
+  px = x
+  py = y - h * scale_y
+
+  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y)
+end
+
 return module

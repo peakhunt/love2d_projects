@@ -1,17 +1,19 @@
 --
 -- kungfu master entity
 --
-local world = require('world')
 local asset_conf = require('asset_conf')
 local utils = require('utils')
 local state = require('state')
 
 local move_delta = 3
 
+local scale_factor = 3
+local jump_distance = 70
+
 function moveState(entity, newState)
-  entity.currentState.leave()
-  entity.currentState = newState;
-  entity.currentState.enter()
+  entity.currentState:leave()
+  entity.currentState = newState
+  entity.currentState:enter()
 end
 
 return function(pos_x, pos_y)
@@ -20,34 +22,58 @@ return function(pos_x, pos_y)
   local entity_height = 18
   local entity_speed = 0
 
-  entity.body = love.physics.newBody(world, pos_x, pos_y, 'dynamic')
-  entity.shape = love.physics.newRectangleShape(entity_width, entity_height)
-  entity.fixture = love.physics.newFixture(entity.body, entity.shape)
-  entity.fixture:setUserData(entity)
+  entity.pos = {
+    x = pos_x,
+    y = pos_y,
+    scale_x = -scale_factor,
+    scale_y = scale_factor,
+  }
 
-  entity.standingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.standing);
-  entity.walkingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.walking);
+  entity.setPos = function(self, x, y)
+    self.pos.x = x
+    self.pos.y = y
+  end
+
+  entity.getPos = function(self)
+    return self.pos.x, self.pos.y
+  end
+
+  entity.standingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.standing)
+  entity.walkingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.walking)
+  entity.sittingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.sitting)
+  entity.standJumpingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.standJumping)
+  entity.walkJumpingAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.walkJumping)
+  entity.standPunchAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.standPunching)
+  entity.standKickAnim = utils.newAnimationFromConf(asset_conf.spriteSheet, asset_conf.hero.sprites.standKicking)
 
   entity.currentAnim = entity.walkingAnim
   entity.forward = true
 
   entity.stateStanding = {
     update = function(self, dt)
+      if state.button_kick then
+        moveState(entity, entity.stateStandKicking)
+      elseif state.button_punch then
+        moveState(entity, entity.stateStandPunching)
+        return
+      end
+
       -- movement
       if state.button_left then
         entity.forward = true
+        entity.pos.scale_x = -1 * scale_factor
         moveState(entity, entity.stateWalking)
       elseif state.button_right then
         entity.forward = false
+        entity.pos.scale_x = scale_factor
         moveState(entity, entity.stateWalking)
       elseif state.button_down then
+        moveState(entity, entity.stateSitting)
       elseif state.button_up then
+        moveState(entity, entity.stateStandJumping)
       end
 
       -- kick and punch
-      if state.button_kick then
-      elseif state.button_punch then
-      end
 
       entity.standingAnim.currentTime = entity.standingAnim.currentTime + dt
       if entity.standingAnim.currentTime >= entity.standingAnim.duration then
@@ -56,17 +82,9 @@ return function(pos_x, pos_y)
     end,
 
     draw = function(self)
-      local x, y = self.body:getWorldPoints(self.shape:getPoints())
-      local off;
+      local x,y = self:getPos()
 
-      if self.forward == true then
-        off = -4
-      else
-        off = 4
-      end
-
-      local spriteNum = math.floor(entity.standingAnim.currentTime / entity.standingAnim.duration * #entity.standingAnim.quads) + 1
-      love.graphics.draw(entity.standingAnim.spriteSheet, entity.standingAnim.quads[spriteNum], x, y, 0, off, 4)
+      utils.drawAnimation(entity.standingAnim, x, y, 0, self.pos.scale_x, self.pos.scale_y)
     end,
     enter = function(self)
       entity.standingAnim.currentTime = 0
@@ -77,24 +95,43 @@ return function(pos_x, pos_y)
 
   entity.stateWalking = {
     update = function(self, dt)
-      local x, y;
+      if state.button_kick then
+        moveState(entity, entity.stateStandKicking)
+      elseif state.button_punch then
+        moveState(entity, entity.stateStandPunching)
+        return
+      end
 
-      x, y = entity.body:getPosition();
+      local x,y = self:getPos()
+      local prevForward = entity.forward
 
       -- movement
       if state.button_left then
-        x = x - move_delta
         entity.forward = true
-        entity.body:setPosition(x, y)
       elseif state.button_right then
-        x = x + move_delta
         entity.forward = false
-        entity.body:setPosition(x, y)
-      elseif state.button_down then
-      elseif state.button_up then
       else
         moveState(entity, entity.stateStanding)
       end
+      
+      if state.button_down then
+        moveState(entity, entity.stateSitting)
+        return
+      end
+
+      if state.button_up and prevForward == entity.forward then
+        moveState(entity, entity.stateWalkJumping)
+        return
+      end
+
+      if entity.forward then
+        x = x - move_delta
+        entity.pos.scale_x = -1 * scale_factor
+      else
+        x = x + move_delta
+        entity.pos.scale_x = scale_factor
+      end 
+      entity:setPos(x, y)
 
       -- kick and punch
       if state.button_kick then
@@ -107,20 +144,173 @@ return function(pos_x, pos_y)
       end
     end,
     draw = function(self)
-      local x, y = self.body:getWorldPoints(self.shape:getPoints())
-      local off;
+      local x,y = self:getPos()
 
-      if self.forward == true then
-        off = -4
-      else
-        off = 4
-      end
-
-      local spriteNum = math.floor(entity.walkingAnim.currentTime / entity.walkingAnim.duration * #entity.walkingAnim.quads) + 1
-      love.graphics.draw(entity.walkingAnim.spriteSheet, entity.walkingAnim.quads[spriteNum], x, y, 0, off, 4)
+      utils.drawAnimation(entity.walkingAnim, x, y, 0, self.pos.scale_x, self.pos.scale_y)
     end,
+
     enter = function(self)
       entity.walkingAnim.currentTime = 0
+    end,
+    leave = function(self)
+    end,
+  }
+
+  entity.stateSitting = {
+    update = function(self, dt)
+      -- movement
+      if state.button_left then
+        entity.forward = true
+        entity.pos.scale_x = -1 * scale_factor
+      elseif state.button_right then
+        entity.forward = false
+        entity.pos.scale_x = scale_factor
+      elseif state.button_down then
+      elseif state.button_up then
+        moveState(entity, entity.stateStanding)
+      else
+        moveState(entity, entity.stateStanding)
+      end
+
+      -- kick and punch
+      if state.button_kick then
+      elseif state.button_punch then
+      end
+
+      entity.sittingAnim.currentTime = entity.sittingAnim.currentTime + dt
+      if entity.sittingAnim.currentTime >= entity.sittingAnim.duration then
+        entity.sittingAnim.currentTime = entity.sittingAnim.currentTime - entity.sittingAnim.duration
+      end
+    end,
+    draw = function(self)
+      local x,y = self:getPos()
+
+      utils.drawAnimation(entity.sittingAnim, x, y, 0, self.pos.scale_x, self.pos.scale_y)
+    end,
+
+    enter = function(self)
+      entity.sittingAnim.currentTime = 0
+    end,
+    leave = function(self)
+    end,
+  }
+
+  entity.stateStandJumping = {
+    savedPos = {
+      x = 0,
+      y = 0,
+    },
+    update = function(self, dt)
+      entity.standJumpingAnim.currentTime = entity.standJumpingAnim.currentTime + dt
+      if entity.standJumpingAnim.currentTime >= entity.standJumpingAnim.duration then
+        -- animation over
+        moveState(entity, entity.stateStanding)
+        entity:setPos(entity.stateStandJumping.savedPos.x, entity.stateStandJumping.savedPos.y)
+      else
+        local x,y = entity:getPos()
+        if entity.standJumpingAnim.currentTime < (entity.standJumpingAnim.duration/2) then
+          y = y - jump_distance * dt * 2;
+        else
+          y = y + jump_distance * dt * 2;
+        end
+        entity:setPos(x, y)
+      end
+    end,
+    draw = function(self)
+      local x,y = entity:getPos()
+
+      utils.drawAnimation(entity.standJumpingAnim, x, y, 0, entity.pos.scale_x, entity.pos.scale_y)
+    end,
+    enter = function(self)
+      entity.standJumpingAnim.currentTime = 0
+
+      local x,y = entity:getPos()
+
+      entity.stateStandJumping.savedPos.x = x
+      entity.stateStandJumping.savedPos.y = y
+    end,
+    leave = function(self)
+    end,
+  }
+
+  entity.stateWalkJumping = {
+    savedPosY = 0,
+    update = function(self, dt)
+      entity.walkJumpingAnim.currentTime = entity.walkJumpingAnim.currentTime + dt
+      if entity.walkJumpingAnim.currentTime >= entity.walkJumpingAnim.duration then
+        -- animation over
+        moveState(entity, entity.stateWalking)
+
+        local x, _ = entity:getPos()
+
+        entity:setPos(x, entity.stateWalkJumping.savedPosY)
+      else
+        local x,y = entity:getPos()
+        if entity.walkJumpingAnim.currentTime < (entity.walkJumpingAnim.duration/2) then
+          y = y - jump_distance * dt * 2;
+        else
+          y = y + jump_distance * dt * 2;
+        end
+
+        if entity.forward then
+          x = x - move_delta
+        else
+          x = x + move_delta
+        end 
+        entity:setPos(x, y)
+      end
+    end,
+    draw = function(self)
+      local x,y = entity:getPos()
+
+      utils.drawAnimation(entity.walkJumpingAnim, x, y, 0, entity.pos.scale_x, entity.pos.scale_y)
+    end,
+    enter = function(self)
+      entity.walkJumpingAnim.currentTime = 0
+
+      local _,y = entity:getPos()
+
+      entity.stateWalkJumping.savedPosY = y
+    end,
+    leave = function(self)
+    end,
+  }
+
+  entity.stateStandPunching = {
+    update = function(self, dt)
+      entity.standPunchAnim.currentTime = entity.standPunchAnim.currentTime + dt
+      if entity.standPunchAnim.currentTime >= entity.standPunchAnim.duration then
+        -- animation over
+        moveState(entity, entity.stateStanding)
+      end
+    end,
+    draw = function(self)
+      local x,y = entity:getPos()
+
+      utils.drawAnimation(entity.standPunchAnim, x, y, 0, entity.pos.scale_x, entity.pos.scale_y)
+    end,
+    enter = function(self)
+      entity.standPunchAnim.currentTime = 0
+    end,
+    leave = function(self)
+    end,
+  }
+
+  entity.stateStandKicking = {
+    update = function(self, dt)
+      entity.standKickAnim.currentTime = entity.standKickAnim.currentTime + dt
+      if entity.standKickAnim.currentTime >= entity.standKickAnim.duration then
+        -- animation over
+        moveState(entity, entity.stateStanding)
+      end
+    end,
+    draw = function(self)
+      local x,y = entity:getPos()
+
+      utils.drawAnimation(entity.standKickAnim, x, y, 0, entity.pos.scale_x, entity.pos.scale_y)
+    end,
+    enter = function(self)
+      entity.standKickAnim.currentTime = 0
     end,
     leave = function(self)
     end,
