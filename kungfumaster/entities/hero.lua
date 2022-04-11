@@ -5,10 +5,9 @@ local asset_conf = require('asset_conf')
 local utils = require('utils')
 local state = require('state')
 
-local move_delta = 3
-
 local scale_factor = 3
 local jump_distance = 70
+local move_speed = 200
 
 function moveState(entity, newState)
   entity.currentState:leave()
@@ -23,6 +22,20 @@ function commonUpdate(entity, dt)
     return true
   end
   return false
+end
+
+function calcJumpDistance(anim)
+  -- simple parabolic
+  --
+  -- y = -a(x - t/2)^2 + h
+  -- a = 4h/t^2
+  --
+  local t = anim.duration
+  local h = jump_distance
+  local a = 4 * h / (t * t)
+  local x = (anim.currentTime - t / 2)
+  local y = -a * x * x + h
+  return y
 end
 
 return function(pos_x, pos_y)
@@ -125,10 +138,10 @@ return function(pos_x, pos_y)
       end
 
       if entity.forward then
-        x = x - move_delta
+        x = x - move_speed * dt
         entity.pos.scale_x = -1 * scale_factor
       else
-        x = x + move_delta
+        x = x + move_speed * dt
         entity.pos.scale_x = scale_factor
       end 
       entity:setPos(x, y)
@@ -194,12 +207,8 @@ return function(pos_x, pos_y)
         moveState(entity, entity.stateStanding)
         entity:setPos(entity.stateStandJumping.savedPos.x, entity.stateStandJumping.savedPos.y)
       else
-        local x,y = entity:getPos()
-        if entity.standJumpingAnim.currentTime < (entity.standJumpingAnim.duration/2) then
-          y = y - jump_distance * dt * 2;
-        else
-          y = y + jump_distance * dt * 2;
-        end
+        local x,_ = entity:getPos()
+        local y = entity.stateStandJumping.savedPos.y - calcJumpDistance(entity.standJumpingAnim);
         entity:setPos(x, y)
       end
     end,
@@ -228,17 +237,13 @@ return function(pos_x, pos_y)
 
         entity:setPos(x, entity.stateWalkJumping.savedPosY)
       else
-        local x,y = entity:getPos()
-        if entity.walkJumpingAnim.currentTime < (entity.walkJumpingAnim.duration/2) then
-          y = y - jump_distance * dt * 2;
-        else
-          y = y + jump_distance * dt * 2;
-        end
+        local x,_ = entity:getPos()
+        local y = entity.stateWalkJumping.savedPosY - calcJumpDistance(entity.walkJumpingAnim);
 
         if entity.forward then
-          x = x - move_delta
+          x = x - move_speed * dt
         else
-          x = x + move_delta
+          x = x + move_speed * dt
         end 
         entity:setPos(x, y)
       end
