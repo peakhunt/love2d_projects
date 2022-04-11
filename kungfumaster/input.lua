@@ -83,8 +83,8 @@ return {
     end
 
     if state.button_kick == true then
-      if trigger.pick ~= 0 then
-        state.button_pick = false
+      if trigger.kick ~= 0 then
+        state.button_kick = false
       else
         trigger.kick = trigger.kick + 1
       end

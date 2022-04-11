@@ -133,12 +133,18 @@ local asset_conf = {
         oneshot = true,
         quads = {
           [1] = {
+            pos_x = 52,
+            pos_y = 580,
+            width = 21,
+            height = 62,
+          },
+          [2] = {
             pos_x = 16,
             pos_y = 581,
             width = 28,
             height = 61,
           },
-          [2] = {
+          [3] = {
             pos_x = 52,
             pos_y = 580,
             width = 21,
@@ -161,6 +167,12 @@ local asset_conf = {
             pos_y = 581,
             width = 43,
             height = 61,
+          },
+          [3] = {
+            pos_x = 259,
+            pos_y = 579,
+            width = 29,
+            height = 63,
           },
         },
       },
