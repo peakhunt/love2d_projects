@@ -129,7 +129,7 @@ local asset_conf = {
         },
       },
       standPunching = {
-        duration = 0.15,
+        duration = 0.125,
         oneshot = true,
         quads = {
           [1] = {
@@ -153,7 +153,7 @@ local asset_conf = {
         },
       },
       standKicking = {
-        duration = 0.15,
+        duration = 0.125,
         oneshot = true,
         quads = {
           [1] = {
