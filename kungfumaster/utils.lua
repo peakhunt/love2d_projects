@@ -1,23 +1,5 @@
 local module = {}
 
-module.newAnimation = function(image, width, height, duration)
-  local animation = {}
-
-  animation.spriteSheet = image;
-  animation.quads = {};
-
-  for y = 0, image:getHeight() - height, height do
-    for x = 0, image:getWidth() - width, width do
-      table.insert(animation.quads, love.graphics.newQuad(x, y, width, height, image:getDimensions()))
-    end
-  end
-
-  animation.duration = duration or 1
-  animation.currentTime = 0
-
-  return animation
-end
-
 module.newAnimationFromConf = function(image, conf)
   local animation = {}
 
@@ -37,13 +19,12 @@ module.newAnimationFromConf = function(image, conf)
   end
 
   animation.duration = conf.duration
-  animation.currentTime = 0
 
   return animation;
 end
 
-module.drawAnimation = function(anim, x, y, rotation, scale_x, scale_y)
-  local spriteNum = math.floor(anim.currentTime / anim.duration * #anim.quads) + 1
+module.drawAnimation = function(anim, currentTime, x, y, rotation, scale_x, scale_y)
+  local spriteNum = math.floor(currentTime / anim.duration * #anim.quads) + 1
   local _,_,_,h = anim.quads[spriteNum]:getViewport()
   local px, py
 
