@@ -418,6 +418,136 @@ local asset_conf = {
       },
     },
   },
+  crazy88 = {
+    sprites = {
+      walking = {
+        duration = 0.7,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 16,
+            width = 20,
+            height = 58,
+          },
+          [2] = {
+            pos_x = 44,
+            pos_y = 16,
+            width = 11,
+            height = 58,
+          },
+          [3] = {
+            pos_x = 63,
+            pos_y = 16,
+            width = 21,
+            height = 58,
+          },
+          [4] = {
+            pos_x = 92,
+            pos_y = 16,
+            width = 11,
+            height = 58,
+          },
+        },
+      },
+      approaching = {
+        duration = 0.7,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 98,
+            width = 20,
+            height = 63,
+          },
+          [2] = {
+            pos_x = 44,
+            pos_y = 98,
+            width = 11,
+            height = 63,
+          },
+          [3] = {
+            pos_x = 63,
+            pos_y = 98,
+            width = 21,
+            height = 63,
+          },
+          [4] = {
+            pos_x = 92,
+            pos_y = 98,
+            width = 11,
+            height = 63,
+          },
+        },
+      },
+      holding = {
+        duration = 0.5,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 135,
+            pos_y = 104,
+            width = 22,
+            height = 57,
+          },
+        },
+      },
+      falling = {
+        duration = 0.5,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 351,
+            pos_y = 108,
+            width = 37,
+            height = 53,
+          },
+          [2] = {
+            pos_x = 396,
+            pos_y = 112,
+            width = 41,
+            height = 49,
+          },
+        },
+      },
+      hitTop = {
+        duration = 0.1,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 189,
+            pos_y = 102,
+            width = 23,
+            height = 59,
+          },
+        },
+      },
+      hitMiddle = {
+        duration = 0.1,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 244,
+            pos_y = 105,
+            width = 20,
+            height = 56,
+          },
+        },
+      },
+      hitBottom = {
+        duration = 0.1,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 296,
+            pos_y = 101,
+            width = 23,
+            height = 60,
+          },
+        },
+      },
+    },
+  },
 }
 
 return asset_conf
