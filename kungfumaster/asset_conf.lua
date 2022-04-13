@@ -253,12 +253,18 @@ local asset_conf = {
             height = 68,
           },
           [5] = {
+            pos_x = 432,
+            pos_y = 772,
+            width = 31,
+            height = 68,
+          },
+          [6] = {
             pos_x = 471,
             pos_y = 782,
             width = 17,
             height = 69,
           },
-          [6] = {
+          [7] = {
             pos_x = 496,
             pos_y = 813,
             width = 15,
@@ -343,12 +349,18 @@ local asset_conf = {
             height = 68,
           },
           [5] = {
+            pos_x = 465,
+            pos_y = 893,
+            width = 31,
+            height = 68,
+          },
+          [6] = {
             pos_x = 96,
             pos_y = 903,
             width = 17,
             height = 69,
           },
-          [6] = {
+          [7] = {
             pos_x = 121,
             pos_y = 934,
             width = 15,

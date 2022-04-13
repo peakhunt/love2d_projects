@@ -67,12 +67,8 @@ states.standing = {
     end
 
     if state.button_left then
-      entity.forward = true
-      entity.pos.scale_x = -1 * scale_factor
       entity:moveState(states.walking)
     elseif state.button_right then
-      entity.forward = false
-      entity.pos.scale_x = scale_factor
       entity:moveState(states.walking)
     elseif state.button_down then
       entity:moveState(states.sitting)
@@ -101,16 +97,23 @@ states.walking = {
       return
     end
 
-    local x,y = entity:getPos()
     local prevForward = entity.forward
 
-    -- movement
     if state.button_left then
       entity.forward = true
+      if prevForward ~= entity.forward then
+        entity:moveState(states.standing)
+        return
+      end
     elseif state.button_right then
       entity.forward = false
+      if prevForward ~= entity.forward then
+        entity:moveState(states.standing)
+        return
+      end
     else
       entity:moveState(states.standing)
+      return
     end
     
     if state.button_down then
@@ -118,19 +121,21 @@ states.walking = {
       return
     end
 
-    if state.button_up and prevForward == entity.forward then
-      entity:moveState(states.walkJumping)
-      return
-    end
+    local x,y = entity:getPos()
 
-    if entity.forward and prevForward == entity.forward then
+    if entity.forward then
       x = x - move_speed * dt
       entity.pos.scale_x = -1 * scale_factor
-    elseif prevForward == entity.forward then
+    else
       x = x + move_speed * dt
       entity.pos.scale_x = scale_factor
     end 
     entity:setPos(x, y)
+
+    if state.button_up then
+      entity:moveState(states.walkJumping)
+      return
+    end
 
     entity:commonUpdate(dt)
   end,
@@ -262,10 +267,7 @@ states.walkJumping = {
 --
 states.standPunching = {
   update = function(self, entity, dt)
-    if entity:commonUpdate(dt) == true then
-      -- animation over
-      entity:moveState(states.standing)
-    end
+    entity:updateOneshot(dt, states.standing)
   end,
   enter = function(self, entity, oldState)
     entity.currentAnimTime = 0
@@ -278,10 +280,7 @@ states.standPunching = {
 --
 states.standKicking = {
   update = function(self, entity, dt)
-    if entity:commonUpdate(dt) == true then
-      -- animation over
-      entity:moveState(states.standing)
-    end
+    entity:updateOneshot(dt, states.standing)
   end,
   enter = function(self, entity, oldState)
     entity.currentAnimTime = 0
@@ -294,10 +293,7 @@ states.standKicking = {
 --
 states.sitPunching = {
   update = function(self, entity, dt)
-    if entity:commonUpdate(dt) == true then
-      -- animation over
-      entity:moveState(states.sitting)
-    end
+    entity:updateOneshot(dt, states.sitting)
   end,
   enter = function(self, entity, oldState)
     entity.currentAnimTime = 0
@@ -310,10 +306,7 @@ states.sitPunching = {
 --
 states.sitKicking = {
   update = function(self, entity, dt)
-    if entity:commonUpdate(dt) == true then
-      -- animation over
-      entity:moveState(states.sitting)
-    end
+    entity:updateOneshot(dt, states.sitting)
   end,
   enter = function(self, entity, oldState)
     entity.currentAnimTime = 0
@@ -475,6 +468,12 @@ return function(pos_x, pos_y)
         return true
       end
       return false
+    end,
+
+    updateOneshot = function(self, dt, nextState)
+      if self:commonUpdate(dt) == true then
+        self:moveState(nextState)
+      end
     end,
   }
 
