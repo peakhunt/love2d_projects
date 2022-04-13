@@ -57,6 +57,7 @@ local states = {}
 -- state standing
 --
 states.standing = {
+  animation = animations.standing,
   update = function(self, entity, dt)
     if state.button_kick then
       entity:moveState(states.standKicking)
@@ -78,16 +79,13 @@ states.standing = {
 
     entity:commonUpdate(dt)
   end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.standing
-  end,
 }
 
 --
 -- state walking
 --
 states.walking = {
+  animation = animations.walking,
   update = function(self, entity, dt)
     if state.button_kick then
       entity:moveState(states.standKicking)
@@ -139,16 +137,13 @@ states.walking = {
 
     entity:commonUpdate(dt)
   end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.walking
-  end,
 }
 
 --
 -- state sitting
 --
 states.sitting = {
+  animation = animations.sitting,
   update = function(self, entity, dt)
     -- kick and punch
     if state.button_kick then
@@ -174,10 +169,6 @@ states.sitting = {
     end
 
     entity:commonUpdate(dt)
-  end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.sitting
   end,
 }
 
@@ -266,12 +257,9 @@ states.walkJumping = {
 -- state punhcing
 --
 states.standPunching = {
+  animation = animations.standPunch,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.standing)
-  end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.standPunch
   end,
 }
 
@@ -279,12 +267,9 @@ states.standPunching = {
 -- state kicking
 --
 states.standKicking = {
+  animation = animations.standKick,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.standing)
-  end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.standKick
   end,
 }
 
@@ -292,12 +277,9 @@ states.standKicking = {
 -- state punching while sitting down
 --
 states.sitPunching = {
+  animation = animations.sitPunch,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.sitting)
-  end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.sitPunch
   end,
 }
 
@@ -305,12 +287,9 @@ states.sitPunching = {
 -- state kicking while sitting down
 --
 states.sitKicking = {
+  animation = animations.sitKick,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.sitting)
-  end,
-  enter = function(self, entity, oldState)
-    entity.currentAnimTime = 0
-    entity.currentAnim = animations.sitKick
   end,
 }
 
@@ -449,6 +428,9 @@ return function(pos_x, pos_y)
 
       if newstate.enter then
         self.currentState:enter(self, oldState)
+      else
+        self.currentAnimTime = 0
+        self.currentAnim = newstate.animation
       end 
     end,
 

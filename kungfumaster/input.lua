@@ -3,6 +3,7 @@ local state = require('state')
 local trigger = {
   punch = 0,
   kick = 0,
+  up = 0,
 }
 
 local press_funcs = {
@@ -74,6 +75,14 @@ return {
   end,
 
   update = function(dt)
+    if state.button_up == true then
+      if trigger.up ~= 0 then
+        state.button_up = false
+      else
+        trigger.up = trigger.up + 1
+      end
+    end
+
     if state.button_punch == true then
       if trigger.punch ~= 0 then
         state.button_punch = false
