@@ -60,380 +60,392 @@ local animations = {
 -- hero state machine
 --
 --------------------------------------------------------------------------------
-states = {
-  standing = {
-    update = function(self, entity, dt)
-      if state.button_kick then
-        entity:moveState(states.standKicking)
-        return
-      elseif state.button_punch then
-        entity:moveState(states.standPunching)
-        return
-      end
+local states = {}
 
-      -- movement
-      if state.button_left then
-        entity.forward = true
-        entity.pos.scale_x = -1 * scale_factor
-        entity:moveState(states.walking)
-      elseif state.button_right then
-        entity.forward = false
-        entity.pos.scale_x = scale_factor
-        entity:moveState(states.walking)
-      elseif state.button_down then
-        entity:moveState(states.sitting)
-      elseif state.button_up then
-        entity:moveState(states.standJumping)
-      end
+states.standing = {
+  update = function(self, entity, dt)
+    if state.button_kick then
+      entity:moveState(states.standKicking)
+      return
+    elseif state.button_punch then
+      entity:moveState(states.standPunching)
+      return
+    end
 
-      commonUpdate(entity, dt)
-    end,
-    enter = function(self, entity)
-      animations.standing.currentTime = 0
-      entity.currentAnim = animations.standing
-    end,
-    leave = function(self, entity)
-    end,
+    -- movement
+    if state.button_left then
+      entity.forward = true
+      entity.pos.scale_x = -1 * scale_factor
+      entity:moveState(states.walking)
+    elseif state.button_right then
+      entity.forward = false
+      entity.pos.scale_x = scale_factor
+      entity:moveState(states.walking)
+    elseif state.button_down then
+      entity:moveState(states.sitting)
+    elseif state.button_up then
+      entity:moveState(states.standJumping)
+    end
+
+    commonUpdate(entity, dt)
+  end,
+  enter = function(self, entity)
+    animations.standing.currentTime = 0
+    entity.currentAnim = animations.standing
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.walking = {
+  update = function(self, entity, dt)
+    if state.button_kick then
+      entity:moveState(states.standKicking)
+      return
+    elseif state.button_punch then
+      entity:moveState(states.standPunching)
+      return
+    end
+
+    local x,y = entity:getPos()
+    local prevForward = entity.forward
+
+    -- movement
+    if state.button_left then
+      entity.forward = true
+    elseif state.button_right then
+      entity.forward = false
+    else
+      entity:moveState(states.standing)
+    end
+    
+    if state.button_down then
+      entity:moveState(states.sitting)
+      return
+    end
+
+    if state.button_up and prevForward == entity.forward then
+      entity:moveState(states.walkJumping)
+      return
+    end
+
+    if entity.forward and prevForward == entity.forward then
+      x = x - move_speed * dt
+      entity.pos.scale_x = -1 * scale_factor
+    elseif prevForward == entity.forward then
+      x = x + move_speed * dt
+      entity.pos.scale_x = scale_factor
+    end 
+    entity:setPos(x, y)
+
+    commonUpdate(entity, dt)
+  end,
+  enter = function(self, entity)
+    animations.walking.currentTime = 0
+    entity.currentAnim = animations.walking
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.sitting = {
+  update = function(self, entity, dt)
+    -- kick and punch
+    if state.button_kick then
+      entity:moveState(states.sitKicking)
+      return
+    elseif state.button_punch then
+      entity:moveState(states.sitPunching)
+      return
+    end
+
+    -- movement
+    if state.button_left then
+      entity.forward = true
+      entity.pos.scale_x = -1 * scale_factor
+    elseif state.button_right then
+      entity.forward = false
+      entity.pos.scale_x = scale_factor
+    elseif state.button_down then
+    elseif state.button_up then
+      entity:moveState(states.standing)
+    else
+      entity:moveState(states.standing)
+    end
+
+    commonUpdate(entity, dt)
+  end,
+  enter = function(self, entity)
+    animations.sitting.currentTime = 0
+    entity.currentAnim = animations.sitting
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.standJumping = {
+  savedPos = {
+    x = 0,
+    y = 0,
   },
-  walking = {
-    update = function(self, entity, dt)
-      if state.button_kick then
-        entity:moveState(states.standKicking)
-        return
-      elseif state.button_punch then
-        entity:moveState(states.standPunching)
-        return
-      end
+  update = function(self, entity, dt)
+    if state.button_kick and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
+      entity:moveState(states.standJumpKicking)
+      return
+    end
 
-      local x,y = entity:getPos()
-      local prevForward = entity.forward
+    if state.button_punch and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
+      entity:moveState(states.standJumpPunching)
+      return
+    end
 
-      -- movement
-      if state.button_left then
-        entity.forward = true
-      elseif state.button_right then
-        entity.forward = false
-      else
-        entity:moveState(states.standing)
-      end
-      
-      if state.button_down then
-        entity:moveState(states.sitting)
-        return
-      end
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.standing)
+      entity:setPos(self.savedPos.x, self.savedPos.y)
+    else
+      local x,_ = entity:getPos()
+      local y = self.savedPos.y - calcJumpDistance(animations.standJumping)
+      entity:setPos(x, y)
+    end
+  end,
+  enter = function(self, entity)
+    animations.standJumping.currentTime = 0
 
-      if state.button_up and prevForward == entity.forward then
-        entity:moveState(states.walkJumping)
-        return
-      end
+    local x,y = entity:getPos()
 
-      if entity.forward and prevForward == entity.forward then
+    self.savedPos.x = x
+    self.savedPos.y = y
+
+    entity.currentAnim = animations.standJumping
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.walkJumping = {
+  savedPosY = 0,
+  update = function(self, entity, dt)
+    if state.button_kick and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
+      entity:moveState(states.walkJumpKicking)
+      return
+    end
+
+    if state.button_punch and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
+      entity:moveState(states.walkJumpPunching)
+      return
+    end
+
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.walking)
+
+      local x, _ = entity:getPos()
+
+      entity:setPos(x, self.savedPosY)
+    else
+      local x,_ = entity:getPos()
+      local y = self.savedPosY - calcJumpDistance(animations.walkJumping)
+
+      if entity.forward then
         x = x - move_speed * dt
-        entity.pos.scale_x = -1 * scale_factor
-      elseif prevForward == entity.forward then
+      else
         x = x + move_speed * dt
-        entity.pos.scale_x = scale_factor
       end 
       entity:setPos(x, y)
+    end
+  end,
+  enter = function(self, entity)
+    animations.walkJumping.currentTime = 0
 
-      commonUpdate(entity, dt)
-    end,
-    enter = function(self, entity)
-      animations.walking.currentTime = 0
-      entity.currentAnim = animations.walking
-    end,
-    leave = function(self, entity)
-    end,
+    local _,y = entity:getPos()
+
+    self.savedPosY = y
+    entity.currentAnim = animations.walkJumping
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.standPunching = {
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.standing)
+    end
+  end,
+  enter = function(self, entity)
+    animations.standPunch.currentTime = 0
+    entity.currentAnim = animations.standPunch
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.standKicking = {
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.standing)
+    end
+  end,
+  enter = function(self, entity)
+    animations.standKick.currentTime = 0
+    entity.currentAnim = animations.standKick
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.sitPunching = {
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.sitting)
+    end
+  end,
+  enter = function(self, entity)
+    animations.sitPunch.currentTime = 0
+    entity.currentAnim = animations.sitPunch
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.sitKicking = {
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.sitting)
+    end
+  end,
+  enter = function(self, entity)
+    animations.sitKick.currentTime = 0
+    entity.currentAnim = animations.sitKick
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.standJumpKicking = {
+  savedPos = {
+    x = 0,
+    y = 0,
   },
-  sitting = {
-    update = function(self, entity, dt)
-      -- kick and punch
-      if state.button_kick then
-        entity:moveState(states.sitKicking)
-        return
-      elseif state.button_punch then
-        entity:moveState(states.sitPunching)
-        return
-      end
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.standing)
+      entity:setPos(self.savedPos.x, self.savedPos.y)
+    else
+      local x,_ = entity:getPos()
+      local y = self.savedPos.y - calcJumpDistance(animations.standJumpKick)
+      entity:setPos(x, y)
+    end
+  end,
+  enter = function(self, entity)
+    animations.standJumpKick.currentTime = animations.standJumping.currentTime
 
-      -- movement
-      if state.button_left then
-        entity.forward = true
-        entity.pos.scale_x = -1 * scale_factor
-      elseif state.button_right then
-        entity.forward = false
-        entity.pos.scale_x = scale_factor
-      elseif state.button_down then
-      elseif state.button_up then
-        entity:moveState(states.standing)
+    self.savedPos.x = states.standJumping.savedPos.x
+    self.savedPos.y = states.standJumping.savedPos.y
+
+    entity.currentAnim = animations.standJumpKick
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.standJumpPunching = {
+  savedPos = {
+    x = 0,
+    y = 0,
+  },
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.standing)
+      entity:setPos(self.savedPos.x, self.savedPos.y)
+    else
+      local x,_ = entity:getPos()
+      local y = self.savedPos.y - calcJumpDistance(animations.standJumpPunch)
+      entity:setPos(x, y)
+    end
+  end,
+  enter = function(self, entity)
+    animations.standJumpPunch.currentTime = animations.standJumping.currentTime
+
+    self.savedPos.x = states.standJumping.savedPos.x
+    self.savedPos.y = states.standJumping.savedPos.y
+
+    entity.currentAnim = animations.standJumpPunch
+  end,
+  leave = function(self, entity)
+  end,
+}
+
+states.walkJumpKicking = {
+  savedPosY = 0,
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.walking)
+
+      local x, _ = entity:getPos()
+
+      entity:setPos(x, self.savedPosY)
+    else
+      local x,_ = entity:getPos()
+      local y = self.savedPosY - calcJumpDistance(animations.walkJumpKick)
+
+      if entity.forward then
+        x = x - move_speed * dt
       else
-        entity:moveState(states.standing)
-      end
+        x = x + move_speed * dt
+      end 
+      entity:setPos(x, y)
+    end
+  end,
+  enter = function(self, entity)
+    animations.walkJumpKick.currentTime = animations.walkJumping.currentTime
 
-      commonUpdate(entity, dt)
-    end,
-    enter = function(self, entity)
-      animations.sitting.currentTime = 0
-      entity.currentAnim = animations.sitting
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  standJumping = {
-    savedPos = {
-      x = 0,
-      y = 0,
-    },
-    update = function(self, entity, dt)
-      if state.button_kick and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
-        entity:moveState(states.standJumpKicking)
-        return
-      end
+    self.savedPosY = states.walkJumping.savedPosY
 
-      if state.button_punch and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
-        entity:moveState(states.standJumpPunching)
-        return
-      end
+    entity.currentAnim = animations.walkJumpKick
+  end,
+  leave = function(self, entity)
+  end,
+}
 
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.standing)
-        entity:setPos(self.savedPos.x, self.savedPos.y)
+states.walkJumpPunching = {
+  savedPosY = 0,
+  update = function(self, entity, dt)
+    if commonUpdate(entity, dt) == true then
+      -- animation over
+      entity:moveState(states.walking)
+
+      local x, _ = entity:getPos()
+      entity:setPos(x, self.savedPosY)
+    else
+      local x,_ = entity:getPos()
+      local y = self.savedPosY - calcJumpDistance(animations.walkJumpPunch)
+
+      if entity.forward then
+        x = x - move_speed * dt
       else
-        local x,_ = entity:getPos()
-        local y = self.savedPos.y - calcJumpDistance(animations.standJumping)
-        entity:setPos(x, y)
-      end
-    end,
-    enter = function(self, entity)
-      animations.standJumping.currentTime = 0
+        x = x + move_speed * dt
+      end 
+      entity:setPos(x, y)
+    end
+  end,
+  enter = function(self, entity)
+    animations.walkJumpPunch.currentTime = animations.walkJumping.currentTime
 
-      local x,y = entity:getPos()
+    self.savedPosY = states.walkJumping.savedPosY
 
-      self.savedPos.x = x
-      self.savedPos.y = y
-
-      entity.currentAnim = animations.standJumping
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  walkJumping = {
-    savedPosY = 0,
-    update = function(self, entity, dt)
-      if state.button_kick and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
-        entity:moveState(states.walkJumpKicking)
-        return
-      end
-
-      if state.button_punch and entity.currentAnim.currentTime < (entity.currentAnim.duration  * 3 / 5) then
-        entity:moveState(states.walkJumpPunching)
-        return
-      end
-
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.walking)
-
-        local x, _ = entity:getPos()
-
-        entity:setPos(x, self.savedPosY)
-      else
-        local x,_ = entity:getPos()
-        local y = self.savedPosY - calcJumpDistance(animations.walkJumping)
-
-        if entity.forward then
-          x = x - move_speed * dt
-        else
-          x = x + move_speed * dt
-        end 
-        entity:setPos(x, y)
-      end
-    end,
-    enter = function(self, entity)
-      animations.walkJumping.currentTime = 0
-
-      local _,y = entity:getPos()
-
-      self.savedPosY = y
-      entity.currentAnim = animations.walkJumping
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  standPunching = {
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.standing)
-      end
-    end,
-    enter = function(self, entity)
-      animations.standPunch.currentTime = 0
-      entity.currentAnim = animations.standPunch
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  standKicking = {
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.standing)
-      end
-    end,
-    enter = function(self, entity)
-      animations.standKick.currentTime = 0
-      entity.currentAnim = animations.standKick
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  sitPunching = {
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.sitting)
-      end
-    end,
-    enter = function(self, entity)
-      animations.sitPunch.currentTime = 0
-      entity.currentAnim = animations.sitPunch
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  sitKicking = {
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.sitting)
-      end
-    end,
-    enter = function(self, entity)
-      animations.sitKick.currentTime = 0
-      entity.currentAnim = animations.sitKick
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  standJumpKicking = {
-    savedPos = {
-      x = 0,
-      y = 0,
-    },
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.standing)
-        entity:setPos(self.savedPos.x, self.savedPos.y)
-      else
-        local x,_ = entity:getPos()
-        local y = self.savedPos.y - calcJumpDistance(animations.standJumpKick)
-        entity:setPos(x, y)
-      end
-    end,
-    enter = function(self, entity)
-      animations.standJumpKick.currentTime = animations.standJumping.currentTime
-
-      self.savedPos.x = states.standJumping.savedPos.x
-      self.savedPos.y = states.standJumping.savedPos.y
-
-      entity.currentAnim = animations.standJumpKick
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  standJumpPunching = {
-    savedPos = {
-      x = 0,
-      y = 0,
-    },
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.standing)
-        entity:setPos(self.savedPos.x, self.savedPos.y)
-      else
-        local x,_ = entity:getPos()
-        local y = self.savedPos.y - calcJumpDistance(animations.standJumpPunch)
-        entity:setPos(x, y)
-      end
-    end,
-    enter = function(self, entity)
-      animations.standJumpPunch.currentTime = animations.standJumping.currentTime
-
-      self.savedPos.x = states.standJumping.savedPos.x
-      self.savedPos.y = states.standJumping.savedPos.y
-
-      entity.currentAnim = animations.standJumpPunch
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  walkJumpKicking = {
-    savedPosY = 0,
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.walking)
-
-        local x, _ = entity:getPos()
-
-        entity:setPos(x, self.savedPosY)
-      else
-        local x,_ = entity:getPos()
-        local y = self.savedPosY - calcJumpDistance(animations.walkJumpKick)
-
-        if entity.forward then
-          x = x - move_speed * dt
-        else
-          x = x + move_speed * dt
-        end 
-        entity:setPos(x, y)
-      end
-    end,
-    enter = function(self, entity)
-      animations.walkJumpKick.currentTime = animations.walkJumping.currentTime
-
-      self.savedPosY = states.walkJumping.savedPosY
-
-      entity.currentAnim = animations.walkJumpKick
-    end,
-    leave = function(self, entity)
-    end,
-  },
-  walkJumpPunching = {
-    savedPosY = 0,
-    update = function(self, entity, dt)
-      if commonUpdate(entity, dt) == true then
-        -- animation over
-        entity:moveState(states.walking)
-
-        local x, _ = entity:getPos()
-        entity:setPos(x, self.savedPosY)
-      else
-        local x,_ = entity:getPos()
-        local y = self.savedPosY - calcJumpDistance(animations.walkJumpPunch)
-
-        if entity.forward then
-          x = x - move_speed * dt
-        else
-          x = x + move_speed * dt
-        end 
-        entity:setPos(x, y)
-      end
-    end,
-    enter = function(self, entity)
-      animations.walkJumpPunch.currentTime = animations.walkJumping.currentTime
-
-      self.savedPosY = states.walkJumping.savedPosY
-
-      entity.currentAnim = animations.walkJumpPunch
-    end,
-    leave = function(self, entity)
-    end,
-  },
+    entity.currentAnim = animations.walkJumpPunch
+  end,
+  leave = function(self, entity)
+  end,
 }
 
 return function(pos_x, pos_y)
