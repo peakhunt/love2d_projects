@@ -548,6 +548,112 @@ local asset_conf = {
       },
     },
   },
+  dwarf = {
+    sprites = {
+      walking = {
+        duration = 0.7,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 189,
+            width = 16,
+            height = 43,
+          },
+          [2] = {
+            pos_x = 40,
+            pos_y = 189,
+            width = 11,
+            height = 43,
+          },
+          [3] = {
+            pos_x = 59,
+            pos_y = 189,
+            width = 16,
+            height = 43,
+          },
+          [4] = {
+            pos_x = 83,
+            pos_y = 189,
+            width = 11,
+            height = 43,
+          },
+        },
+      },
+      holding = {
+        duration = 0.5,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 126,
+            pos_y = 192,
+            width = 19,
+            height = 40,
+          },
+        },
+      },
+      falling = {
+        duration = 0.5,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 177,
+            pos_y = 196,
+            width = 27,
+            height = 36,
+          },
+          [2] = {
+            pos_x = 212,
+            pos_y = 207,
+            width = 31,
+            height = 25,
+          },
+        },
+      },
+      tumbling = {
+        duration = 0.7,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 275,
+            pos_y = 192,
+            width = 16,
+            height = 40,
+          },
+          [2] = {
+            pos_x = 299,
+            pos_y = 185,
+            width = 18,
+            height = 47,
+          },
+          [3] = {
+            pos_x = 325,
+            pos_y = 201,
+            width = 19,
+            height = 31,
+          },
+          [4] = {
+            pos_x = 352,
+            pos_y = 204,
+            width = 20,
+            height = 28,
+          },
+          [5] = {
+            pos_x = 380,
+            pos_y = 201,
+            width = 19,
+            height = 31,
+          },
+          [6] = {
+            pos_x = 435,
+            pos_y = 192,
+            width = 16,
+            height = 40,
+          },
+        },
+      },
+    },
+  },
 }
 
 return asset_conf
