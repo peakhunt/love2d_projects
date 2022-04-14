@@ -11,8 +11,8 @@ local entities = {
   crazy88(300, 400),
   dwarf(500, 400),
   gogo(600, 400),
-  knife(100, 100),
-  knife(500, 300),
+  knife(100, 250),
+  knife(500, 370),
   hero(150, 400),
 }
 

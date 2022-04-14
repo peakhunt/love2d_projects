@@ -1,4 +1,5 @@
 local module = {}
+local debug_rect = true
 
 module.newAnimationFromConf = function(image, conf)
   local animation = {}
@@ -31,13 +32,23 @@ module.drawAnimation = function(anim, currentTime, x, y, rotation, scale_x, scal
     spriteNum = 1
   end
 
-  local _,_,_,h = anim.quads[spriteNum]:getViewport()
+  local _,_,w,h = anim.quads[spriteNum]:getViewport()
   local px, py
 
   px = x
   py = y - h * scale_y
 
   love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y)
+
+  if debug_rect then
+    w = w * scale_x
+    h = h * scale_y
+
+    local r,g,b,a =  love.graphics.getColor()
+    love.graphics.setColor(1.0, 0, 0, 1)
+    love.graphics.rectangle("line", px, py, w, h)
+    love.graphics.setColor(r, g, b, a)
+  end
 end
 
 return module
