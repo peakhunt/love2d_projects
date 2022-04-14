@@ -2,15 +2,19 @@ local world = require('world')
 local entities = require('entities')
 local asset_conf = require('asset_conf')
 local input = require('input')
+local level = require('level')
+
+local current_level;
 
 function love.load()
   love.graphics.setFont(love.graphics.newFont(11))
+  current_level = level(1)
 end
 
 function love.draw()
-  love.graphics.setBackgroundColor(115/255, 27/255, 135/255, 1)
-
-  love.graphics.line(0, 400, 800, 400)
+  --love.graphics.setBackgroundColor(115/255, 27/255, 135/255, 1)
+  --love.graphics.line(0, 400, 800, 400)
+  current_level:draw()
 
   for _, entity in ipairs(entities) do
     if entity.draw then

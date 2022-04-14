@@ -762,6 +762,13 @@ local asset_conf = {
       },
     },
   },
+  level = {
+    [1] = {
+      background = 'assets/floor1.png',
+      background_width = 1792,
+      background_height = 200,
+    },
+  },
 }
 
 return asset_conf
