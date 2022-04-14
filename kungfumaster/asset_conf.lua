@@ -4,7 +4,6 @@ local asset_conf = {
     sprites = {
       standing = {
         duration = 1,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 16,
@@ -16,7 +15,6 @@ local asset_conf = {
       },
       walking = {
         duration = 0.5,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 72,
@@ -46,7 +44,6 @@ local asset_conf = {
       },
       sitting = {
         duration = 1,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 16,
@@ -58,7 +55,6 @@ local asset_conf = {
       },
       standJumping = {
         duration = 0.5,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 16,
@@ -94,7 +90,6 @@ local asset_conf = {
       },
       walkJumping = {
         duration = 0.5,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 16,
@@ -130,7 +125,6 @@ local asset_conf = {
       },
       standPunching = {
         duration = 0.125,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 52,
@@ -154,7 +148,6 @@ local asset_conf = {
       },
       standKicking = {
         duration = 0.125,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 259,
@@ -178,7 +171,6 @@ local asset_conf = {
       },
       sitPunching = {
         duration = 0.125,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 108,
@@ -202,7 +194,6 @@ local asset_conf = {
       },
       sitKicking = {
         duration = 0.125,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 323,
@@ -226,7 +217,6 @@ local asset_conf = {
       },
       standJumpKicking = {
         duration = 0.6,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 363,
@@ -274,7 +264,6 @@ local asset_conf = {
       },
       standJumpPunching = {
         duration = 0.6,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 157,
@@ -322,7 +311,6 @@ local asset_conf = {
       },
       walkJumpKicking = {
         duration = 0.6,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 16,
@@ -370,7 +358,6 @@ local asset_conf = {
       },
       walkJumpPunching = {
         duration = 0.6,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 16,
@@ -422,7 +409,6 @@ local asset_conf = {
     sprites = {
       walking = {
         duration = 0.7,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 16,
@@ -452,7 +438,6 @@ local asset_conf = {
       },
       approaching = {
         duration = 0.7,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 16,
@@ -482,7 +467,6 @@ local asset_conf = {
       },
       holding = {
         duration = 0.5,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 135,
@@ -494,7 +478,6 @@ local asset_conf = {
       },
       falling = {
         duration = 0.5,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 351,
@@ -512,7 +495,6 @@ local asset_conf = {
       },
       hitTop = {
         duration = 0.1,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 189,
@@ -524,7 +506,6 @@ local asset_conf = {
       },
       hitMiddle = {
         duration = 0.1,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 244,
@@ -536,7 +517,6 @@ local asset_conf = {
       },
       hitBottom = {
         duration = 0.1,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 296,
@@ -552,7 +532,6 @@ local asset_conf = {
     sprites = {
       walking = {
         duration = 0.7,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 16,
@@ -582,7 +561,6 @@ local asset_conf = {
       },
       holding = {
         duration = 0.5,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 126,
@@ -594,7 +572,6 @@ local asset_conf = {
       },
       falling = {
         duration = 0.5,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 177,
@@ -612,7 +589,6 @@ local asset_conf = {
       },
       tumbling = {
         duration = 0.7,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 275,
@@ -658,7 +634,6 @@ local asset_conf = {
     sprites = {
       standing = {
         duration = 0.7,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 139,
@@ -670,7 +645,6 @@ local asset_conf = {
       },
       walking = {
         duration = 0.6,
-        oneshot = false,
         quads = {
           [1] = {
             pos_x = 16,
@@ -700,7 +674,6 @@ local asset_conf = {
       },
       throwingHigh = {
         duration = 0.25,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 193,
@@ -718,7 +691,6 @@ local asset_conf = {
       },
       throwingLow = {
         duration = 0.25,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 276,
@@ -736,7 +708,6 @@ local asset_conf = {
       },
       falling = {
         duration = 0.25,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 478,
@@ -754,7 +725,6 @@ local asset_conf = {
       },
       hit1 = {
         duration = 0.25,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 380,
@@ -766,13 +736,27 @@ local asset_conf = {
       },
       hit2 = {
         duration = 0.25,
-        oneshot = true,
         quads = {
           [1] = {
             pos_x = 427,
             pos_y = 267,
             width = 19,
             height = 59,
+          },
+        },
+      },
+    },
+  },
+  knife = {
+    sprites = {
+      flying = {
+        duration = 0.1,
+        quads = {
+          [1] = {
+            pos_x = 610,
+            pos_y = 319,
+            width = 12,
+            height = 7,
           },
         },
       },

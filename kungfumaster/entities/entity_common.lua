@@ -53,13 +53,18 @@ return function(pos_x, pos_y, states, animations, start_state)
     end,
 
     update = function(self, dt)
-      self.currentState:update(self, dt)
+      if dt < 0.1 then
+        self.currentState:update(self, dt)
+      end
     end,
 
     commonUpdate = function(self, dt)
       self.currentAnimTime = self.currentAnimTime + dt
       if self.currentAnimTime >= self.currentAnim.duration then
+        -- XXX this can cause a weird problem in sluggish env with huge dt
+        -- but keeping it this way for now
         self.currentAnimTime = self.currentAnimTime - self.currentAnim.duration
+        --self.currentAnimTime = 0
         return true
       end
       return false

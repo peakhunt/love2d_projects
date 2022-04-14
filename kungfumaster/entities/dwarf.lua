@@ -89,6 +89,7 @@ return function(pos_x, pos_y)
   local entity = entity_common(pos_x, pos_y, states, animations, states.walking)
 
   entity.testDt = 0
+  entity.name = "dwarf"
 
   return entity
 end

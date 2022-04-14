@@ -390,5 +390,8 @@ states.walkJumpPunching = {
 }
 
 return function(pos_x, pos_y)
-  return entity_common(pos_x, pos_y, states, animations, states.standing)
+  local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
+  entity.name = "helo"
+
+  return entity
 end

@@ -25,6 +25,12 @@ end
 
 module.drawAnimation = function(anim, currentTime, x, y, rotation, scale_x, scale_y)
   local spriteNum = math.floor(currentTime / anim.duration * #anim.quads) + 1
+  if spriteNum > #anim.quads or spriteNum < 1 then
+    -- print('BUG: spriteNum bigger than quads:', spriteNum, #anim.quads)
+    -- return
+    spriteNum = 1
+  end
+
   local _,_,_,h = anim.quads[spriteNum]:getViewport()
   local px, py
 
