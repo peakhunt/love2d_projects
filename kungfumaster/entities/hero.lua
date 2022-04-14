@@ -4,10 +4,9 @@
 local asset_conf = require('asset_conf')
 local utils = require('utils')
 local state = require('state')
+local entity_common = require('entities/entity_common')
+local common_conf = require('entities/common_conf')
 
-local scale_factor = 3
-local jump_distance = 70
-local move_speed = 200
 local spriteSheet = asset_conf.spriteSheet
 local sprites = asset_conf.hero.sprites
 
@@ -18,7 +17,7 @@ function calcJumpDistance(anim, currentAnimTime)
   -- a = 4h/t^2
   --
   local t = anim.duration
-  local h = jump_distance
+  local h = common_conf.jump_distance
   local a = 4 * h / (t * t)
   local x = (currentAnimTime - t / 2)
   local y = -a * x * x + h
@@ -122,11 +121,11 @@ states.walking = {
     local x,y = entity:getPos()
 
     if entity.forward then
-      x = x - move_speed * dt
-      entity.pos.scale_x = -1 * scale_factor
+      x = x - common_conf.move_speed * dt
+      entity.pos.scale_x = -1 * common_conf.scale_factor
     else
-      x = x + move_speed * dt
-      entity.pos.scale_x = scale_factor
+      x = x + common_conf.move_speed * dt
+      entity.pos.scale_x = common_conf.scale_factor
     end 
     entity:setPos(x, y)
 
@@ -157,10 +156,10 @@ states.sitting = {
     -- movement
     if state.button_left then
       entity.forward = true
-      entity.pos.scale_x = -1 * scale_factor
+      entity.pos.scale_x = -1 * common_conf.scale_factor
     elseif state.button_right then
       entity.forward = false
-      entity.pos.scale_x = scale_factor
+      entity.pos.scale_x = common_conf.scale_factor
     elseif state.button_down then
     elseif state.button_up then
       entity:moveState(states.standing)
@@ -236,9 +235,9 @@ states.walkJumping = {
       local y = entity.savedPos.y - calcJumpDistance(animations.walkJumping, entity.currentAnimTime)
 
       if entity.forward then
-        x = x - move_speed * dt
+        x = x - common_conf.move_speed * dt
       else
-        x = x + move_speed * dt
+        x = x + common_conf.move_speed * dt
       end 
       entity:setPos(x, y)
     end
@@ -350,9 +349,9 @@ states.walkJumpKicking = {
       local y = entity.savedPos.y - calcJumpDistance(animations.walkJumpKick, entity.currentAnimTime)
 
       if entity.forward then
-        x = x - move_speed * dt
+        x = x - common_conf.move_speed * dt
       else
-        x = x + move_speed * dt
+        x = x + common_conf.move_speed * dt
       end 
       entity:setPos(x, y)
     end
@@ -378,9 +377,9 @@ states.walkJumpPunching = {
       local y = entity.savedPos.y - calcJumpDistance(animations.walkJumpPunch, entity.currentAnimTime)
 
       if entity.forward then
-        x = x - move_speed * dt
+        x = x - common_conf.move_speed * dt
       else
-        x = x + move_speed * dt
+        x = x + common_conf.move_speed * dt
       end 
       entity:setPos(x, y)
     end
@@ -391,75 +390,5 @@ states.walkJumpPunching = {
 }
 
 return function(pos_x, pos_y)
-  local entity = {
-    pos = {
-      x = pos_x,
-      y = pos_y,
-      scale_x = -scale_factor,
-      scale_y = scale_factor,
-    },
-    savedPos = {
-      x = 0,
-      y = 0,
-    },
-    animations = animations,
-    states = states,
-    forward = true,
-    currentState = nil,
-    currentAnim = nil,
-    currentAnimTime = 0,
-    setPos = function(self, x, y)
-      self.pos.x = x
-      self.pos.y = y
-    end,
-
-    getPos = function(self)
-      return self.pos.x, self.pos.y
-    end,
-
-    moveState = function(self, newstate)
-      local oldState = self.currentState
-
-      if oldState ~= nil and oldState.leave then
-        oldState:leave(self)
-      end
-
-      self.currentState = newstate
-
-      if newstate.enter then
-        self.currentState:enter(self, oldState)
-      else
-        self.currentAnimTime = 0
-        self.currentAnim = newstate.animation
-      end 
-    end,
-
-    draw = function(self)
-      local x,y = self:getPos()
-      utils.drawAnimation(self.currentAnim, self.currentAnimTime, x, y, 0, self.pos.scale_x, self.pos.scale_y)
-    end,
-
-    update = function(self, dt)
-      self.currentState:update(self, dt)
-    end,
-
-    commonUpdate = function(self, dt)
-      self.currentAnimTime = self.currentAnimTime + dt
-      if self.currentAnimTime >= self.currentAnim.duration then
-        self.currentAnimTime = self.currentAnimTime - self.currentAnim.duration
-        return true
-      end
-      return false
-    end,
-
-    updateOneshot = function(self, dt, nextState)
-      if self:commonUpdate(dt) == true then
-        self:moveState(nextState)
-      end
-    end,
-  }
-
-  entity:moveState(states.standing)
-
-  return entity
+  return entity_common(pos_x, pos_y, states, animations, states.standing)
 end
