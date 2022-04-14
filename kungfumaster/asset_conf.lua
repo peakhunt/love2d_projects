@@ -654,6 +654,130 @@ local asset_conf = {
       },
     },
   },
+  gogo = {
+    sprites = {
+      standing = {
+        duration = 0.7,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 139,
+            pos_y = 267,
+            width = 22,
+            height = 59,
+          },
+        },
+      },
+      walking = {
+        duration = 0.6,
+        oneshot = false,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 267,
+            width = 21,
+            height = 59,
+          },
+          [2] = {
+            pos_x = 45,
+            pos_y = 267,
+            width = 12,
+            height = 59,
+          },
+          [3] = {
+            pos_x = 65,
+            pos_y = 267,
+            width = 22,
+            height = 59,
+          },
+          [4] = {
+            pos_x = 95,
+            pos_y = 267,
+            width = 12,
+            height = 59,
+          },
+        },
+      },
+      throwingHigh = {
+        duration = 0.25,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 193,
+            pos_y = 256,
+            width = 16,
+            height = 70,
+          },
+          [2] = {
+            pos_x = 217,
+            pos_y = 267,
+            width = 27,
+            height = 59,
+          },
+        },
+      },
+      throwingLow = {
+        duration = 0.25,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 276,
+            pos_y = 275,
+            width = 32,
+            height = 51,
+          },
+          [2] = {
+            pos_x = 316,
+            pos_y = 275,
+            width = 32,
+            height = 51,
+          },
+        },
+      },
+      falling = {
+        duration = 0.25,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 478,
+            pos_y = 274,
+            width = 45,
+            height = 52,
+          },
+          [2] = {
+            pos_x = 531,
+            pos_y = 278,
+            width = 47,
+            height = 48,
+          },
+        },
+      },
+      hit1 = {
+        duration = 0.25,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 380,
+            pos_y = 268,
+            width = 15,
+            height = 58,
+          },
+        },
+      },
+      hit2 = {
+        duration = 0.25,
+        oneshot = true,
+        quads = {
+          [1] = {
+            pos_x = 427,
+            pos_y = 267,
+            width = 19,
+            height = 59,
+          },
+        },
+      },
+    },
+  },
 }
 
 return asset_conf
