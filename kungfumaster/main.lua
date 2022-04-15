@@ -8,7 +8,7 @@ local current_level;
 
 function love.load()
   love.graphics.setFont(love.graphics.newFont(11))
-  current_level = level(1)
+  current_level = level(1, entities[6])
 end
 
 function love.draw()
@@ -54,6 +54,7 @@ function love.update(dt)
     index = index + 1
   end
 
+  current_level:update(dt)
   world:update(dt)
   input.update(dt)
 end

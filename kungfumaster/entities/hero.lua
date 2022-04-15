@@ -391,7 +391,17 @@ states.walkJumpPunching = {
 
 return function(pos_x, pos_y)
   local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
+  local baseSetPos = entity.setPos
+
   entity.name = "helo"
+  entity.onMoveListener = nil
+
+  entity.setPos = function(self, x, y)
+    baseSetPos(entity, x, y)
+    if self.onMoveListener then
+      self.onMoveListener:onMove(x, y)
+    end
+  end
 
   return entity
 end

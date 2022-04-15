@@ -1,7 +1,7 @@
 --
 -- import anything you want
 --
-local bottom_y = 160 * 3
+local bottom_y = 160 * 3.15
 
 local hero = require('entities/hero')
 local crazy88 = require('entities/crazy88')
@@ -15,7 +15,7 @@ local entities = {
   gogo(600, bottom_y),
   knife(100, 250),
   knife(500, 370),
-  hero(150, bottom_y),
+  hero(400, bottom_y),
 }
 
 return entities
