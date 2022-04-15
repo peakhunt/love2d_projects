@@ -29,8 +29,10 @@ return {
   pixel_height_per_viewport = 0,
   sx = 0,
   sy = 0,
+  levelSize = nil,
   viewport = viewPort,
   init = function(self, levelSize, background_width, background_height)
+    self.levelSize = levelSize
     self.pixel_width_per_viewport = background_width * (self.viewport.width/levelSize.width)
     self.pixel_height_per_viewport = background_height * (self.viewport.height / levelSize.height)
     self.quad = love.graphics.newQuad(
@@ -49,7 +51,14 @@ return {
     self.quad:setViewport(self.viewport.x * self.pixel_width_per_viewport, y, w, h)
   end,
   updateX = function(self, x)
+    if x < 0 or x > (self.levelSize.width - viewPort.width) then
+      return
+    end
     self.viewport.x = x
     self:updateViewQuad()
   end,
+  isWithin = function(self, x, y, w, h)
+    -- FIXME
+    return true
+  end
 }
