@@ -11,7 +11,7 @@ local screenTarget = {
   x = 0,
   y = window_height / 5,
   width = 800,
-  height = window_height * 4 / 5,
+  height = window_height * 4 / 5 - 20,
 }
 
 --
