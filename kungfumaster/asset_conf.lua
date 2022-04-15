@@ -1,6 +1,12 @@
 local asset_conf = {
   spriteSheet = love.graphics.newImage('assets/sprites.png'),
   hero = {
+    refFrame = {
+      pixelwidth = 24,      -- reference pixel width  24 pixel = 1 unit = 1/3 width in viewport dimension
+      pixelheight = 56,     -- reference pixel height 56 pixel = 1 unit = 1/12 height in viewport dimension
+      height = 1 / 3,       -- height in viewport dimension
+      width = 1 / 12,       -- width in viewport dimension
+    },
     sprites = {
       standing = {
         duration = 1,
@@ -406,6 +412,12 @@ local asset_conf = {
     },
   },
   crazy88 = {
+    refFrame = {
+      pixelwidth = 20,
+      pixelheight = 58,
+      height = 1 / 3,
+      width = 1 / 12,
+    },
     sprites = {
       walking = {
         duration = 0.7,
@@ -529,6 +541,12 @@ local asset_conf = {
     },
   },
   dwarf = {
+    refFrame = {
+      pixelwidth = 16,
+      pixelheight = 43,
+      height = 1 / 6,
+      width = 1 / 14,
+    },
     sprites = {
       walking = {
         duration = 0.7,
@@ -631,6 +649,12 @@ local asset_conf = {
     },
   },
   gogo = {
+    refFrame = {
+      pixelwidth = 22,
+      pixelheight = 59,
+      height = 1 / 3,
+      width = 1 / 12,
+    },
     sprites = {
       standing = {
         duration = 0.7,
@@ -748,6 +772,12 @@ local asset_conf = {
     },
   },
   knife = {
+    refFrame = {
+      pixelwidth = 12,
+      pixelheight = 7,
+      height = 1 / 24,
+      width = 1 / 24,
+    },
     sprites = {
       flying = {
         duration = 0.1,
