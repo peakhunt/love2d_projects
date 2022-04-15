@@ -32,6 +32,10 @@ local press_funcs = {
     state.button_kick = true
     trigger.kick = 0
   end,
+
+  space = function()
+    state.button_debug = not state.button_debug
+  end,
 }
 
 local release_funcs = {

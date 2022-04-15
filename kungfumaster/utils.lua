@@ -1,3 +1,5 @@
+local state = require('state')
+
 local module = {}
 local debug_rect = true
 
@@ -40,7 +42,7 @@ module.drawAnimation = function(anim, currentTime, x, y, rotation, scale_x, scal
 
   love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y)
 
-  if debug_rect then
+  if state.button_debug then
     w = w * scale_x
     h = h * scale_y
 
