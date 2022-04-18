@@ -14,8 +14,6 @@ local levelSize = {
 --
 -- we should be able to move from end to end in 30 seconds
 --
-local move_speed = levelSize.width / 30
-
 return function(level)
   local conf = asset_conf.level[level]
   local background = love.graphics.newImage(conf.background)
