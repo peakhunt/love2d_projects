@@ -1,7 +1,50 @@
 local common_conf = require('entities/common_conf')
-
+local viewport = require('viewport')
 local utils = require('utils')
 local state = require('state')
+
+function drawAnimation(anim, currentTime, x, y, rotation, forward)
+  local spriteNum = math.floor(currentTime / anim.duration * #anim.quads) + 1
+  if spriteNum > #anim.quads or spriteNum < 1 then
+    -- print('BUG: spriteNum bigger than quads:', spriteNum, #anim.quads)
+    -- return
+    spriteNum = 1
+  end
+
+  local px, py
+
+  -- px, py is bottom left corener of the rectangle
+  px, py = viewport:toScreenTop(x, y, anim.virtSize[spriteNum])
+
+  -- calculate scale factor
+  local scale_x, scale_y
+  local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
+
+  scale_x, scale_y = viewport:getScaleFactor(anim.virtSize[spriteNum], anim.quads[spriteNum])
+
+  if forward then
+    scale_x = -scale_x
+  end
+
+  local _, _, sw = anim.quads[spriteNum]:getViewport()
+
+  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y, sw/2)
+
+  if state.button_debug then
+    local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
+
+    if forward then
+      px = px + w/2
+      w = -w
+    else
+      px = px - w/2
+    end
+
+    love.graphics.setColor(1.0, 0, 0, 1)
+    love.graphics.rectangle("line", px, py, w, h)
+    love.graphics.setColor(1, 1, 1, 1)
+  end
+end
 
 return function(pos_x, pos_y, states, animations, start_state)
   local entity = {
@@ -47,7 +90,7 @@ return function(pos_x, pos_y, states, animations, start_state)
 
     draw = function(self)
       local x,y = self:getPos()
-      utils.drawAnimation(self.currentAnim, self.currentAnimTime, x, y, 0, self.forward)
+      drawAnimation(self.currentAnim, self.currentAnimTime, x, y, 0, self.forward)
     end,
 
     update = function(self, dt)
