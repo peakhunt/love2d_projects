@@ -20,7 +20,7 @@ local asset_conf = {
         }
       },
       walking = {
-        duration = 0.5,
+        duration = 0.35,
         quads = {
           [1] = {
             pos_x = 72,
