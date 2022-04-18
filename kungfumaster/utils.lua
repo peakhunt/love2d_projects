@@ -44,7 +44,6 @@ module.drawAnimation = function(anim, currentTime, x, y, rotation, forward)
     spriteNum = 1
   end
 
-  local _,_,w,h = anim.quads[spriteNum]:getViewport()
   local px, py
 
   -- px, py is bottom left corener of the rectangle
