@@ -11,8 +11,7 @@ function love.load()
 end
 
 function love.draw()
-  --love.graphics.setBackgroundColor(115/255, 27/255, 135/255, 1)
-  --love.graphics.line(0, 400, 800, 400)
+  love.graphics.setColor(1, 1, 1, 1)
   state.current_level:draw()
 
   for _, entity in ipairs(entities) do

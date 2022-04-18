@@ -51,6 +51,7 @@ module.drawAnimation = function(anim, currentTime, x, y, rotation, forward)
 
   -- calculate scale factor
   local scale_x, scale_y
+  local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
 
   scale_x, scale_y = viewport:getScaleFactor(anim.virtSize[spriteNum], anim.quads[spriteNum])
 
@@ -58,19 +59,23 @@ module.drawAnimation = function(anim, currentTime, x, y, rotation, forward)
     scale_x = -scale_x
   end
 
-  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y)
+  local _, _, sw = anim.quads[spriteNum]:getViewport()
+
+  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y, sw/2)
 
   if state.button_debug then
     local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
 
     if forward then
+      px = px + w/2
       w = -w
+    else
+      px = px - w/2
     end
 
-    local r,g,b,a =  love.graphics.getColor()
     love.graphics.setColor(1.0, 0, 0, 1)
     love.graphics.rectangle("line", px, py, w, h)
-    love.graphics.setColor(r, g, b, a)
+    love.graphics.setColor(1, 1, 1, 1)
   end
 end
 
