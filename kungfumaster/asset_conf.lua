@@ -60,7 +60,7 @@ local asset_conf = {
         },
       },
       standJumping = {
-        duration = 0.5,
+        duration = 0.6,
         quads = {
           [1] = {
             pos_x = 16,
@@ -95,7 +95,7 @@ local asset_conf = {
         },
       },
       walkJumping = {
-        duration = 0.5,
+        duration = 0.6,
         quads = {
           [1] = {
             pos_x = 16,
