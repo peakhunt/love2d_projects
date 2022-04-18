@@ -62,7 +62,7 @@ return {
     return true
   end,
   toScreenTop = function(self, vx, vy, vQuad)
-    local sx, xy
+    local sx, sy
 
     -- vx, vy are bottom left corner
     -- we need top left corner
