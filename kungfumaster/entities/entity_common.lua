@@ -8,8 +8,6 @@ return function(pos_x, pos_y, states, animations, start_state)
     pos = {
       x = pos_x,
       y = pos_y,
-      scale_x = -common_conf.scale_factor,
-      scale_y = common_conf.scale_factor,
     },
     savedPos = {
       x = 0,
@@ -49,7 +47,7 @@ return function(pos_x, pos_y, states, animations, start_state)
 
     draw = function(self)
       local x,y = self:getPos()
-      utils.drawAnimation(self.currentAnim, self.currentAnimTime, x, y, 0, self.pos.scale_x, self.pos.scale_y)
+      utils.drawAnimation(self.currentAnim, self.currentAnimTime, x, y, 0, self.forward)
     end,
 
     update = function(self, dt)

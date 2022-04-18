@@ -8,7 +8,8 @@ local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 
 local spriteSheet = asset_conf.spriteSheet
-local sprites = asset_conf.crazy88.sprites
+local assetCrazy88 = asset_conf.crazy88
+local sprites = assetCrazy88.sprites
 
 local testTime = 2
 
@@ -18,13 +19,13 @@ local testTime = 2
 --
 --------------------------------------------------------------------------------
 local animations = {
-  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking),
-  approaching = utils.newAnimationFromConf(spriteSheet, sprites.approaching),
-  holding = utils.newAnimationFromConf(spriteSheet, sprites.holding),
-  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling),
-  hitTop = utils.newAnimationFromConf(spriteSheet, sprites.hitTop),
-  hitMiddle = utils.newAnimationFromConf(spriteSheet, sprites.hitMiddle),
-  hitBottom = utils.newAnimationFromConf(spriteSheet, sprites.hitBottom),
+  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking, assetCrazy88.refFrame),
+  approaching = utils.newAnimationFromConf(spriteSheet, sprites.approaching, assetCrazy88.refFrame),
+  holding = utils.newAnimationFromConf(spriteSheet, sprites.holding, assetCrazy88.refFrame),
+  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling, assetCrazy88.refFrame),
+  hitTop = utils.newAnimationFromConf(spriteSheet, sprites.hitTop, assetCrazy88.refFrame),
+  hitMiddle = utils.newAnimationFromConf(spriteSheet, sprites.hitMiddle, assetCrazy88.refFrame),
+  hitBottom = utils.newAnimationFromConf(spriteSheet, sprites.hitBottom, assetCrazy88.refFrame),
 }
 
 --------------------------------------------------------------------------------

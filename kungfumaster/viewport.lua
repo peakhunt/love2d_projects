@@ -60,5 +60,31 @@ return {
   isWithin = function(self, x, y, w, h)
     -- FIXME
     return true
-  end
+  end,
+  toScreenTop = function(self, vx, vy, vQuad)
+    local sx, xy
+
+    -- vx, vy are bottom left corner
+    -- we need top left corner
+    vy = vy + vQuad.height
+    sx = screenTarget.x + (vx - self.viewport.x) * screenTarget.width
+    sy = screenTarget.height - (vy - self.viewport.y) * screenTarget.height + screenTarget.y
+
+    return sx, sy
+  end,
+  toScreenDim = function(self, vQuad)
+    local width, height
+
+    width = vQuad.width * screenTarget.width
+    height = vQuad.height * screenTarget.height
+
+    return width, height
+  end,
+  getScaleFactor = function(self, vQuad, sQuad)
+    local _, _, sw, sh = sQuad:getViewport()
+    local w = vQuad.width * screenTarget.width
+    local h = vQuad.height * screenTarget.height
+
+    return w/sw, h/sh
+  end,
 }

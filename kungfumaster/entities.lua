@@ -10,12 +10,13 @@ local gogo = require('entities/gogo')
 local knife = require('entities/knife')
 
 local entities = {
-  crazy88(300, bottom_y),
-  dwarf(500, bottom_y),
-  gogo(600, bottom_y),
-  knife(100, 250),
-  knife(500, 370),
-  hero(400, bottom_y),
+  --crazy88(300, bottom_y),
+  --dwarf(500, bottom_y),
+  --gogo(600, bottom_y),
+  --knife(100, 250),
+  --knife(500, 370),
+  --hero(400, bottom_y),
+  hero(6.5, 0.19),
 }
 
 return entities

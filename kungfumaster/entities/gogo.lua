@@ -8,7 +8,8 @@ local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 
 local spriteSheet = asset_conf.spriteSheet
-local sprites = asset_conf.gogo.sprites
+local assetGogo = asset_conf.gogo
+local sprites = assetGogo.sprites
 
 local testTime = 2
 
@@ -28,13 +29,13 @@ local animKey = {
 }
 
 local animations = {
-  standing = utils.newAnimationFromConf(spriteSheet, sprites.standing),
-  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking),
-  throwingHigh = utils.newAnimationFromConf(spriteSheet, sprites.throwingHigh),
-  throwingLow = utils.newAnimationFromConf(spriteSheet, sprites.throwingLow),
-  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling),
-  hit1 = utils.newAnimationFromConf(spriteSheet, sprites.hit1),
-  hit2 = utils.newAnimationFromConf(spriteSheet, sprites.hit2),
+  standing = utils.newAnimationFromConf(spriteSheet, sprites.standing, assetGogo.refFrame),
+  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking, assetGogo.refFrame),
+  throwingHigh = utils.newAnimationFromConf(spriteSheet, sprites.throwingHigh, assetGogo.refFrame),
+  throwingLow = utils.newAnimationFromConf(spriteSheet, sprites.throwingLow, assetGogo.refFrame),
+  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling, assetGogo.refFrame),
+  hit1 = utils.newAnimationFromConf(spriteSheet, sprites.hit1, assetGogo.refFrame),
+  hit2 = utils.newAnimationFromConf(spriteSheet, sprites.hit2, assetGogo.refFrame),
 }
 
 --------------------------------------------------------------------------------

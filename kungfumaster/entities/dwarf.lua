@@ -10,7 +10,8 @@ local common_conf = require('entities/common_conf')
 local scale_factor = 3
 local move_speed = 200
 local spriteSheet = asset_conf.spriteSheet
-local sprites = asset_conf.dwarf.sprites
+local assetDwarf = asset_conf.dwarf
+local sprites = assetDwarf.sprites
 
 local testTime = 2
 
@@ -20,10 +21,10 @@ local testTime = 2
 --
 --------------------------------------------------------------------------------
 local animations = {
-  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking),
-  holding = utils.newAnimationFromConf(spriteSheet, sprites.holding),
-  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling),
-  tumbling = utils.newAnimationFromConf(spriteSheet, sprites.tumbling),
+  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking, assetDwarf.refFrame),
+  holding = utils.newAnimationFromConf(spriteSheet, sprites.holding, assetDwarf.refFrame),
+  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling, assetDwarf.refFrame),
+  tumbling = utils.newAnimationFromConf(spriteSheet, sprites.tumbling, assetDwarf.refFrame),
 }
 
 --------------------------------------------------------------------------------

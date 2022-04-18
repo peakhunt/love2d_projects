@@ -8,7 +8,8 @@ local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 
 local spriteSheet = asset_conf.spriteSheet
-local sprites = asset_conf.knife.sprites
+local assetKnife = asset_conf.knife
+local sprites = assetKnife.sprites
 
 --------------------------------------------------------------------------------
 -- 
@@ -16,7 +17,7 @@ local sprites = asset_conf.knife.sprites
 --
 --------------------------------------------------------------------------------
 local animations = {
-  flying = utils.newAnimationFromConf(spriteSheet, sprites.flying),
+  flying = utils.newAnimationFromConf(spriteSheet, sprites.flying, assetKnife.refFrame),
 }
 
 --------------------------------------------------------------------------------
@@ -43,10 +44,8 @@ states.flying = {
 
     if entity.forward then
       x = x - common_conf.move_speed * dt
-      entity.pos.scale_x = -1 * common_conf.scale_factor
     else
       x = x + common_conf.move_speed * dt
-      entity.pos.scale_x = common_conf.scale_factor
     end
 
     entity:setPos(x, y)

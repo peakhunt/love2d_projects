@@ -6,9 +6,11 @@ local utils = require('utils')
 local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
+local state = require('state')
 
 local spriteSheet = asset_conf.spriteSheet
-local sprites = asset_conf.hero.sprites
+local assetHero = asset_conf.hero
+local sprites = assetHero.sprites
 
 --------------------------------------------------------------------------------
 -- some reasoning and explanation so that I can pick up later when I forget.
@@ -63,19 +65,19 @@ end
 --
 --------------------------------------------------------------------------------
 local animations = {
-  standing = utils.newAnimationFromConf(spriteSheet, sprites.standing),
-  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking),
-  sitting = utils.newAnimationFromConf(spriteSheet, sprites.sitting),
-  standJumping = utils.newAnimationFromConf(spriteSheet, sprites.standJumping),
-  walkJumping = utils.newAnimationFromConf(spriteSheet, sprites.walkJumping),
-  standPunch = utils.newAnimationFromConf(spriteSheet, sprites.standPunching),
-  standKick = utils.newAnimationFromConf(spriteSheet, sprites.standKicking),
-  sitPunch = utils.newAnimationFromConf(spriteSheet, sprites.sitPunching),
-  sitKick = utils.newAnimationFromConf(spriteSheet, sprites.sitKicking),
-  standJumpKick = utils.newAnimationFromConf(spriteSheet, sprites.standJumpKicking),
-  standJumpPunch = utils.newAnimationFromConf(spriteSheet, sprites.standJumpPunching),
-  walkJumpKick = utils.newAnimationFromConf(spriteSheet, sprites.walkJumpKicking),
-  walkJumpPunch = utils.newAnimationFromConf(spriteSheet, sprites.walkJumpPunching),
+  standing = utils.newAnimationFromConf(spriteSheet, sprites.standing, assetHero.refFrame),
+  walking = utils.newAnimationFromConf(spriteSheet, sprites.walking, assetHero.refFrame),
+  sitting = utils.newAnimationFromConf(spriteSheet, sprites.sitting, assetHero.refFrame),
+  standJumping = utils.newAnimationFromConf(spriteSheet, sprites.standJumping, assetHero.refFrame),
+  walkJumping = utils.newAnimationFromConf(spriteSheet, sprites.walkJumping, assetHero.refFrame),
+  standPunch = utils.newAnimationFromConf(spriteSheet, sprites.standPunching, assetHero.refFrame),
+  standKick = utils.newAnimationFromConf(spriteSheet, sprites.standKicking, assetHero.refFrame),
+  sitPunch = utils.newAnimationFromConf(spriteSheet, sprites.sitPunching, assetHero.refFrame),
+  sitKick = utils.newAnimationFromConf(spriteSheet, sprites.sitKicking, assetHero.refFrame),
+  standJumpKick = utils.newAnimationFromConf(spriteSheet, sprites.standJumpKicking, assetHero.refFrame),
+  standJumpPunch = utils.newAnimationFromConf(spriteSheet, sprites.standJumpPunching, assetHero.refFrame),
+  walkJumpKick = utils.newAnimationFromConf(spriteSheet, sprites.walkJumpKicking, assetHero.refFrame),
+  walkJumpPunch = utils.newAnimationFromConf(spriteSheet, sprites.walkJumpPunching, assetHero.refFrame),
 }
 
 --------------------------------------------------------------------------------
@@ -155,10 +157,8 @@ states.walking = {
 
     if entity.forward then
       x = x - common_conf.move_speed * dt
-      entity.pos.scale_x = -1 * common_conf.scale_factor
     else
       x = x + common_conf.move_speed * dt
-      entity.pos.scale_x = common_conf.scale_factor
     end 
     entity:setPos(x, y)
 
@@ -189,10 +189,8 @@ states.sitting = {
     -- movement
     if state.button_left then
       entity.forward = true
-      entity.pos.scale_x = -1 * common_conf.scale_factor
     elseif state.button_right then
       entity.forward = false
-      entity.pos.scale_x = common_conf.scale_factor
     elseif state.button_down then
     elseif state.button_up then
       entity:moveState(states.standing)
@@ -225,7 +223,7 @@ states.standJumping = {
       entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
       local x,_ = entity:getPos()
-      local y = entity.savedPos.y - calcJumpDistance(animations.standJumping, entity.currentAnimTime)
+      local y = entity.savedPos.y + calcJumpDistance(animations.standJumping, entity.currentAnimTime)
       entity:setPos(x, y)
     end
   end,
@@ -265,7 +263,7 @@ states.walkJumping = {
       entity:setPos(x, entity.savedPos.y)
     else
       local x,_ = entity:getPos()
-      local y = entity.savedPos.y - calcJumpDistance(animations.walkJumping, entity.currentAnimTime)
+      local y = entity.savedPos.y + calcJumpDistance(animations.walkJumping, entity.currentAnimTime)
 
       if entity.forward then
         x = x - common_conf.move_speed * dt
@@ -336,7 +334,7 @@ states.standJumpKicking = {
       entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
       local x,_ = entity:getPos()
-      local y = entity.savedPos.y - calcJumpDistance(animations.standJumpKick, entity.currentAnimTime)
+      local y = entity.savedPos.y + calcJumpDistance(animations.standJumpKick, entity.currentAnimTime)
       entity:setPos(x, y)
     end
   end,
@@ -356,7 +354,7 @@ states.standJumpPunching = {
       entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
       local x,_ = entity:getPos()
-      local y = entity.savedPos.y - calcJumpDistance(animations.standJumpPunch, entity.currentAnimTime)
+      local y = entity.savedPos.y + calcJumpDistance(animations.standJumpPunch, entity.currentAnimTime)
       entity:setPos(x, y)
     end
   end,
@@ -379,7 +377,7 @@ states.walkJumpKicking = {
       entity:setPos(x, entity.savedPos.y)
     else
       local x,_ = entity:getPos()
-      local y = entity.savedPos.y - calcJumpDistance(animations.walkJumpKick, entity.currentAnimTime)
+      local y = entity.savedPos.y + calcJumpDistance(animations.walkJumpKick, entity.currentAnimTime)
 
       if entity.forward then
         x = x - common_conf.move_speed * dt
@@ -407,7 +405,7 @@ states.walkJumpPunching = {
       entity:setPos(x, entity.savedPos.y)
     else
       local x,_ = entity:getPos()
-      local y = entity.savedPos.y - calcJumpDistance(animations.walkJumpPunch, entity.currentAnimTime)
+      local y = entity.savedPos.y + calcJumpDistance(animations.walkJumpPunch, entity.currentAnimTime)
 
       if entity.forward then
         x = x - common_conf.move_speed * dt
@@ -427,12 +425,12 @@ return function(pos_x, pos_y)
   local baseSetPos = entity.setPos
 
   entity.name = "helo"
-  entity.onMoveListener = nil
 
   entity.setPos = function(self, x, y)
     baseSetPos(entity, x, y)
-    if self.onMoveListener then
-      self.onMoveListener:onMove(x, y)
+
+    if state.current_level then
+      state.current_level:heroMove(x, y)
     end
   end
 

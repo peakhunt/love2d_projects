@@ -6,4 +6,5 @@ return {
   button_punch = false,
   button_kick = false,
   button_debug = false,
+  current_level = nil,
 }
