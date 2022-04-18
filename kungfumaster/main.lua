@@ -26,7 +26,7 @@ function love.draw()
   -- Draw the current delta-time. (The same value
   -- is passed to update each frame).
   love.graphics.print("dt: " .. love.timer.getDelta(), 50, 70)
-  love.graphics.print("z: kick, x: punch, arrow keys for move", 50, 90)
+  love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 90)
 end
 
 function love.focus(focused)
