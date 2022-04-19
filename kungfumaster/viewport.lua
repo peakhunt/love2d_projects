@@ -31,6 +31,7 @@ return {
   sy = 0,
   levelSize = nil,
   viewport = viewPort,
+  screen = screenTarget,
   init = function(self, levelSize, background_width, background_height)
     self.levelSize = levelSize
     self.pixel_width_per_viewport = background_width * (self.viewport.width/levelSize.width)

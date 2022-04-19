@@ -1,9 +1,9 @@
-local world = require('world')
 local entities = require('entities')
 local asset_conf = require('asset_conf')
 local input = require('input')
 local level = require('level')
 local state = require('state')
+local viewport = require('viewport')
 
 function love.load()
   love.graphics.setFont(love.graphics.newFont(11))
@@ -29,7 +29,16 @@ function love.draw()
 
   if state.button_debug then
     love.graphics.setColor(1, 0, 0, 1)
-    love.graphics.line(800/2-1, 0, 800/2-1, 599)
+
+    love.graphics.line(viewport.screen.x + viewport.screen.width / 2 - 1,
+                       viewport.screen.y,
+                       viewport.screen.x + viewport.screen.width / 2 - 1,
+                       viewport.screen.y + viewport.screen.height - 1)
+
+    love.graphics.line(viewport.screen.x ,
+                       viewport.screen.y + viewport.screen.height/2 -1,
+                       viewport.screen.x + viewport.screen.width - 1,
+                       viewport.screen.y + viewport.screen.height/2 -1)
     love.graphics.setColor(1, 1, 1, 1)
   end
 end
@@ -59,6 +68,5 @@ function love.update(dt)
   end
 
   state.current_level:update(dt)
-  world:update(dt)
   input.update(dt)
 end
