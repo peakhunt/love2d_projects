@@ -7,7 +7,7 @@ function drawAnimation(anim, spriteNum, x, y, rotation, forward)
   local px, py
 
   -- px, py is bottom center of the rectangle
-  px, py = viewport:toScreenTop(x, y, anim.virtSize[spriteNum])
+  px, py = viewport:toScreenTopLeft(x, y, anim.virtSize[spriteNum])
 
   -- calculate scale factor
   local scale_x, scale_y

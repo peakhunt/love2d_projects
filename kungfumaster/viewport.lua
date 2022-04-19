@@ -61,7 +61,7 @@ return {
     -- FIXME
     return true
   end,
-  toScreenTop = function(self, vx, vy, vQuad)
+  toScreenTopLeft = function(self, vx, vy, vQuad)
     local sx, sy
 
     -- vx, vy are bottom center
