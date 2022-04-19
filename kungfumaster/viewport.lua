@@ -74,6 +74,14 @@ return {
 
     return sx, sy
   end,
+  virtualPointToScreenCoord = function(self, vx, vy)
+    local sx, sy
+
+    sx = screenTarget.x + (vx - self.viewport.x) * screenTarget.width
+    sy = screenTarget.height - (vy - self.viewport.y) * screenTarget.height + screenTarget.y
+
+    return sx, sy
+  end,
   toScreenDim = function(self, vQuad)
     local width, height
 

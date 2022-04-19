@@ -30,9 +30,46 @@ function drawAnimation(anim, spriteNum, x, y, rotation, forward)
     --
     local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
 
-    love.graphics.setColor(1.0, 0, 0, 1)
+    love.graphics.setColor(0, 0, 1, 1)
     love.graphics.rectangle("line", px, py, w, h)
     love.graphics.setColor(1, 1, 1, 1)
+
+    --
+    -- hitPoint
+    --
+    if anim.virtSize[spriteNum].hitPoint then
+      -- (x, y) is bottom center
+      -- hitPoint coord is top left
+      local left_x = x - anim.virtSize[spriteNum].width / 2
+      local right_x = x + anim.virtSize[spriteNum].width / 2
+      local top_y = y + anim.virtSize[spriteNum].height
+      local hx, hy
+
+      -- rx/ry are relative point from top/left
+      -- rx/ry are calculated for forward = false
+      if forward then
+        hx = right_x - anim.virtSize[spriteNum].hitPoint.rx - anim.virtSize[spriteNum].hitPoint.width
+      else
+        hx = left_x + anim.virtSize[spriteNum].hitPoint.rx
+      end
+      hy = top_y - anim.virtSize[spriteNum].hitPoint.ry
+
+      -- now we got top left virtual coordinate of hitPoint rectangle
+      -- width/height of the rectangle are already calculated at load time
+
+      -- now we have to convert (hx, hy) to pixel coordinate and
+      -- calculate scale factor for with/height of hitPoint
+      px, py = viewport:virtualPointToScreenCoord(hx, hy)
+      w, h = viewport:toScreenDim({
+        width = anim.virtSize[spriteNum].hitPoint.width,
+        height = anim.virtSize[spriteNum].hitPoint.height,
+      })
+
+      -- now draw
+      love.graphics.setColor(1, 0, 0, 1)
+      love.graphics.rectangle("line", px, py, w, h)
+      love.graphics.setColor(1, 1, 1, 1)
+    end
   end
 end
 

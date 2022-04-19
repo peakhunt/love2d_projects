@@ -143,6 +143,12 @@ local asset_conf = {
             pos_y = 581,
             width = 28,
             height = 61,
+            hitPoint = {
+              pos_x = 39,
+              pos_y = 590,
+              width = 5,
+              height = 6,
+            },
           },
           [3] = {
             pos_x = 52,
@@ -166,6 +172,12 @@ local asset_conf = {
             pos_y = 581,
             width = 43,
             height = 61,
+            hitPoint = {
+              pos_x = 332,
+              pos_y = 589,
+              width = 7,
+              height = 6,
+            },
           },
           [3] = {
             pos_x = 259,
@@ -189,6 +201,12 @@ local asset_conf = {
             pos_y = 683,
             width = 29,
             height = 48,
+            hitPoint = {
+              pos_x = 94,
+              pos_y = 692,
+              width = 6,
+              height = 6,
+            }
           },
           [3] = {
             pos_x = 108,
@@ -212,6 +230,12 @@ local asset_conf = {
             pos_y = 689,
             width = 49,
             height = 42,
+            hitPoint = {
+              pos_x = 403,
+              pos_y = 724,
+              width = 8,
+              height = 7,
+            }
           },
           [3] = {
             pos_x = 323,
@@ -247,12 +271,24 @@ local asset_conf = {
             pos_y = 772,
             width = 31,
             height = 68,
+            hitPoint = {
+              pos_x = 456,
+              pos_y = 775,
+              width = 7,
+              height = 10,
+            },
           },
           [5] = {
             pos_x = 432,
             pos_y = 772,
             width = 31,
             height = 68,
+            hitPoint = {
+              pos_x = 456,
+              pos_y = 775,
+              width = 7,
+              height = 10,
+            },
           },
           [6] = {
             pos_x = 471,
@@ -294,6 +330,12 @@ local asset_conf = {
             pos_y = 779,
             width = 28,
             height = 61,
+            hitPoint = {
+              pos_x = 249,
+              pos_y = 788,
+              width = 5,
+              height = 6,
+            }
           },
           [5] = {
             pos_x = 262,
@@ -341,12 +383,24 @@ local asset_conf = {
             pos_y = 893,
             width = 31,
             height = 68,
+            hitPoint = {
+              pos_x = 489,
+              pos_y = 896,
+              width = 7,
+              height = 10,
+            }
           },
           [5] = {
             pos_x = 465,
             pos_y = 893,
             width = 31,
             height = 68,
+            hitPoint = {
+              pos_x = 489,
+              pos_y = 896,
+              width = 7,
+              height = 10,
+            }
           },
           [6] = {
             pos_x = 96,
@@ -388,6 +442,12 @@ local asset_conf = {
             pos_y = 901,
             width = 28,
             height = 61,
+            hitPoint = {
+              pos_x = 271,
+              pos_y = 910,
+              width = 5,
+              height = 6,
+            }
           },
           [5] = {
             pos_x = 284,
@@ -544,8 +604,8 @@ local asset_conf = {
     refFrame = {
       pixelwidth = 16,
       pixelheight = 43,
-      height = 1 / 6,
-      width = 1 / 14,
+      height = 1 / 4,
+      width = 1 / 12,
     },
     sprites = {
       walking = {
