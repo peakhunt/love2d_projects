@@ -26,6 +26,12 @@ function love.draw()
   -- is passed to update each frame).
   love.graphics.print("dt: " .. love.timer.getDelta(), 50, 70)
   love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 90)
+
+  if state.button_debug then
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.line(800/2-1, 0, 800/2-1, 599)
+    love.graphics.setColor(1, 1, 1, 1)
+  end
 end
 
 function love.focus(focused)

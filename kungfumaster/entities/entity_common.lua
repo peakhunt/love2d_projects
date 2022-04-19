@@ -3,42 +3,32 @@ local viewport = require('viewport')
 local utils = require('utils')
 local state = require('state')
 
-function drawAnimation(anim, currentTime, x, y, rotation, forward)
-  local spriteNum = math.floor(currentTime / anim.duration * #anim.quads) + 1
-  if spriteNum > #anim.quads or spriteNum < 1 then
-    -- print('BUG: spriteNum bigger than quads:', spriteNum, #anim.quads)
-    -- return
-    spriteNum = 1
-  end
-
+function drawAnimation(anim, spriteNum, x, y, rotation, forward)
   local px, py
 
-  -- px, py is bottom left corener of the rectangle
+  -- px, py is bottom center of the rectangle
   px, py = viewport:toScreenTop(x, y, anim.virtSize[spriteNum])
 
   -- calculate scale factor
   local scale_x, scale_y
-  local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
 
   scale_x, scale_y = viewport:getScaleFactor(anim.virtSize[spriteNum], anim.quads[spriteNum])
+  local _, _, sw = anim.quads[spriteNum]:getViewport()
 
   if forward then
     scale_x = -scale_x
+  else
+    sw = 0
   end
 
-  local _, _, sw = anim.quads[spriteNum]:getViewport()
 
-  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y, sw/2)
+  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y, sw, 0)
 
   if state.button_debug then
+    -- XXX
+    -- this is the rectangle we will use for collision detection
+    --
     local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
-
-    if forward then
-      px = px + w/2
-      w = -w
-    else
-      px = px - w/2
-    end
 
     love.graphics.setColor(1.0, 0, 0, 1)
     love.graphics.rectangle("line", px, py, w, h)
@@ -62,6 +52,7 @@ return function(pos_x, pos_y, states, animations, start_state)
     currentState = nil,
     currentAnim = nil,
     currentAnimTime = 0,
+    spriteNum = 1,
     setPos = function(self, x, y)
       self.pos.x = x
       self.pos.y = y
@@ -86,11 +77,13 @@ return function(pos_x, pos_y, states, animations, start_state)
         self.currentAnimTime = 0
         self.currentAnim = newstate.animation
       end 
+
+      self.spriteNum = 1
     end,
 
     draw = function(self)
       local x,y = self:getPos()
-      drawAnimation(self.currentAnim, self.currentAnimTime, x, y, 0, self.forward)
+      drawAnimation(self.currentAnim, self.spriteNum, x, y, 0, self.forward)
     end,
 
     update = function(self, dt)
@@ -100,15 +93,26 @@ return function(pos_x, pos_y, states, animations, start_state)
     end,
 
     commonUpdate = function(self, dt)
+      local ret = false
+
       self.currentAnimTime = self.currentAnimTime + dt
       if self.currentAnimTime >= self.currentAnim.duration then
         -- XXX this can cause a weird problem in sluggish env with huge dt
         -- but keeping it this way for now
         self.currentAnimTime = self.currentAnimTime - self.currentAnim.duration
         --self.currentAnimTime = 0
-        return true
+        ret = true
       end
-      return false
+
+      local sn = math.floor(self.currentAnimTime / self.currentAnim.duration * #self.currentAnim.quads) + 1
+      if sn > #self.currentAnim.quads or sn < 1 then
+        --print('BUG: spriteNum bigger than quads:', spriteNum, #anim.quads)
+        sn = 1
+      end
+
+      self.spriteNum = sn
+
+      return ret
     end,
 
     updateOneshot = function(self, dt, nextState)

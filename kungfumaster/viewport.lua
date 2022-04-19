@@ -64,8 +64,9 @@ return {
   toScreenTop = function(self, vx, vy, vQuad)
     local sx, sy
 
-    -- vx, vy are bottom left corner
+    -- vx, vy are bottom center
     -- we need top left corner
+    vx = vx - vQuad.width/2
     vy = vy + vQuad.height
     sx = screenTarget.x + (vx - self.viewport.x) * screenTarget.width
     sy = screenTarget.height - (vy - self.viewport.y) * screenTarget.height + screenTarget.y
