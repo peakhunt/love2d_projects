@@ -3,32 +3,35 @@ local viewport = require('viewport')
 local utils = require('utils')
 local state = require('state')
 
-function drawAnimation(anim, spriteNum, x, y, rotation, forward)
+function drawEntity(entity)
   local px, py
 
   -- px, py is bottom center of the rectangle
-  px, py = viewport:toScreenTopLeft(x, y, anim.virtSize[spriteNum])
+  px, py = viewport:toScreenTopLeft(entity.pos.x, entity.pos.y, entity.currentAnim.virtSize[entity.spriteNum])
 
   -- calculate scale factor
   local scale_x, scale_y
+  scale_x, scale_y = viewport:getScaleFactor(entity.currentAnim.virtSize[entity.spriteNum], entity.currentAnim.quads[entity.spriteNum])
 
-  scale_x, scale_y = viewport:getScaleFactor(anim.virtSize[spriteNum], anim.quads[spriteNum])
-  local _, _, sw = anim.quads[spriteNum]:getViewport()
+  local _, _, sw = entity.currentAnim.quads[entity.spriteNum]:getViewport()
 
-  if forward then
+  if entity.forward then
     scale_x = -scale_x
   else
     sw = 0
   end
 
-
-  love.graphics.draw(anim.spriteSheet, anim.quads[spriteNum], px, py, rotation, scale_x, scale_y, sw, 0)
+  love.graphics.draw(entity.currentAnim.spriteSheet,
+                     entity.currentAnim.quads[entity.spriteNum],
+                     px, py, rotation,
+                     scale_x, scale_y,
+                     sw, 0)
 
   if state.button_debug then
     -- XXX
     -- this is the rectangle we will use for collision detection
     --
-    local w, h = viewport:toScreenDim(anim.virtSize[spriteNum])
+    local w, h = viewport:toScreenDim(entity.vQuad)
 
     love.graphics.setColor(0, 0, 1, 1)
     love.graphics.rectangle("line", px, py, w, h)
@@ -37,40 +40,13 @@ function drawAnimation(anim, spriteNum, x, y, rotation, forward)
     --
     -- hitPoint
     --
-    if anim.virtSize[spriteNum].hitPoint then
-      -- (x, y) is bottom center
-      -- hitPoint coord is top left
-      local left_x = x - anim.virtSize[spriteNum].width / 2
-      local right_x = x + anim.virtSize[spriteNum].width / 2
-      local top_y = y + anim.virtSize[spriteNum].height
-      local hx, hy
-
-      -- rx/ry are relative point from top/left
-      -- rx/ry are calculated for forward = false
-      if forward then
-        hx = right_x - anim.virtSize[spriteNum].hitPoint.rx - anim.virtSize[spriteNum].hitPoint.width
-      else
-        hx = left_x + anim.virtSize[spriteNum].hitPoint.rx
-      end
-      hy = top_y - anim.virtSize[spriteNum].hitPoint.ry
-
-      -- now we got top left virtual coordinate of hitPoint rectangle
-      -- width/height of the rectangle are already calculated at load time
-
-      -- now we have to convert (hx, hy) to pixel coordinate and
-      -- calculate scale factor for with/height of hitPoint
-      --
-      -- (hx,hy,width, height) is the quad in virtual space
-      -- we can use this quad in virtual space for any type of
-      -- collision detection
-      --
-      px, py = viewport:virtualPointToScreenCoord(hx, hy)
+    if entity.vHitQuad then
+      px, py = viewport:virtualPointToScreenCoord(entity.vHitQuad.x, entity.vHitQuad.y)
       w, h = viewport:toScreenDim({
-        width = anim.virtSize[spriteNum].hitPoint.width,
-        height = anim.virtSize[spriteNum].hitPoint.height,
+        width = entity.vHitQuad.width,
+        height = entity.vHitQuad.height,
       })
 
-      -- now draw
       love.graphics.setColor(1, 0, 0, 1)
       love.graphics.rectangle("line", px, py, w, h)
       love.graphics.setColor(1, 1, 1, 1)
@@ -98,7 +74,9 @@ return function(pos_x, pos_y, states, animations, start_state)
 
     -- current quad in virtual space
     vQuad = nil,
+
     -- current hit quad in virtual space
+    -- position in virtual space is already calculated by update
     vHitQuad = nil,
 
     setPos = function(self, x, y)
@@ -130,14 +108,20 @@ return function(pos_x, pos_y, states, animations, start_state)
     end,
 
     draw = function(self)
-      local x,y = self:getPos()
-      drawAnimation(self.currentAnim, self.spriteNum, x, y, 0, self.forward)
+      drawEntity(self)
     end,
 
     update = function(self, dt)
+      -- preupdate
+
+      -- main update
       if dt < 0.1 then
         self.currentState:update(self, dt)
       end
+
+      -- post update
+      self.vQuad = self.currentAnim.virtSize[self.spriteNum]
+      self:updateHitPoint()
     end,
 
     commonUpdate = function(self, dt)
@@ -167,6 +151,35 @@ return function(pos_x, pos_y, states, animations, start_state)
       if self:commonUpdate(dt) == true then
         self:moveState(nextState)
       end
+    end,
+
+    updateHitPoint = function(self)
+      if self.vQuad.hitPoint == nil then
+        self.vHitQuad = nil
+        return
+      end
+
+      -- (x, y) is bottom center
+      -- hitPoint coord is top left
+      local left_x  = self.pos.x - self.vQuad.width / 2
+      local right_x = self.pos.x + self.vQuad.width / 2
+      local top_y   = self.pos.y + self.vQuad.height
+      local hx, hy
+
+      if self.forward then
+        hx = right_x - self.vQuad.hitPoint.rx - self.vQuad.hitPoint.width
+      else
+        hx = left_x + self.vQuad.hitPoint.rx
+      end
+
+      hy = top_y - self.vQuad.hitPoint.ry
+
+      self.vHitQuad = {
+        x = hx,
+        y = hy,
+        width = self.vQuad.hitPoint.width,
+        height = self.vQuad.hitPoint.height,
+      }
     end,
   }
 
