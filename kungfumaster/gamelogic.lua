@@ -4,6 +4,8 @@ local entities = require('entities')
 --
 -- x1, y1 : top left corner of q1
 -- x2, y2 : top left corner of q2
+-- XXX: remember! this is in virtual coordinate space
+--      not in screen coordinate!
 --
 -------------------------------------------------
 function check_collision(x1,y1,w1,h1,x2,y2,w2,h2)
