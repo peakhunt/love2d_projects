@@ -69,6 +69,7 @@ function love.update(dt)
   --
   -- XXX test code
   --
+  --[[
   state.hero_energy = state.hero_energy + love.math.random(-30, 30) * dt
   if state.hero_energy < 0 then
     state.hero_energy = 0
@@ -88,6 +89,7 @@ function love.update(dt)
     state.score = 0
   end
   -- end of test code
+  --]]
 
   while index <= #entities do
     local entity = entities[index]

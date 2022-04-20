@@ -3,6 +3,8 @@
 --
 local state = require('state')
 local font = love.graphics.newFont("assets/arcadeclassic.ttf", 20)
+local font_small = love.graphics.newFont("assets/arcadeclassic.ttf", 15)
+local font_big = love.graphics.newFont("assets/arcadeclassic.ttf", 25)
 local energy_bar_width = 200
 
 function drawScore()
@@ -41,6 +43,10 @@ function drawBossEnergy()
 end
 
 function drawCurrentLevel()
+  love.graphics.setColor(love.math.colorFromBytes(0xff, 0xfe, 0xe0))
+  love.graphics.print("1F 2F 3F 4F 5F", font_small, 400, 50)
+  love.graphics.setColor(love.math.colorFromBytes(0xff, 0x00, 0xff))
+  love.graphics.print("  →  →  →  →  ", font_small, 400, 80)
 end
 
 function drawLivesLeft()
@@ -51,8 +57,8 @@ function drawTimeLeft()
   str = string.format("%04d", state.time_left)
 
   love.graphics.setColor(love.math.colorFromBytes(0xff, 0xff, 0xff))
-  love.graphics.print("TIME", font, 700, 50)
-  love.graphics.print(str, font, 700, 70)
+  love.graphics.print("TIME", font_big, 650, 50)
+  love.graphics.print(str, font_big, 650, 80)
 end
 
 function update(dt)
