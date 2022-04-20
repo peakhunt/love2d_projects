@@ -12,39 +12,6 @@ local spriteSheet = asset_conf.spriteSheet
 local assetHero = asset_conf.hero
 local sprites = assetHero.sprites
 
---------------------------------------------------------------------------------
--- some reasoning and explanation so that I can pick up later when I forget.
---
--- vitual world width is defined to be between 0 and 7
--- vitual world height is defined to be between 0 and 1
---  /\
---  | 1
---  |
---  |
---  |                          7
---  ____________________________>
---
--- And viewport is defined to be (0~1,0~1),
--- which means 1/7 of the virtual world is projected into the pixel screen
--- whatever the pixel screen resolution is.
---
--- For the world, aka, background, this is quite simple and straightforward.
--- 
--- For the entitires appearing in the world, if sprite sizes are always same,
--- things are quite simple and easy. But that's usually not the case.
---
--- So for the entities with varying sprite size, we take the following step
---
--- 1. A size in virtual world is defined for a reference sprite (usually standing or idle)
--- 2. A size in virtual world for other sprites are calculated at load time
---    with the reference sprite and its size in virtual world.
---
--- So why even go through all these hassels instead of simply using pixel dimension?
--- It's because it seems easier to me to manipulate everything in virtual world unit 
--- as of this writing.
---
---------------------------------------------------------------------------------
-
 function calcJumpDistance(anim, currentAnimTime)
   -- simple parabolic
   --
@@ -227,6 +194,7 @@ states.standJumping = {
       entity:setPos(x, y)
     end
   end,
+
   enter = function(self, entity, oldState)
     entity.currentAnimTime = 0
 
@@ -273,6 +241,7 @@ states.walkJumping = {
       entity:setPos(x, y)
     end
   end,
+
   enter = function(self, entity, oldState)
     entity.currentAnimTime = 0
 
@@ -338,6 +307,7 @@ states.standJumpKicking = {
       entity:setPos(x, y)
     end
   end,
+
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.standJumpKick
   end,
@@ -358,6 +328,7 @@ states.standJumpPunching = {
       entity:setPos(x, y)
     end
   end,
+
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.standJumpPunch
   end,
@@ -387,6 +358,7 @@ states.walkJumpKicking = {
       entity:setPos(x, y)
     end
   end,
+
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.walkJumpKick
   end,
@@ -415,6 +387,7 @@ states.walkJumpPunching = {
       entity:setPos(x, y)
     end
   end,
+
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.walkJumpPunch
   end,
@@ -424,7 +397,7 @@ return function(pos_x, pos_y)
   local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
   local baseSetPos = entity.setPos
 
-  entity.name = "helo"
+  entity.name = "hero"
 
   entity.setPos = function(self, x, y)
     baseSetPos(entity, x, y)

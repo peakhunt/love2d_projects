@@ -4,9 +4,10 @@ local input = require('input')
 local level = require('level')
 local state = require('state')
 local viewport = require('viewport')
+local dashboard = require('dashboard')
 
 function love.load()
-  love.graphics.setFont(love.graphics.newFont(11))
+  love.graphics.setFont(love.graphics.newFont(12))
   state.current_level = level(1, entities[6])
 end
 
@@ -20,14 +21,17 @@ function love.draw()
      end
   end
 
-  -- Draw the current FPS.
-  love.graphics.print("FPS: " .. love.timer.getFPS(), 50, 50)
-  -- Draw the current delta-time. (The same value
-  -- is passed to update each frame).
-  love.graphics.print("dt: " .. love.timer.getDelta(), 50, 70)
-  love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 90)
+  dashboard.draw()
 
   if state.button_debug then
+    love.graphics.setColor(0, 0, 0, 1)
+    -- Draw the current FPS.
+    love.graphics.print("FPS: " .. love.timer.getFPS(), 50, 150)
+    -- Draw the current delta-time. (The same value
+    -- is passed to update each frame).
+    love.graphics.print("dt: " .. love.timer.getDelta(), 50, 170)
+    love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 190)
+
     love.graphics.setColor(1, 0, 0, 1)
 
     love.graphics.line(viewport.screen.x + viewport.screen.width / 2 - 1,
@@ -57,6 +61,34 @@ end
 function love.update(dt)
   local index = 1
 
+  state.time_left = state.time_left - dt
+  if state.time_left < 0 then
+  state.time_left = 0
+  end
+
+  --
+  -- XXX test code
+  --
+  state.hero_energy = state.hero_energy + love.math.random(-30, 30) * dt
+  if state.hero_energy < 0 then
+    state.hero_energy = 0
+  end
+  if state.hero_energy > 100 then
+    state.hero_energy = 100 
+  end
+  state.enemy_energy = state.enemy_energy + love.math.random(-30, 30) * dt
+  if state.enemy_energy < 0 then
+    state.enemy_energy = 0
+  end
+  if state.enemy_energy > 100 then
+    state.enemy_energy = 100
+  end
+  state.score = state.score + love.math.random(-300, 300) * dt
+  if state.score < 0 or state.score > 999999 then
+    state.score = 0
+  end
+  -- end of test code
+
   while index <= #entities do
     local entity = entities[index]
 
@@ -69,4 +101,5 @@ function love.update(dt)
 
   state.current_level:update(dt)
   input.update(dt)
+  dashboard.update(dt)
 end

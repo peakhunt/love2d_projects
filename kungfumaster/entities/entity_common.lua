@@ -59,6 +59,11 @@ function drawAnimation(anim, spriteNum, x, y, rotation, forward)
 
       -- now we have to convert (hx, hy) to pixel coordinate and
       -- calculate scale factor for with/height of hitPoint
+      --
+      -- (hx,hy,width, height) is the quad in virtual space
+      -- we can use this quad in virtual space for any type of
+      -- collision detection
+      --
       px, py = viewport:virtualPointToScreenCoord(hx, hy)
       w, h = viewport:toScreenDim({
         width = anim.virtSize[spriteNum].hitPoint.width,
@@ -90,6 +95,12 @@ return function(pos_x, pos_y, states, animations, start_state)
     currentAnim = nil,
     currentAnimTime = 0,
     spriteNum = 1,
+
+    -- current quad in virtual space
+    vQuad = nil,
+    -- current hit quad in virtual space
+    vHitQuad = nil,
+
     setPos = function(self, x, y)
       self.pos.x = x
       self.pos.y = y

@@ -1,3 +1,36 @@
+--------------------------------------------------------------------------------
+-- some reasoning and explanation so that I can pick up later when I forget.
+--
+-- vitual world width is defined to be between 0 and 7
+-- vitual world height is defined to be between 0 and 1
+--  /\
+--  | 1
+--  |
+--  |
+--  |                          7
+--  ____________________________>
+--
+-- And viewport is defined to be (0~1,0~1),
+-- which means 1/7 of the virtual world is projected into the pixel screen
+-- whatever the pixel screen resolution is.
+--
+-- For the world, aka, background, this is quite simple and straightforward.
+-- 
+-- For the entitires appearing in the world, if sprite sizes are always same,
+-- things are quite simple and easy. But that's usually not the case.
+--
+-- So for the entities with varying sprite size, we take the following step
+--
+-- 1. A size in virtual world is defined for a reference sprite (usually standing or idle)
+-- 2. A size in virtual world for other sprites are calculated at load time
+--    with the reference sprite and its size in virtual world.
+--
+-- So why even go through all these hassels instead of simply using pixel dimension?
+-- It's because it seems easier to me to manipulate everything in virtual world unit 
+-- as of this writing.
+--
+--------------------------------------------------------------------------------
+
 local window_width = 800;
 local window_height = 600;
 
@@ -32,6 +65,8 @@ return {
   levelSize = nil,
   viewport = viewPort,
   screen = screenTarget,
+
+  -- initialize viewport object
   init = function(self, levelSize, background_width, background_height)
     self.levelSize = levelSize
     self.pixel_width_per_viewport = background_width * (self.viewport.width/levelSize.width)
@@ -47,10 +82,12 @@ return {
     self.sx = screenTarget.width / self.pixel_width_per_viewport
     self.sy = screenTarget.height / self.pixel_height_per_viewport
   end,
+
   updateViewQuad = function(self)
     local _, y, w, h = self.quad:getViewport()
     self.quad:setViewport(self.viewport.x * self.pixel_width_per_viewport, y, w, h)
   end,
+
   updateX = function(self, x)
     if x < 0 or x > (self.levelSize.width - viewPort.width) then
       return
@@ -58,10 +95,12 @@ return {
     self.viewport.x = x
     self:updateViewQuad()
   end,
+
   isWithin = function(self, x, y, w, h)
     -- FIXME
     return true
   end,
+
   toScreenTopLeft = function(self, vx, vy, vQuad)
     local sx, sy
 
@@ -74,6 +113,7 @@ return {
 
     return sx, sy
   end,
+
   virtualPointToScreenCoord = function(self, vx, vy)
     local sx, sy
 
@@ -82,6 +122,7 @@ return {
 
     return sx, sy
   end,
+
   toScreenDim = function(self, vQuad)
     local width, height
 
@@ -90,6 +131,7 @@ return {
 
     return width, height
   end,
+
   getScaleFactor = function(self, vQuad, sQuad)
     local _, _, sw, sh = sQuad:getViewport()
     local w = vQuad.width * screenTarget.width
