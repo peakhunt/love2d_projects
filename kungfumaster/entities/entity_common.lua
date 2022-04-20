@@ -6,7 +6,8 @@ local state = require('state')
 function drawEntity(entity)
   local px, py
 
-  -- px, py is bottom center of the rectangle
+  -- x, y is bottom center of the rectangle
+  -- px, py is top left corer of the rectangle
   px, py = viewport:toScreenTopLeft(entity.pos.x, entity.pos.y, entity.currentAnim.virtSize[entity.spriteNum])
 
   -- calculate scale factor
