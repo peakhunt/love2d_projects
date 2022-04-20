@@ -5,17 +5,18 @@ local level = require('level')
 local state = require('state')
 local viewport = require('viewport')
 local dashboard = require('dashboard')
+local gamelogic = require('gamelogic')
 
 function love.load()
   love.graphics.setFont(love.graphics.newFont(12))
-  state.current_level = level(1, entities[6])
+  state.current_level = level(1, entities.hero)
 end
 
 function love.draw()
   love.graphics.setColor(1, 1, 1, 1)
   state.current_level:draw()
 
-  for _, entity in ipairs(entities) do
+  for _, entity in pairs(entities) do
     if entity.draw then
       entity:draw()
      end
@@ -58,18 +59,12 @@ function love.keyreleased(released_key)
   input.release(released_key)
 end
 
-function love.update(dt)
-  local index = 1
-
+function update_test(dt)
   state.time_left = state.time_left - dt
   if state.time_left < 0 then
   state.time_left = 0
   end
 
-  --
-  -- XXX test code
-  --
-  --[[
   state.hero_energy = state.hero_energy + love.math.random(-30, 30) * dt
   if state.hero_energy < 0 then
     state.hero_energy = 0
@@ -88,20 +83,23 @@ function love.update(dt)
   if state.score < 0 or state.score > 999999 then
     state.score = 0
   end
-  -- end of test code
-  --]]
+end
 
-  while index <= #entities do
-    local entity = entities[index]
+function love.update(dt)
+  local index = 1
 
+  if state.test_enabled then
+    update_test(dt)
+  end
+
+  for _, entity in pairs(entities) do
     if entity.update then
       entity:update(dt)
     end
-
-    index = index + 1
   end
 
   state.current_level:update(dt)
   input.update(dt)
+  gamelogic.update(dt)
   dashboard.update(dt)
 end

@@ -25,4 +25,9 @@ return {
   top_score = 0,        -- 6 digits
   hero_energy = 100,    -- 0 to 100 %
   enemy_energy = 100,   -- 0 to 100 %. level boss' energy
+
+  --
+  -- for debugging and testing
+  --
+  test_enabled = true,
 }

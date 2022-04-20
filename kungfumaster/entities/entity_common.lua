@@ -6,9 +6,7 @@ local state = require('state')
 function drawEntity(entity)
   local px, py
 
-  -- x, y is bottom center of the rectangle
-  -- px, py is top left corer of the rectangle
-  px, py = viewport:toScreenTopLeft(entity.pos.x, entity.pos.y, entity.currentAnim.virtSize[entity.spriteNum])
+  px, py = viewport:virtualPointToScreenCoord(entity.vQuad.x, entity.vQuad.y)
 
   -- calculate scale factor
   local scale_x, scale_y
@@ -58,6 +56,11 @@ end
 return function(pos_x, pos_y, states, animations, start_state)
   local entity = {
     pos = {
+      --
+      -- bottom/center position of current quad in virtual space
+      -- why center? because it was easiest to manipulate facing direction
+      -- why bottom? because it was easiest to manage bottom given various sprite heights
+      --
       x = pos_x,
       y = pos_y,
     },
@@ -74,6 +77,7 @@ return function(pos_x, pos_y, states, animations, start_state)
     spriteNum = 1,
 
     -- current quad in virtual space
+    -- x/y here is top/left corner of the quad in virtual space
     vQuad = nil,
 
     -- current hit quad in virtual space
@@ -103,9 +107,10 @@ return function(pos_x, pos_y, states, animations, start_state)
       else
         self.currentAnimTime = 0
         self.currentAnim = newstate.animation
+        self.spriteNum = 1
       end 
 
-      self.spriteNum = 1
+      self:updateQuad()
     end,
 
     draw = function(self)
@@ -121,8 +126,7 @@ return function(pos_x, pos_y, states, animations, start_state)
       end
 
       -- post update
-      self.vQuad = self.currentAnim.virtSize[self.spriteNum]
-      self:updateHitPoint()
+      self:updateQuad()
     end,
 
     commonUpdate = function(self, dt)
@@ -154,32 +158,42 @@ return function(pos_x, pos_y, states, animations, start_state)
       end
     end,
 
+    updateQuad = function(self)
+      self.vQuad = {
+        x = self.pos.x - self.currentAnim.virtSize[self.spriteNum].width/2,
+        y = self.pos.y + self.currentAnim.virtSize[self.spriteNum].height,
+        width = self.currentAnim.virtSize[self.spriteNum].width,
+        height = self.currentAnim.virtSize[self.spriteNum].height,
+      }
+      self:updateHitPoint()
+    end,
+
     updateHitPoint = function(self)
-      if self.vQuad.hitPoint == nil then
+      local hitPoint = self.currentAnim.virtSize[self.spriteNum].hitPoint
+
+      if hitPoint == nil then
         self.vHitQuad = nil
         return
       end
 
-      -- (x, y) is bottom center
-      -- hitPoint coord is top left
-      local left_x  = self.pos.x - self.vQuad.width / 2
-      local right_x = self.pos.x + self.vQuad.width / 2
-      local top_y   = self.pos.y + self.vQuad.height
+      local left_x  = self.vQuad.x
+      local right_x = self.vQuad.x + self.vQuad.width
+      local top_y   = self.vQuad.y
       local hx, hy
 
       if self.forward then
-        hx = right_x - self.vQuad.hitPoint.rx - self.vQuad.hitPoint.width
+        hx = right_x - hitPoint.rx - hitPoint.width
       else
-        hx = left_x + self.vQuad.hitPoint.rx
+        hx = left_x + hitPoint.rx
       end
 
-      hy = top_y - self.vQuad.hitPoint.ry
+      hy = top_y - hitPoint.ry
 
       self.vHitQuad = {
         x = hx,
         y = hy,
-        width = self.vQuad.hitPoint.width,
-        height = self.vQuad.hitPoint.height,
+        width = hitPoint.width,
+        height =hitPoint.height,
       }
     end,
   }

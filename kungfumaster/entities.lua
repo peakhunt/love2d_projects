@@ -15,7 +15,7 @@ local entities = {
   crazy88(6.3, bottom_y),
   dwarf(6.2, bottom_y),
   gogo(6.7, bottom_y),
-  hero(6.5, bottom_y),
+  hero = hero(6.5, bottom_y),
 }
 
 return entities
