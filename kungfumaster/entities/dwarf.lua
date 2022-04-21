@@ -37,6 +37,9 @@ states.walking = {
   update = function(self, entity, dt)
     entity:commonUpdate(dt)
   end,
+  hit = function(self, entity, hitQuad)
+    entity:moveState(states.falling)
+  end,
 }
 
 states.holding = {
@@ -49,7 +52,10 @@ states.holding = {
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
-    entity:commonUpdate(dt)
+    -- just for test for now
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.walking)
+    end
   end,
 }
 

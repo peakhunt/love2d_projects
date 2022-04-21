@@ -45,30 +45,48 @@ local animations = {
 --------------------------------------------------------------------------------
 local states = {}
 
-states.gogo = {
-  currentStep = 1,
-  animation = animations.standing,
+states.walking = {
+  animation = animations.walking,
   update = function(self, entity, dt)
-    entity.testDt = entity.testDt + dt;
-    if entity.testDt > testTime then
-      entity.testDt = entity.testDt -testTime 
-      self.currentStep = self.currentStep + 1
-      if self.currentStep > #animKey then
-        self.currentStep = 1
-      end
-      entity.currentAnimTime = 0
-      entity.currentAnim = animations[animKey[self.currentStep]]
-    end
-
     entity:commonUpdate(dt)
+  end,
+  hit = function(self, entity, hitQuad)
+    if entity.hitCount == 0 then
+      entity:moveState(states.hit1)
+      entity.hitCount = 1
+    else
+      entity:moveState(states.hit2)
+      entity.hitCount = 0
+    end
+  end,
+}
+
+states.hit1 = {
+  animation = animations.hit1,
+  update = function(self, entity, dt)
+    -- just for test for now
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.walking)
+    end
+  end,
+}
+
+states.hit2 = {
+  animation = animations.hit2,
+  update = function(self, entity, dt)
+    -- just for test for now
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.walking)
+    end
   end,
 }
 
 return function(pos_x, pos_y)
-  local entity = entity_common(pos_x, pos_y, states, animations, states.gogo)
+  local entity = entity_common(pos_x, pos_y, states, animations, states.walking)
 
   entity.testDt = 0
   entity.name = "gogo"
+  entity.hitCount = 0
 
   return entity
 end
