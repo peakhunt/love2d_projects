@@ -31,6 +31,7 @@
 --
 --------------------------------------------------------------------------------
 
+local collision = require('collision')
 local window_width = 800;
 local window_height = 600;
 
@@ -50,8 +51,8 @@ local screenTarget = {
 local viewPort = {
   width = 1.0,
   height = 1.0,
-  x = 6.0,
-  y = 0,
+  x = 6.0,          -- left
+  y = 1.0,          -- top
 }
 
 local quad
@@ -89,16 +90,20 @@ return {
   end,
 
   updateX = function(self, x)
-    if x < 0 or x > (self.levelSize.width - viewPort.width) then
+    if x < 0 or x > (self.levelSize.width - self.viewport.width) then
       return
     end
     self.viewport.x = x
     self:updateViewQuad()
   end,
 
-  isWithin = function(self, x, y, w, h)
-    -- FIXME
-    return true
+  isVisible = function(self, entity)
+    -- just for the safety. in reality, it never occurs
+    if entity.vQuad == nil then
+      return true
+    end
+
+    return collision.check_quad_for_quad(self.viewport, entity.vQuad)
   end,
 
   toScreenTopLeft = function(self, vx, vy, vQuad)
@@ -108,8 +113,13 @@ return {
     -- we need top left corner
     vx = vx - vQuad.width/2
     vy = vy + vQuad.height
-    sx = screenTarget.x + (vx - self.viewport.x) * screenTarget.width
-    sy = screenTarget.height - (vy - self.viewport.y) * screenTarget.height + screenTarget.y
+
+    -- x:0 --> screen.x
+    -- x:1 --> screen.x + screen.width - 1
+    -- y:0 --> screen.y + screen.height - 1
+    -- y:1 --> screen.y
+    sx = screenTarget.x + (vx - self.viewport.x) * (screenTarget.width-1)
+    sy = (self.viewport.y - vy) * (screenTarget.height -1) + screenTarget.y
 
     return sx, sy
   end,
@@ -117,8 +127,12 @@ return {
   virtualPointToScreenCoord = function(self, vx, vy)
     local sx, sy
 
-    sx = screenTarget.x + (vx - self.viewport.x) * screenTarget.width
-    sy = screenTarget.height - (vy - self.viewport.y) * screenTarget.height + screenTarget.y
+    -- x:0 --> screen.x
+    -- x:1 --> screen.x + screen.width - 1
+    -- y:0 --> screen.y + screen.height - 1
+    -- y:1 --> screen.y
+    sx = screenTarget.x + (vx - self.viewport.x) * (screenTarget.width-1)
+    sy = (self.viewport.y - vy) * (screenTarget.height-1) + screenTarget.y
 
     return sx, sy
   end,

@@ -7,6 +7,33 @@ local viewport = require('viewport')
 local dashboard = require('dashboard')
 local gamelogic = require('gamelogic')
 
+function debug_draw()
+  if state.button_debug == false then
+    return
+  end
+
+  love.graphics.setColor(0, 0, 0, 1)
+  -- Draw the current FPS.
+  love.graphics.print("FPS: " .. love.timer.getFPS(), 50, 150)
+  -- Draw the current delta-time. (The same value
+  -- is passed to update each frame).
+  love.graphics.print("dt: " .. love.timer.getDelta(), 50, 170)
+  love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 190)
+
+  love.graphics.setColor(1, 0, 0, 1)
+
+  love.graphics.line(viewport.screen.x + viewport.screen.width / 2 - 1,
+                     viewport.screen.y,
+                     viewport.screen.x + viewport.screen.width / 2 - 1,
+                     viewport.screen.y + viewport.screen.height - 1)
+
+  love.graphics.line(viewport.screen.x ,
+                     viewport.screen.y + viewport.screen.height/2 -1,
+                     viewport.screen.x + viewport.screen.width - 1,
+                     viewport.screen.y + viewport.screen.height/2 -1)
+  love.graphics.setColor(1, 1, 1, 1)
+end
+
 function love.load()
   love.graphics.setFont(love.graphics.newFont(12))
   state.current_level = level(1, entities.hero)
@@ -17,35 +44,13 @@ function love.draw()
   state.current_level:draw()
 
   for _, entity in pairs(entities) do
-    if entity.draw then
+    if viewport:isVisible(entity) and entity.draw then
       entity:draw()
      end
   end
 
   dashboard.draw()
-
-  if state.button_debug then
-    love.graphics.setColor(0, 0, 0, 1)
-    -- Draw the current FPS.
-    love.graphics.print("FPS: " .. love.timer.getFPS(), 50, 150)
-    -- Draw the current delta-time. (The same value
-    -- is passed to update each frame).
-    love.graphics.print("dt: " .. love.timer.getDelta(), 50, 170)
-    love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 190)
-
-    love.graphics.setColor(1, 0, 0, 1)
-
-    love.graphics.line(viewport.screen.x + viewport.screen.width / 2 - 1,
-                       viewport.screen.y,
-                       viewport.screen.x + viewport.screen.width / 2 - 1,
-                       viewport.screen.y + viewport.screen.height - 1)
-
-    love.graphics.line(viewport.screen.x ,
-                       viewport.screen.y + viewport.screen.height/2 -1,
-                       viewport.screen.x + viewport.screen.width - 1,
-                       viewport.screen.y + viewport.screen.height/2 -1)
-    love.graphics.setColor(1, 1, 1, 1)
-  end
+  debug_draw()
 end
 
 function love.focus(focused)
@@ -60,6 +65,10 @@ function love.keyreleased(released_key)
 end
 
 function update_test(dt)
+  if state.test_enabled == false then
+    return
+  end
+
   state.time_left = state.time_left - dt
   if state.time_left < 0 then
   state.time_left = 0
@@ -88,9 +97,7 @@ end
 function love.update(dt)
   local index = 1
 
-  if state.test_enabled then
-    update_test(dt)
-  end
+  update_test(dt)
 
   for _, entity in pairs(entities) do
     if entity.update then
