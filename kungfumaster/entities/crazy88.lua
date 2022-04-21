@@ -38,6 +38,25 @@ states.walking = {
   update = function(self, entity, dt)
     entity:commonUpdate(dt)
   end,
+  hit = function(self, entity, hitQuad)
+    local mid1, mid2, a_quarter
+
+    a_quarter = entity.vQuad.height / 4
+
+    mid1 = entity.vQuad.y - a_quarter
+    mid2 = mid1 - 2 * a_quarter
+
+    if hitQuad.y > mid1 then
+      -- top hit
+      entity:moveState(states.hitTop)
+    elseif hitQuad.y < mid1 and hitQuad.y > mid2 then
+      -- middle hit
+      entity:moveState(states.hitMiddle)
+    else
+      -- bottom hit
+      entity:moveState(states.hitBottom)
+    end
+  end,
 }
 
 states.approaching = {
@@ -64,20 +83,29 @@ states.falling = {
 states.hitTop = {
   animation = animations.hitTop,
   update = function(self, entity, dt)
-    entity:commonUpdate(dt)
+    -- just for test for now
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.walking)
+    end
   end,
 }
 states.hitMiddle = {
   animation = animations.hitMiddle,
   update = function(self, entity, dt)
-    entity:commonUpdate(dt)
+    -- just for test for now
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.walking)
+    end
   end,
 }
 
 states.hitBottom = {
   animation = animations.hitBottom,
   update = function(self, entity, dt)
-    entity:commonUpdate(dt)
+    -- just for test for now
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.walking)
+    end
   end,
 }
 

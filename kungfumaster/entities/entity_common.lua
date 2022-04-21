@@ -196,6 +196,11 @@ return function(pos_x, pos_y, states, animations, start_state)
         height =hitPoint.height,
       }
     end,
+    hit = function(self, hitQuad)
+      if self.currentState.hit then
+        self.currentState:hit(self, hitQuad)
+      end
+    end,
   }
 
   entity:moveState(start_state)

@@ -12,7 +12,7 @@ return {
     for _, entity in pairs(entities) do
       if entity ~= hero then
         if collision.check_entity_for_hit(entity, hero.vHitQuad) then
-          print(dt, 'hit hit hit: ', entity.name)
+          entity:hit(hero.vHitQuad)
         end
       end
     end
