@@ -149,16 +149,16 @@ states.holding = {
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
-    local x, y = entity:getPos()
+    local xdelta, ydelta
 
     if entity.forward then
-      x = x + common_conf.crazy88_fall_speed * dt
+      xdelta = common_conf.crazy88_fall_speed * dt
     else
-      x = x - common_conf.crazy88_fall_speed * dt
+      xdelta = -common_conf.crazy88_fall_speed * dt
     end
-    y = y - common_conf.crazy88_fall_speed * dt
+    ydelta = -common_conf.crazy88_fall_speed * dt
 
-    entity:setPos(x, y)
+    entity:move(xdelta, ydelta)
 
     if entity:commonUpdate(dt) == true then
       entity.health = 0
