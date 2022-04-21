@@ -68,6 +68,9 @@ return function(pos_x, pos_y, states, animations, start_state)
       x = 0,
       y = 0,
     },
+
+    health = 1,
+
     animations = animations,
     states = states,
     forward = true,
@@ -196,11 +199,21 @@ return function(pos_x, pos_y, states, animations, start_state)
         height =hitPoint.height,
       }
     end,
+
     hit = function(self, hitQuad)
       if self.currentState.hit then
         self.currentState:hit(self, hitQuad)
       end
     end,
+
+    move = function(self, xdelta, ydelta)
+      local x,y = self:getPos()
+
+      x = x + xdelta
+      y = y + ydelta
+
+      self:setPos(x, y)
+    end
   }
 
   entity:moveState(start_state)

@@ -43,7 +43,7 @@ function love.draw()
   love.graphics.setColor(1, 1, 1, 1)
   state.current_level:draw()
 
-  for _, entity in pairs(entities) do
+  for _, entity in ipairs(entities.table) do
     if viewport:isVisible(entity) and entity.draw then
       entity:draw()
      end
@@ -99,9 +99,16 @@ function love.update(dt)
 
   update_test(dt)
 
-  for _, entity in pairs(entities) do
+  while index <= #entities.table do
+    local entity = entities.table[index]
     if entity.update then
       entity:update(dt)
+    end
+
+    if entity.health == 0 then
+      table.remove(entities.table, index)
+    else
+      index = index + 1
     end
   end
 

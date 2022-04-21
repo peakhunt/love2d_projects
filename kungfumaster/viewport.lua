@@ -147,4 +147,22 @@ return {
 
     return w/sw, h/sh
   end,
+
+  spaceLeftRight = function(self, delta)
+    local lx, rx
+    
+    lx = self.viewport.x - self.viewport.width + delta
+    rx = self.viewport.x + self.viewport.width + delta
+
+    -- FIXME addhoc
+    if lx < 0 or lx >= 7.0 then
+      lx = -1
+    end
+
+    if rx < 0 or rx >= 7.0 then
+      rx = -1
+    end
+
+    return lx, rx
+  end,
 }

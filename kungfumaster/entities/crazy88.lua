@@ -36,6 +36,33 @@ local states = {}
 states.walking = {
   animation = animations.walking,
   update = function(self, entity, dt)
+    --
+    -- implement some walking logic here
+    --
+    local hero = state.hero
+    local distance = entity.vQuad.x - hero.vQuad.x
+
+    if math.abs(distance) < 0.4 then
+      entity:moveState(states.approaching)
+    end
+
+    if math.abs(distance) > 0.3 then
+      if distance < 0 then
+        entity.forward = false
+      else
+        entity.forward = true
+      end
+    end
+
+    local xdelta
+    if entity.forward then
+      xdelta =  -common_conf.crazy88_speed * dt
+    else
+      xdelta =  common_conf.crazy88_speed * dt
+    end
+
+    entity:move(xdelta, 0)
+
     entity:commonUpdate(dt)
   end,
   hit = function(self, entity, hitQuad)
@@ -62,7 +89,53 @@ states.walking = {
 states.approaching = {
   animation = animations.approaching,
   update = function(self, entity, dt)
+    --
+    -- implement some walking logic here
+    --
+    local hero = state.hero
+    local distance = entity.vQuad.x - hero.vQuad.x
+
+    if math.abs(distance) >= 0.4 then
+      entity:moveState(states.walking)
+    end
+
+    if math.abs(distance) > 0.3 then
+      if distance < 0 then
+        entity.forward = false
+      else
+        entity.forward = true
+      end
+    end
+
+    local xdelta
+    if entity.forward then
+      xdelta =  -common_conf.crazy88_speed * dt
+    else
+      xdelta =  common_conf.crazy88_speed * dt
+    end
+
+    entity:move(xdelta, 0)
+
     entity:commonUpdate(dt)
+  end,
+  hit = function(self, entity, hitQuad)
+    local mid1, mid2, a_quarter
+
+    a_quarter = entity.vQuad.height / 4
+
+    mid1 = entity.vQuad.y - a_quarter
+    mid2 = mid1 - 2 * a_quarter
+
+    if hitQuad.y > mid1 then
+      -- top hit
+      entity:moveState(states.hitTop)
+    elseif hitQuad.y < mid1 and hitQuad.y > mid2 then
+      -- middle hit
+      entity:moveState(states.hitMiddle)
+    else
+      -- bottom hit
+      entity:moveState(states.hitBottom)
+    end
   end,
 }
 
@@ -76,25 +149,36 @@ states.holding = {
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
-    entity:commonUpdate(dt)
+    local x, y = entity:getPos()
+
+    if entity.forward then
+      x = x + common_conf.crazy88_fall_speed * dt
+    else
+      x = x - common_conf.crazy88_fall_speed * dt
+    end
+    y = y - common_conf.crazy88_fall_speed * dt
+
+    entity:setPos(x, y)
+
+    if entity:commonUpdate(dt) == true then
+      entity.health = 0
+    end
   end,
 }
 
 states.hitTop = {
   animation = animations.hitTop,
   update = function(self, entity, dt)
-    -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity:moveState(states.walking)
+      entity:moveState(states.falling)
     end
   end,
 }
 states.hitMiddle = {
   animation = animations.hitMiddle,
   update = function(self, entity, dt)
-    -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity:moveState(states.walking)
+      entity:moveState(states.falling)
     end
   end,
 }
@@ -102,9 +186,8 @@ states.hitMiddle = {
 states.hitBottom = {
   animation = animations.hitBottom,
   update = function(self, entity, dt)
-    -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity:moveState(states.walking)
+      entity:moveState(states.falling)
     end
   end,
 }

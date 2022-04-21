@@ -1,4 +1,5 @@
 local asset_conf = {
+  floor_bottom = 0.19,
   spriteSheet = love.graphics.newImage('assets/sprites.png'),
   hero = {
     refFrame = {

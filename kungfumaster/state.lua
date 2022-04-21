@@ -16,6 +16,11 @@ return {
   current_level = nil,
 
   --
+  -- hero
+  --
+  hero = nil,
+
+  --
   -- for game management and dashboard
   --
   level = 1,            -- 1 to 5
