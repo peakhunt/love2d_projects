@@ -114,25 +114,19 @@ return {
     vx = vx - vQuad.width/2
     vy = vy + vQuad.height
 
-    -- x:0 --> screen.x
-    -- x:1 --> screen.x + screen.width - 1
-    -- y:0 --> screen.y + screen.height - 1
-    -- y:1 --> screen.y
-    sx = screenTarget.x + (vx - self.viewport.x) * (screenTarget.width-1)
-    sy = (self.viewport.y - vy) * (screenTarget.height -1) + screenTarget.y
-
-    return sx, sy
+    return self:virtualPointToScreenCoord(vx, vy)
   end,
 
   virtualPointToScreenCoord = function(self, vx, vy)
     local sx, sy
 
+    -- FIXME: let me think about this. virtual 1 doesn't have to be the exact end of screen pixel!
     -- x:0 --> screen.x
     -- x:1 --> screen.x + screen.width - 1
     -- y:0 --> screen.y + screen.height - 1
     -- y:1 --> screen.y
-    sx = screenTarget.x + (vx - self.viewport.x) * (screenTarget.width-1)
-    sy = (self.viewport.y - vy) * (screenTarget.height-1) + screenTarget.y
+    sx = screenTarget.x + (vx - self.viewport.x) * (screenTarget.width - 1)
+    sy = (self.viewport.y - vy) * (screenTarget.height - 1) + screenTarget.y
 
     return sx, sy
   end,
