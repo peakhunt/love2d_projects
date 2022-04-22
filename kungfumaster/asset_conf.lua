@@ -382,6 +382,12 @@ local asset_conf = {
             pos_y = 905,
             width = 17,
             height = 54,
+            hitPoint = {
+              pos_x = 84,
+              pos_y = 905,
+              width = 4,
+              height = 37,
+            }
           },
           [4] = {
             pos_x = 465,

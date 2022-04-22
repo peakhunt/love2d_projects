@@ -97,6 +97,12 @@ return function(pos_x, pos_y, states, animations, start_state)
       return self.pos.x, self.pos.y
     end,
 
+    commonStateEnter = function(self, newAnim)
+      self.currentAnimTime = 0
+      self.currentAnim = newAnim 
+      self.spriteNum = 1
+    end,
+
     moveState = function(self, newstate)
       local oldState = self.currentState
 
@@ -109,9 +115,7 @@ return function(pos_x, pos_y, states, animations, start_state)
       if newstate.enter then
         self.currentState:enter(self, oldState)
       else
-        self.currentAnimTime = 0
-        self.currentAnim = newstate.animation
-        self.spriteNum = 1
+        self:commonStateEnter(newstate.animation)
       end 
 
       self:updateQuad()
