@@ -1,6 +1,6 @@
 local asset_conf = {
   floor_bottom = 0.19,
-  spriteSheet = love.graphics.newImage('assets/sprites.png'),
+  spriteSheet = 'assets/sprites.png',
   hero = {
     refFrame = {
       pixelwidth = 24,      -- reference pixel width  24 pixel = 1 unit = 1/3 width in viewport dimension
@@ -889,7 +889,7 @@ local asset_conf = {
       background = 'assets/floor1.png',
       start = {
         x = 6.5,    -- FIXME
-        y = 0.19,
+        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
       },
       size = {
         width = 7.0,

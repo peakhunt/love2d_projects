@@ -6,8 +6,9 @@ local utils = require('utils')
 local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
+local resource = require('resource')
 
-local spriteSheet = asset_conf.spriteSheet
+local spriteSheet = resource.spriteSheet
 local assetGogo = asset_conf.gogo
 local sprites = assetGogo.sprites
 

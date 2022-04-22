@@ -6,10 +6,9 @@ local utils = require('utils')
 local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
+local resource = require('resource')
 
-local scale_factor = 3
-local move_speed = 200
-local spriteSheet = asset_conf.spriteSheet
+local spriteSheet = resource.spriteSheet
 local assetDwarf = asset_conf.dwarf
 local sprites = assetDwarf.sprites
 
