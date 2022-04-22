@@ -22,6 +22,11 @@ return {
   held = 0,
 
   --
+  -- game objects
+  --
+  entities = {},
+
+  --
   -- for game management and dashboard
   --
   level = 1,            -- 1 to 5
@@ -36,4 +41,26 @@ return {
   -- for debugging and testing
   --
   test_enabled = true,
+
+  reset = function(self)
+    self.button_left = false
+    self.button_right = false
+    self.button_up = false
+    self.button_down = false
+    self.button_punch = false
+    self.button_kick = false
+
+    self.current_level = nil
+    self.hero = nil
+    self.held = 0
+    self.entities = {}
+
+    self.level = 1
+    self.life_left = 3
+    self.time_left = 60
+    self.score = 0
+    self.top_score = 0
+    self.hero_energy = 100
+    self.enemy_energy = 100
+  end
 }

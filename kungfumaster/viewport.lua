@@ -48,13 +48,6 @@ local screenTarget = {
 --
 -- viewport width is 1/7 of the total background image
 --
-local viewPort = {
-  width = 1.0,
-  height = 1.0,
-  x = 6.0,          -- left
-  y = 1.0,          -- top
-}
-
 local quad
 
 return {
@@ -64,11 +57,12 @@ return {
   sx = 0,
   sy = 0,
   levelSize = nil,
-  viewport = viewPort,
+  viewport = nil,
   screen = screenTarget,
 
   -- initialize viewport object
-  init = function(self, levelSize, background_width, background_height)
+  init = function(self, viewport, levelSize, background_width, background_height)
+    self.viewport = viewport
     self.levelSize = levelSize
     self.pixel_width_per_viewport = background_width * (self.viewport.width/levelSize.width)
     self.pixel_height_per_viewport = background_height * (self.viewport.height / levelSize.height)

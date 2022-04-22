@@ -1,4 +1,3 @@
-local entities = require('entities')
 local asset_conf = require('asset_conf')
 local input = require('input')
 local level = require('level')
@@ -35,15 +34,14 @@ function debug_draw()
 end
 
 function love.load()
-  love.graphics.setFont(love.graphics.newFont(12))
-  state.current_level = level(1, entities.hero)
+  level(5)
 end
 
 function love.draw()
   love.graphics.setColor(1, 1, 1, 1)
   state.current_level:draw()
 
-  for _, entity in ipairs(entities.table) do
+  for _, entity in ipairs(state.entities) do
     if viewport:isVisible(entity) and entity.draw then
       entity:draw()
      end
@@ -99,14 +97,14 @@ function love.update(dt)
 
   update_test(dt)
 
-  while index <= #entities.table do
-    local entity = entities.table[index]
+  while index <= #state.entities do
+    local entity = state.entities[index]
     if entity.update then
       entity:update(dt)
     end
 
     if entity.health == 0 then
-      table.remove(entities.table, index)
+      table.remove(state.entities, index)
     else
       index = index + 1
     end

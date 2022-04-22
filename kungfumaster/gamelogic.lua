@@ -1,13 +1,13 @@
 local asset_conf = require('asset_conf')
-local entities = require('entities')
 local collision = require('collision')
 local viewport = require('viewport')
 local timer = require('timer')
 local crazy88 = require('entities/crazy88')
+local state = require('state')
 
 local crazy88_spawn = timer(1/2,
 function()
-  if #entities.table > 10 or love.math.random() < 0.5 then
+  if #state.entities > 10 or love.math.random() < 0.5 then
     return
   end
 
@@ -31,14 +31,14 @@ function()
 
   local entity = crazy88(x, asset_conf.floor_bottom)
 
-  table.insert(entities.table, entity)
+  table.insert(state.entities, entity)
 end)
 
 return {
   update = function(dt)
-    local hero = entities.hero
+    local hero = state.hero
 
-    for _, entity in ipairs(entities.table) do
+    for _, entity in ipairs(state.entities) do
 
       -- hero attack test
       if hero.vHitQuad ~= nil and entity ~= hero then

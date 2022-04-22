@@ -891,6 +891,113 @@ local asset_conf = {
         x = 6.5,    -- FIXME
         y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
       },
+      forward = true,
+      viewport = {
+        width = 1.0,
+        height = 1.0,
+        x = 6.0,
+        y = 1.0,
+      },
+      size = {
+        width = 7.0,
+        height = 1.0,
+      },
+      limit = {
+        min = 0.15,
+        max = 6.85,
+      },
+      --
+      -- and whatever else necessary
+      -- 
+    },
+    [2] = {
+      background = 'assets/floor2.png',
+      start = {
+        x = 0.5,    -- FIXME
+        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+      },
+      forward = false,
+      viewport = {
+        width = 1.0,
+        height = 1.0,
+        x = 0.0,
+        y = 1.0,
+      },
+      size = {
+        width = 7.0,
+        height = 1.0,
+      },
+      limit = {
+        min = 0.15,
+        max = 6.85,
+      },
+      --
+      -- and whatever else necessary
+      -- 
+    },
+    [3] = {
+      background = 'assets/floor3.png',
+      start = {
+        x = 6.5,    -- FIXME
+        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+      },
+      forward = true,
+      viewport = {
+        width = 1.0,
+        height = 1.0,
+        x = 6.0,
+        y = 1.0,
+      },
+      size = {
+        width = 7.0,
+        height = 1.0,
+      },
+      limit = {
+        min = 0.15,
+        max = 6.85,
+      },
+      --
+      -- and whatever else necessary
+      -- 
+    },
+    [4] = {
+      background = 'assets/floor4.png',
+      start = {
+        x = 0.5,    -- FIXME
+        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+      },
+      forward = false,
+      viewport = {
+        width = 1.0,
+        height = 1.0,
+        x = 0.0,
+        y = 1.0,
+      },
+      size = {
+        width = 7.0,
+        height = 1.0,
+      },
+      limit = {
+        min = 0.15,
+        max = 6.85,
+      },
+      --
+      -- and whatever else necessary
+      -- 
+    },
+    [5] = {
+      background = 'assets/floor5.png',
+      start = {
+        x = 6.5,    -- FIXME
+        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+      },
+      forward = true,
+      viewport = {
+        width = 1.0,
+        height = 1.0,
+        x = 6.0,
+        y = 1.0,
+      },
       size = {
         width = 7.0,
         height = 1.0,

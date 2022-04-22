@@ -1,6 +1,7 @@
 local asset_conf = require('asset_conf')
 local state = require('state')
 local viewport = require('viewport')
+local hero = require('entities/hero')
 
 return function(level)
   local conf = asset_conf.level[level]
@@ -8,8 +9,6 @@ return function(level)
   local levelSize = conf.size
   local start = conf.start
   local limit = conf.limit
-
-  viewport:init(levelSize, background:getPixelWidth(), background:getPixelHeight())
 
   local floor = {
     background = background,
@@ -35,6 +34,24 @@ return function(level)
       end
     end,
   }
+
+  state:reset()
+
+  state.hero = hero(conf.start.x, conf.start.y)
+  table.insert(state.entities, state.hero)
+  state.level = level
+  state.current_level = floor
+
+  state.hero.forward = conf.forward
+
+  local vp = {
+    x = conf.viewport.x,
+    y = conf.viewport.y,
+    width = conf.viewport.width,
+    height = conf.viewport.height,
+  }
+
+  viewport:init(vp, levelSize, background:getPixelWidth(), background:getPixelHeight())
 
   return floor
 end
