@@ -2,26 +2,21 @@ local asset_conf = require('asset_conf')
 local state = require('state')
 local viewport = require('viewport')
 
---
--- virtual world is 7.0 width and 1.0 height
--- x grows from left to right
---
-local levelSize = {
-  width = 7.0,
-  height = 1.0,
-}
-
---
--- we should be able to move from end to end in 30 seconds
---
 return function(level)
   local conf = asset_conf.level[level]
   local background = love.graphics.newImage(conf.background)
+  local levelSize = conf.size
+  local start = conf.start
+  local limit = conf.limit
 
   viewport:init(levelSize, background:getPixelWidth(), background:getPixelHeight())
 
   local floor = {
     background = background,
+    levelSize = levelSize,
+    start = start,
+    limit = limit,
+
     update = function(self, dt)
     end,
 

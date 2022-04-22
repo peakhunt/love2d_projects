@@ -887,8 +887,21 @@ local asset_conf = {
   level = {
     [1] = {
       background = 'assets/floor1.png',
-      background_width = 1792,
-      background_height = 200,
+      start = {
+        x = 6.5,    -- FIXME
+        y = 0.19,
+      },
+      size = {
+        width = 7.0,
+        height = 1.0,
+      },
+      limit = {
+        min = 0.15,
+        max = 6.85,
+      },
+      --
+      -- and whatever else necessary
+      -- 
     },
   },
 }

@@ -3,6 +3,10 @@ local viewport = require('viewport')
 local utils = require('utils')
 local state = require('state')
 
+function clamp(x, min, max)
+  return math.min(math.max(min, x), max)
+end
+
 function drawEntity(entity)
   local px, py
 
@@ -89,7 +93,7 @@ return function(pos_x, pos_y, states, animations, start_state)
     vHitQuad = nil,
 
     setPos = function(self, x, y)
-      self.pos.x = x
+      self.pos.x = clamp(x, state.current_level.limit.min, state.current_level.limit.max)
       self.pos.y = y
     end,
 
