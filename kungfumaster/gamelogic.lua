@@ -5,7 +5,7 @@ local viewport = require('viewport')
 local timer = require('timer')
 local crazy88 = require('entities/crazy88')
 
-local crazy88_spawn = timer(1/3,
+local crazy88_spawn = timer(1/2,
 function()
   if #entities.table > 10 or love.math.random() < 0.5 then
     return

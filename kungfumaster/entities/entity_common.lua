@@ -78,6 +78,7 @@ return function(pos_x, pos_y, states, animations, start_state)
     currentAnim = nil,
     currentAnimTime = 0,
     spriteNum = 1,
+    trembling = false,
 
     -- current quad in virtual space
     -- x/y here is top/left corner of the quad in virtual space
@@ -122,6 +123,7 @@ return function(pos_x, pos_y, states, animations, start_state)
 
     update = function(self, dt)
       -- preupdate
+      self.trembling = false
 
       -- main update
       if dt < 0.1 then

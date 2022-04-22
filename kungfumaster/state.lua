@@ -19,6 +19,7 @@ return {
   -- hero
   --
   hero = nil,
+  held = 0,
 
   --
   -- for game management and dashboard

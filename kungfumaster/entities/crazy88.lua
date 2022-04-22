@@ -137,12 +137,13 @@ states.approaching = {
       entity:moveState(states.hitBottom)
     end
   end,
+
   collideWithHero = function(self, entity, hero)
     local distance = math.abs(entity.pos.x - hero.pos.x)
 
-    if distance <=  entity.vQuad.width / 3 then
+    if distance <=  hero.vQuad.width / 3 then
+      state.held = state.held + 1
       entity:moveState(states.holding)
-      state.hero:gotHeld(entity)
     end
   end,
 }
@@ -151,6 +152,16 @@ states.holding = {
   animation = animations.holding,
   update = function(self, entity, dt)
     entity:commonUpdate(dt)
+  end,
+  collideWithHero = function(self, entity, hero)
+    if hero.trembling then
+      if entity.health == 0.25 then
+        state.held = state.held - 1
+        entity:moveState(states.falling)
+      else
+        entity.health = entity.health - 0.25
+      end
+    end
   end,
 }
 
