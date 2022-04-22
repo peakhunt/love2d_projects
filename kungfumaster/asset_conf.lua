@@ -1,6 +1,8 @@
 local floor_bottom = 0.19
 
 local asset_conf = {
+  screen_width = 800,
+  screen_height = 600,
   floor_bottom = floor_bottom,
   spriteSheet = 'assets/sprites.png',
   hero = {

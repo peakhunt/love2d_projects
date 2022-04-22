@@ -30,10 +30,10 @@
 -- as of this writing.
 --
 --------------------------------------------------------------------------------
-
+local asset_conf = require('asset_conf')
 local collision = require('collision')
-local window_width = 800;
-local window_height = 600;
+local window_width = asset_conf.screen_width
+local window_height = asset_conf.screen_height
 
 --
 -- 4/5 of the screen height
@@ -41,7 +41,7 @@ local window_height = 600;
 local screenTarget = {
   x = 0,
   y = window_height / 5,
-  width = 800,
+  width = window_width,
   height = window_height * 4 / 5 - 20,
 }
 
