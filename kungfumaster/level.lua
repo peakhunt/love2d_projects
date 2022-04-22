@@ -20,7 +20,9 @@ return function(level)
     end,
 
     draw = function(self)
-      love.graphics.draw(self.background, viewport.quad, 0, 600/5, 0, viewport.sx, viewport.sy)
+      love.graphics.draw(self.background, viewport.quad, 
+          viewport.screen.x, viewport.screen.y,
+          0, viewport.sx, viewport.sy)
     end,
 
     heroMove = function(self, hx, hy)
