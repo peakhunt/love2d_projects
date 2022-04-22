@@ -12,18 +12,32 @@ local spriteSheet = asset_conf.spriteSheet
 local assetHero = asset_conf.hero
 local sprites = assetHero.sprites
 
-function calcJumpDistance(anim, currentAnimTime)
+function calcJumpDistance(duration, time)
   -- simple parabolic
   --
   -- y = -a(x - t/2)^2 + h
   -- a = 4h/t^2
   --
-  local t = anim.duration
+  local t = duration
   local h = common_conf.jump_distance
   local a = 4 * h / (t * t)
-  local x = (currentAnimTime - t / 2)
+  local x = (time - t / 2)
   local y = -a * x * x + h
   return y
+end
+
+function performJump(entity, dt, xspeed)
+  local xdelta, ydelta
+
+  xdelta = xspeed * dt
+  if entity.forward then
+    xdelta = -xdelta
+  end
+
+  local newY = entity.savedPos.y + calcJumpDistance(entity.currentAnim.duration, entity.currentAnimTime)
+  ydelta = newY - entity.pos.y
+
+  entity:move(xdelta, ydelta)
 end
 
 --------------------------------------------------------------------------------
@@ -120,14 +134,14 @@ states.walking = {
       return
     end
 
-    local x,y = entity:getPos()
+    local xdelta
 
     if entity.forward then
-      x = x - common_conf.move_speed * dt
+      xdelta = -common_conf.move_speed * dt
     else
-      x = x + common_conf.move_speed * dt
+      xdelta = common_conf.move_speed * dt
     end 
-    entity:setPos(x, y)
+    entity:move(xdelta, 0)
 
     if state.button_up then
       entity:moveState(states.walkJumping)
@@ -189,9 +203,7 @@ states.standJumping = {
       entity:moveState(states.standing)
       entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
-      local x,_ = entity:getPos()
-      local y = entity.savedPos.y + calcJumpDistance(animations.standJumping, entity.currentAnimTime)
-      entity:setPos(x, y)
+      performJump(entity, dt, 0)
     end
   end,
 
@@ -230,15 +242,7 @@ states.walkJumping = {
 
       entity:setPos(x, entity.savedPos.y)
     else
-      local x,_ = entity:getPos()
-      local y = entity.savedPos.y + calcJumpDistance(animations.walkJumping, entity.currentAnimTime)
-
-      if entity.forward then
-        x = x - common_conf.move_speed * dt
-      else
-        x = x + common_conf.move_speed * dt
-      end 
-      entity:setPos(x, y)
+      performJump(entity, dt, common_conf.move_speed)
     end
   end,
 
@@ -302,9 +306,7 @@ states.standJumpKicking = {
       entity:moveState(states.standing)
       entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
-      local x,_ = entity:getPos()
-      local y = entity.savedPos.y + calcJumpDistance(animations.standJumpKick, entity.currentAnimTime)
-      entity:setPos(x, y)
+      performJump(entity, dt, 0)
     end
   end,
 
@@ -323,9 +325,7 @@ states.standJumpPunching = {
       entity:moveState(states.standing)
       entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
-      local x,_ = entity:getPos()
-      local y = entity.savedPos.y + calcJumpDistance(animations.standJumpPunch, entity.currentAnimTime)
-      entity:setPos(x, y)
+      performJump(entity, dt, 0)
     end
   end,
 
@@ -347,15 +347,7 @@ states.walkJumpKicking = {
 
       entity:setPos(x, entity.savedPos.y)
     else
-      local x,_ = entity:getPos()
-      local y = entity.savedPos.y + calcJumpDistance(animations.walkJumpKick, entity.currentAnimTime)
-
-      if entity.forward then
-        x = x - common_conf.move_speed * dt
-      else
-        x = x + common_conf.move_speed * dt
-      end 
-      entity:setPos(x, y)
+      performJump(entity, dt, common_conf.move_speed)
     end
   end,
 
@@ -376,15 +368,7 @@ states.walkJumpPunching = {
       local x, _ = entity:getPos()
       entity:setPos(x, entity.savedPos.y)
     else
-      local x,_ = entity:getPos()
-      local y = entity.savedPos.y + calcJumpDistance(animations.walkJumpPunch, entity.currentAnimTime)
-
-      if entity.forward then
-        x = x - common_conf.move_speed * dt
-      else
-        x = x + common_conf.move_speed * dt
-      end 
-      entity:setPos(x, y)
+      performJump(entity, dt, common_conf.move_speed)
     end
   end,
 
@@ -396,8 +380,10 @@ states.walkJumpPunching = {
 return function(pos_x, pos_y)
   local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
   local baseSetPos = entity.setPos
+  local baseMove = entity.move
 
   entity.name = "hero"
+  entity.held = false
 
   entity.setPos = function(self, x, y)
     baseSetPos(entity, x, y)
@@ -405,6 +391,18 @@ return function(pos_x, pos_y)
     if state.current_level then
       state.current_level:heroMove(x, y)
     end
+  end
+
+  entity.move = function(self, dx, dy)
+    if self.held then
+      dx = 0
+    end
+
+    baseMove(self, dx, dy)
+  end
+
+  entity.gotHeld = function(self, entity)
+    self.held = true
   end
 
   return entity

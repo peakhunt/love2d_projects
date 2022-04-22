@@ -38,25 +38,23 @@ return {
   update = function(dt)
     local hero = entities.hero
 
-    if hero.vHitQuad ~= nil then
-      -- hero attacks
-      for _, entity in ipairs(entities.table) do
-        if entity ~= hero then
-          if collision.check_entity_for_hit(entity, hero.vHitQuad) then
-            entity:hit(hero.vHitQuad)
-            break   -- only one hit?
-          end
+    for _, entity in ipairs(entities.table) do
+
+      -- hero attack test
+      if hero.vHitQuad ~= nil and entity ~= hero then
+        if collision.check_entity_for_hit(entity, hero.vHitQuad) then
+          entity:takeHit(hero.vHitQuad)
+        end
+      end
+
+      -- enemy attack test
+      if entity ~= hero then
+        if collision.check_entity_for_hit(hero, entity.vQuad) then
+          entity:collideWithHero(hero)
         end
       end
     end
 
-    -- 
-    -- enemy attacks
-    -- FIXME
-
-    --
-    -- enemy spwan
-    --
     crazy88_spawn:update(dt)
   end,
 }

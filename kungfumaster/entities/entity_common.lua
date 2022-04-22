@@ -200,9 +200,15 @@ return function(pos_x, pos_y, states, animations, start_state)
       }
     end,
 
-    hit = function(self, hitQuad)
-      if self.currentState.hit then
-        self.currentState:hit(self, hitQuad)
+    takeHit = function(self, hitQuad)
+      if self.currentState.takeHit then
+        self.currentState:takeHit(self, hitQuad)
+      end
+    end,
+
+    collideWithHero = function(self, hero)
+      if self.currentState.collideWithHero then
+        self.currentState:collideWithHero(self, hero)
       end
     end,
 

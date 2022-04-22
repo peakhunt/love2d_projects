@@ -65,7 +65,7 @@ states.walking = {
 
     entity:commonUpdate(dt)
   end,
-  hit = function(self, entity, hitQuad)
+  takeHit = function(self, entity, hitQuad)
     local mid1, mid2, a_quarter
 
     a_quarter = entity.vQuad.height / 4
@@ -118,7 +118,7 @@ states.approaching = {
 
     entity:commonUpdate(dt)
   end,
-  hit = function(self, entity, hitQuad)
+  takeHit = function(self, entity, hitQuad)
     local mid1, mid2, a_quarter
 
     a_quarter = entity.vQuad.height / 4
@@ -135,6 +135,14 @@ states.approaching = {
     else
       -- bottom hit
       entity:moveState(states.hitBottom)
+    end
+  end,
+  collideWithHero = function(self, entity, hero)
+    local distance = math.abs(entity.pos.x - hero.pos.x)
+
+    if distance <=  entity.vQuad.width / 3 then
+      entity:moveState(states.holding)
+      state.hero:gotHeld(entity)
     end
   end,
 }
