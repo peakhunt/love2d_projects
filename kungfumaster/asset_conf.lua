@@ -1,5 +1,7 @@
+local floor_bottom = 0.19
+
 local asset_conf = {
-  floor_bottom = 0.19,
+  floor_bottom = floor_bottom,
   spriteSheet = 'assets/sprites.png',
   hero = {
     refFrame = {
@@ -889,7 +891,7 @@ local asset_conf = {
       background = 'assets/floor1.png',
       start = {
         x = 6.5,    -- FIXME
-        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+        y = floor_bottom,
       },
       forward = true,
       viewport = {
@@ -914,7 +916,7 @@ local asset_conf = {
       background = 'assets/floor2.png',
       start = {
         x = 0.5,    -- FIXME
-        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+        y = floor_bottom,
       },
       forward = false,
       viewport = {
@@ -939,7 +941,7 @@ local asset_conf = {
       background = 'assets/floor3.png',
       start = {
         x = 6.5,    -- FIXME
-        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+        y = floor_bottom,
       },
       forward = true,
       viewport = {
@@ -964,7 +966,7 @@ local asset_conf = {
       background = 'assets/floor4.png',
       start = {
         x = 0.5,    -- FIXME
-        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+        y = floor_bottom,
       },
       forward = false,
       viewport = {
@@ -989,7 +991,7 @@ local asset_conf = {
       background = 'assets/floor5.png',
       start = {
         x = 6.5,    -- FIXME
-        y = 0.19,   -- XXX is there any better way to self refrence floor_bottom?
+        y = floor_bottom,
       },
       forward = true,
       viewport = {
