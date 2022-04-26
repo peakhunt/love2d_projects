@@ -34,7 +34,7 @@ function debug_draw()
 end
 
 function love.load()
-  level(5)
+  level(2)
 end
 
 function love.draw()

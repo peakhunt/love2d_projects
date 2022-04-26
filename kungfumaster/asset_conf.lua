@@ -5,6 +5,7 @@ local asset_conf = {
   screen_height = 600,
   floor_bottom = floor_bottom,
   spriteSheet = 'assets/sprites.png',
+  doors = 'assets/doors.png',
   hero = {
     refFrame = {
       pixelwidth = 24,      -- reference pixel width  24 pixel = 1 unit = 1/3 width in viewport dimension
@@ -895,6 +896,7 @@ local asset_conf = {
         x = 6.5,    -- FIXME
         y = floor_bottom,
       },
+      doors = nil,
       forward = true,
       viewport = {
         width = 1.0,
@@ -919,6 +921,30 @@ local asset_conf = {
       start = {
         x = 0.5,    -- FIXME
         y = floor_bottom,
+      },
+      doors = {
+        sprite = 'doors',
+        duration = 1.0,
+        pos = {
+          x = 0,
+          y = 1,
+          height = 1,
+          width = 0.28125,      -- in viewport dimension. (72/1792)*7
+        },
+        quads = {
+          [1] = {
+            pos_x = 0,
+            pos_y = 0,
+            height = 200,
+            width = 72,
+          },
+          [2] = {
+            pos_x = 73,
+            pos_y = 0,
+            height = 200,
+            width = 72,
+          }
+        }
       },
       forward = false,
       viewport = {
@@ -945,6 +971,30 @@ local asset_conf = {
         x = 6.5,    -- FIXME
         y = floor_bottom,
       },
+      doors = {
+        sprite = 'doors',
+        duration = 1.0,
+        pos = {
+          x = 6.69921875,
+          y = 1,
+          height = 1,
+          width =0.30078125 ,      -- in viewport dimension. (77/1792)*7
+        },
+        quads = {
+          [1] = {
+            pos_x = 323,
+            pos_y = 0,
+            height = 200,
+            width = 77,
+          },
+          [2] = {
+            pos_x = 245,
+            pos_y = 0,
+            height = 200,
+            width = 77,
+          }
+        }
+      },
       forward = true,
       viewport = {
         width = 1.0,
@@ -970,6 +1020,30 @@ local asset_conf = {
         x = 0.5,    -- FIXME
         y = floor_bottom,
       },
+      doors = {
+        sprite = 'doors',
+        duration = 1.0,
+        pos = {
+          x = 0,
+          y = 1,
+          height = 1,
+          width = 0.28125,      -- in viewport dimension. (72/1792)*7
+        },
+        quads = {
+          [1] = {
+            pos_x = 0,
+            pos_y = 0,
+            height = 200,
+            width = 72,
+          },
+          [2] = {
+            pos_x = 73,
+            pos_y = 0,
+            height = 200,
+            width = 72,
+          }
+        }
+      },
       forward = false,
       viewport = {
         width = 1.0,
@@ -994,6 +1068,30 @@ local asset_conf = {
       start = {
         x = 6.5,    -- FIXME
         y = floor_bottom,
+      },
+      doors = {
+        sprite = 'doors',
+        duration = 1.0,
+        pos = {
+          x = 6.69921875,
+          y = 1,
+          height = 1,
+          width =0.30078125 ,      -- in viewport dimension. (77/1792)*7
+        },
+        quads = {
+          [1] = {
+            pos_x = 323,
+            pos_y = 0,
+            height = 200,
+            width = 77,
+          },
+          [2] = {
+            pos_x = 245,
+            pos_y = 0,
+            height = 200,
+            width = 77,
+          }
+        }
       },
       forward = true,
       viewport = {
