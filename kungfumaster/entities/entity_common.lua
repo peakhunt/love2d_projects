@@ -51,7 +51,7 @@ function drawEntity(entity)
       })
 
       love.graphics.setColor(1, 0, 0, 1)
-      love.graphics.rectangle("line", px, py, w, h)
+      love.graphics.rectangle("fill", px, py, w, h)
       love.graphics.setColor(1, 1, 1, 1)
     end
   end
