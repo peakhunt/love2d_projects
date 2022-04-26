@@ -3,6 +3,10 @@ local state = require('state')
 local viewport = require('viewport')
 local hero = require('entities/hero')
 local resource = require('resource')
+local door = require('entities/door')
+
+local door_left = door(true)
+local door_right = door(false)
 
 return function(level)
   local conf = asset_conf.level[level]
@@ -10,31 +14,18 @@ return function(level)
   local levelSize = conf.size
   local start = conf.start
   local limit = conf.limit
-  local doors = conf.doors
-
-  if doors ~= nil then
-    doors.love2d_quads = {}
-    for _, quad in ipairs(doors.quads) do
-      table.insert(doors.love2d_quads,
-        love.graphics.newQuad(
-          quad.pos_x,
-          quad.pos_y,
-          quad.width,
-          quad.height,
-          resource[doors.sprite]:getDimensions()
-        )
-      )
-    end
-  end
 
   local floor = {
     background = background,
     levelSize = levelSize,
     start = start,
     limit = limit,
-    doors = doors,
+    current_door = nil,
 
     update = function(self, dt)
+      if self.current_door then
+        self.current_door:update(dt)
+      end
     end,
 
     draw = function(self)
@@ -42,20 +33,8 @@ return function(level)
           viewport.screen.x, viewport.screen.y,
           0, viewport.sx, viewport.sy)
 
-      --
-      -- FIXME fix it later using level start-up state machine
-      --
-      if self.doors ~= nil then
-        local px, py
-        local scale_x, scale_y
-        local sQuad = self.doors.love2d_quads[1]
-
-        px, py = viewport:virtualPointToScreenCoord(self.doors.pos.x, self.doors.pos.y)
-        scale_x, scale_y = viewport:getScaleFactor(self.doors.pos, sQuad)
-
-        love.graphics.draw(resource[self.doors.sprite], sQuad,
-          px, py, 0,
-          scale_x, scale_y)
+      if self.current_door then
+        self.current_door:draw()
       end
     end,
 
@@ -65,11 +44,21 @@ return function(level)
       far_left_x = hx - viewport.viewport.width / 2;
       far_right_x = hx + viewport.viewport.width / 2;
 
-      if far_left_x > 0 and far_right_x < levelSize.width then
+      if far_left_x > 0 and far_right_x < self.levelSize.width then
         viewport:updateX(far_left_x)
       end
     end,
   }
+      
+  if conf.door == 'left' then
+    floor.current_door = door_left
+    floor.current_door:reset()
+  elseif conf.door == 'right' then
+    floor.current_door = door_right
+    floor.current_door:reset()
+  else
+    floor.current_door = nil
+  end
 
   state:reset()
 

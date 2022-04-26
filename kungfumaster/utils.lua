@@ -64,4 +64,27 @@ module.newAnimationFromConf = function(image, conf, refFrame)
   return animation;
 end
 
+module.newAnimationSimple = function(image, conf)
+  local animation = {}
+
+  animation.spriteSheet = image;
+  animation.quads = {}
+  animation.virtSize = {}
+
+  for _, quad in ipairs(conf.quads) do
+    table.insert(animation.quads,
+      love.graphics.newQuad(
+        quad.pos_x,
+        quad.pos_y,
+        quad.width,
+        quad.height,
+        image:getDimensions()
+      )
+    )
+  end
+
+  animation.duration = conf.duration
+  return animation
+end
+
 return module
