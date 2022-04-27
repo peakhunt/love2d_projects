@@ -40,8 +40,11 @@ return {
   --
   -- for debugging and testing
   --
-  test_enabled = true,
+  test_enabled = false,
 
+  --
+  -- conveniences
+  --
   reset = function(self)
     self.button_left = false
     self.button_right = false
@@ -62,5 +65,9 @@ return {
     self.top_score = 0
     self.hero_energy = 100
     self.enemy_energy = 100
-  end
+  end,
+
+  incScore = function(self, inc)
+    self.score = self.score + inc
+  end,
 }

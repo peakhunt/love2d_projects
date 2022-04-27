@@ -91,7 +91,7 @@ game_states.level_playing = {
       -- hero attack test
       if hero.vHitQuad ~= nil and entity ~= hero then
         if collision.check_entity_for_hit(entity, hero.vHitQuad) then
-          entity:takeHit(hero.vHitQuad)
+          entity:takeHit(hero, hero.vHitQuad)
         end
       end
 

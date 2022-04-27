@@ -210,9 +210,9 @@ return function(pos_x, pos_y, states, animations, start_state)
       }
     end,
 
-    takeHit = function(self, hitQuad)
+    takeHit = function(self, from, hitQuad)
       if self.currentState.takeHit then
-        self.currentState:takeHit(self, hitQuad)
+        self.currentState:takeHit(self, from, hitQuad)
       end
     end,
 

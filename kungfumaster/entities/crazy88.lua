@@ -34,6 +34,32 @@ local animations = {
 --------------------------------------------------------------------------------
 local states = {}
 
+function gotHitCommon(self, entity, from, hitQuad)
+  local mid1, mid2, a_quarter
+
+  a_quarter = entity.vQuad.height / 4
+
+  mid1 = entity.vQuad.y - a_quarter
+  mid2 = mid1 - 2 * a_quarter
+
+  if hitQuad.y > mid1 then
+    -- top hit
+    entity:moveState(states.hitTop)
+  elseif hitQuad.y < mid1 and hitQuad.y > mid2 then
+    -- middle hit
+    entity:moveState(states.hitMiddle)
+  else
+    -- bottom hit
+    entity:moveState(states.hitBottom)
+  end
+
+  if from.currentState.scoreX and entity.score then
+    local score = from.currentState.scoreX * entity.score
+
+    state:incScore(score)
+  end
+end
+
 states.walking = {
   animation = animations.walking,
   update = function(self, entity, dt)
@@ -66,25 +92,7 @@ states.walking = {
 
     entity:commonUpdate(dt)
   end,
-  takeHit = function(self, entity, hitQuad)
-    local mid1, mid2, a_quarter
-
-    a_quarter = entity.vQuad.height / 4
-
-    mid1 = entity.vQuad.y - a_quarter
-    mid2 = mid1 - 2 * a_quarter
-
-    if hitQuad.y > mid1 then
-      -- top hit
-      entity:moveState(states.hitTop)
-    elseif hitQuad.y < mid1 and hitQuad.y > mid2 then
-      -- middle hit
-      entity:moveState(states.hitMiddle)
-    else
-      -- bottom hit
-      entity:moveState(states.hitBottom)
-    end
-  end,
+  takeHit = gotHitCommon,
 }
 
 states.approaching = {
@@ -119,25 +127,7 @@ states.approaching = {
 
     entity:commonUpdate(dt)
   end,
-  takeHit = function(self, entity, hitQuad)
-    local mid1, mid2, a_quarter
-
-    a_quarter = entity.vQuad.height / 4
-
-    mid1 = entity.vQuad.y - a_quarter
-    mid2 = mid1 - 2 * a_quarter
-
-    if hitQuad.y > mid1 then
-      -- top hit
-      entity:moveState(states.hitTop)
-    elseif hitQuad.y < mid1 and hitQuad.y > mid2 then
-      -- middle hit
-      entity:moveState(states.hitMiddle)
-    else
-      -- bottom hit
-      entity:moveState(states.hitBottom)
-    end
-  end,
+  takeHit = gotHitCommon,
 
   collideWithHero = function(self, entity, hero)
     local distance = math.abs(entity.pos.x - hero.pos.x)
@@ -223,5 +213,7 @@ return function(pos_x, pos_y)
   local entity = entity_common(pos_x, pos_y, states, animations, states.walking)
 
   entity.name = "crazy88"
+  entity.score = 100
+
   return entity
 end

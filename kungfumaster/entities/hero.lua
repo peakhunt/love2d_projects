@@ -291,6 +291,7 @@ states.walkJumping = {
 --
 states.standPunching = {
   animation = animations.standPunch,
+  scoreX = 1,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.standing)
   end,
@@ -301,6 +302,7 @@ states.standPunching = {
 --
 states.standKicking = {
   animation = animations.standKick,
+  scoreX = 1,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.standing)
   end,
@@ -311,6 +313,7 @@ states.standKicking = {
 --
 states.sitPunching = {
   animation = animations.sitPunch,
+  scoreX = 1,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.sitting)
   end,
@@ -321,6 +324,7 @@ states.sitPunching = {
 --
 states.sitKicking = {
   animation = animations.sitKick,
+  scoreX = 1,
   update = function(self, entity, dt)
     entity:updateOneshot(dt, states.sitting)
   end,
@@ -330,6 +334,7 @@ states.sitKicking = {
 -- state kicking while stand jumping
 --
 states.standJumpKicking = {
+  scoreX = 2,
   update = function(self, entity, dt)
     if entity:commonUpdate(dt) == true then
       -- animation over
@@ -349,6 +354,7 @@ states.standJumpKicking = {
 -- state punching while stand jumping
 --
 states.standJumpPunching = {
+  scoreX = 2,
   update = function(self, entity, dt)
     if entity:commonUpdate(dt) == true then
       -- animation over
@@ -368,6 +374,7 @@ states.standJumpPunching = {
 -- state kicking while walk jumping
 --
 states.walkJumpKicking = {
+  scoreX = 2,
   update = function(self, entity, dt)
     if entity:commonUpdate(dt) == true then
       -- animation over
@@ -390,6 +397,7 @@ states.walkJumpKicking = {
 -- state punching while walk jumping
 --
 states.walkJumpPunching = {
+  scoreX = 2,
   update = function(self, entity, dt)
     if entity:commonUpdate(dt) == true then
       -- animation over
