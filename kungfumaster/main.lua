@@ -1,5 +1,4 @@
 local asset_conf = require('asset_conf')
-local input = require('input')
 local level = require('level')
 local state = require('state')
 local viewport = require('viewport')
@@ -34,7 +33,8 @@ function debug_draw()
 end
 
 function love.load()
-  level(3)
+  level(4)
+  gamelogic:reset()
 end
 
 function love.draw()
@@ -55,11 +55,11 @@ function love.focus(focused)
 end
 
 function love.keypressed(pressed_key)
-  input.press(pressed_key)
+  gamelogic:keypressed(pressed_key)
 end
 
 function love.keyreleased(released_key)
-  input.release(released_key)
+  gamelogic:keyreleased(released_key)
 end
 
 function update_test(dt)
@@ -95,7 +95,7 @@ end
 function love.update(dt)
   local index = 1
 
-  update_test(dt)
+  --update_test(dt)
 
   while index <= #state.entities do
     local entity = state.entities[index]
@@ -111,7 +111,6 @@ function love.update(dt)
   end
 
   state.current_level:update(dt)
-  input.update(dt)
-  gamelogic.update(dt)
+  gamelogic:update(dt)
   dashboard.update(dt)
 end

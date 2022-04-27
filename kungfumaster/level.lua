@@ -62,7 +62,7 @@ return function(level)
 
   state:reset()
 
-  state.hero = hero(conf.start.x, conf.start.y)
+  state.hero = hero(conf.start.ix, conf.start.iy)
   table.insert(state.entities, state.hero)
   state.level = level
   state.current_level = floor

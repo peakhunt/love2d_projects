@@ -1,4 +1,5 @@
 local floor_bottom = 0.19
+local level_start_duration = 0.5
 
 local asset_conf = {
   screen_width = 800,
@@ -6,6 +7,7 @@ local asset_conf = {
   floor_bottom = floor_bottom,
   spriteSheet = 'assets/sprites.png',
   doorSprite = 'assets/doors.png',
+  levelStartDuration = level_start_duration,
   hero = {
     refFrame = {
       pixelwidth = 24,      -- reference pixel width  24 pixel = 1 unit = 1/3 width in viewport dimension
@@ -891,7 +893,7 @@ local asset_conf = {
   },
   doors = {
     left = {
-      duration = 1.0,
+      duration = level_start_duration,
       pos = {
         x = 0,
         y = 1,
@@ -914,7 +916,7 @@ local asset_conf = {
       }
     },
     right = {
-      duration = 1.0,
+      duration = level_start_duration,
       pos = {
         x = 6.69921875,
         y = 1,
@@ -941,8 +943,10 @@ local asset_conf = {
     [1] = {
       background = 'assets/floor1.png',
       start = {
-        x = 6.5,    -- FIXME
-        y = floor_bottom,
+        ix = 6.65,
+        iy = floor_bottom,
+        sx = 6.5,
+        sy = floor_bottom,
       },
       forward = true,
       viewport = {
@@ -959,15 +963,14 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
-      --
-      -- and whatever else necessary
-      -- 
     },
     [2] = {
       background = 'assets/floor2.png',
       start = {
-        x = 0.5,    -- FIXME
-        y = floor_bottom,
+        ix = 0.35,
+        iy = floor_bottom,
+        sx = 0.5,
+        sy = floor_bottom,
       },
       door = 'left',
       forward = false,
@@ -985,15 +988,14 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
-      --
-      -- and whatever else necessary
-      -- 
     },
     [3] = {
       background = 'assets/floor3.png',
       start = {
-        x = 6.5,    -- FIXME
-        y = floor_bottom,
+        ix = 6.65,
+        iy = floor_bottom,
+        sx = 6.5,
+        sy = floor_bottom,
       },
       door = 'right',
       forward = true,
@@ -1011,15 +1013,14 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
-      --
-      -- and whatever else necessary
-      -- 
     },
     [4] = {
       background = 'assets/floor4.png',
       start = {
-        x = 0.5,    -- FIXME
-        y = floor_bottom,
+        ix = 0.35,
+        iy = floor_bottom,
+        sx = 0.5,
+        sy = floor_bottom,
       },
       door = 'left',
       forward = false,
@@ -1037,15 +1038,14 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
-      --
-      -- and whatever else necessary
-      -- 
     },
     [5] = {
       background = 'assets/floor5.png',
       start = {
-        x = 6.5,    -- FIXME
-        y = floor_bottom,
+        ix = 6.65,
+        iy = floor_bottom,
+        sx = 6.5,
+        sy = floor_bottom,
       },
       door = 'right',
       forward = true,
@@ -1063,9 +1063,6 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
-      --
-      -- and whatever else necessary
-      -- 
     },
   },
 }
