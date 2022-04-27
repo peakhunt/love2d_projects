@@ -180,11 +180,11 @@ states.falling = {
     local xdelta, ydelta
 
     if entity.forward then
-      xdelta = common_conf.crazy88_fall_speed * dt
+      xdelta = common_conf.fall_speed * dt
     else
-      xdelta = -common_conf.crazy88_fall_speed * dt
+      xdelta = -common_conf.fall_speed * dt
     end
-    ydelta = -common_conf.crazy88_fall_speed * dt
+    ydelta = -common_conf.fall_speed * dt
 
     entity:move(xdelta, ydelta)
 

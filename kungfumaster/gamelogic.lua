@@ -9,7 +9,7 @@ local input = require('input')
 
 local crazy88_spawn = timer(1/2,
 function()
-  if #state.entities > 10 or love.math.random() < 0.5 then
+  if #state.entities > 10 or love.math.random() < 1.5 then
     return
   end
 
@@ -36,12 +36,9 @@ function()
   table.insert(state.entities, entity)
 end)
 
--- FIXME, just for a quick test. invest a more rigid scheme
-local count = 0
-
 local gogo_spawn = timer(1/2,
 function()
-  if count ~= 0 or love.math.random() < 0.9 then
+  if love.math.random() < 0.7 then
     return
   end
 
@@ -63,7 +60,6 @@ function()
     x = rx
   end
 
-  count = count + 1
   local entity = gogo(x, asset_conf.floor_bottom)
 
   table.insert(state.entities, entity)

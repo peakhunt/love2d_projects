@@ -45,6 +45,8 @@ local animations = {
 -- gogo state machine
 --
 --------------------------------------------------------------------------------
+local states = {}
+
 function throwKnife(entity, y)
   local distance = entity.vQuad.x - state.hero.vQuad.x
   local forward = true
@@ -66,7 +68,13 @@ function throwKnife(entity, y)
   table.insert(state.entities, k)
 end
 
-local states = {}
+function gotHitCommon(self, entity, from, hitQuad)
+  if entity.health == 1.0 then
+    entity:moveState(states.hit1)
+  else
+    entity:moveState(states.hit2)
+  end
+end
 
 states.standing = {
   animation = animations.standing,
@@ -75,12 +83,12 @@ states.standing = {
     local r = love.math.random()
     local distance = entity.vQuad.x - hero.vQuad.x
 
-    if r < 0.5 and math.abs(distance) > 0.42 then
+    if math.abs(distance) > 0.9 then
       entity:moveState(states.walkingTo)
       return
-    elseif r < 0.5 and math.abs(distance) < 0.28 then
-      entity:moveState(states.walkingAway)
-      return
+    --elseif r < 0.2 and math.abs(distance) < 0.1 then
+    --  entity:moveState(states.walkingAway)
+    --  return
     end
 
     if distance < 0 then
@@ -107,6 +115,8 @@ states.standing = {
     entity:commonStateEnter(animations.standing)
     entity.timeAccumulated = 0
   end,
+
+  takeHit = gotHitCommon,
 }
 
 --
@@ -140,6 +150,8 @@ states.walkingAway = {
 
     entity:commonUpdate(dt)
   end,
+
+  takeHit = gotHitCommon,
 }
 
 --
@@ -173,6 +185,8 @@ states.walkingTo = {
 
     entity:commonUpdate(dt)
   end,
+
+  takeHit = gotHitCommon,
 }
 
 states.throwingHigh = {
@@ -183,6 +197,8 @@ states.throwingHigh = {
       entity:moveState(states.standing)
     end
   end,
+
+  takeHit = gotHitCommon,
 }
 
 states.throwingLow = {
@@ -193,6 +209,8 @@ states.throwingLow = {
       entity:moveState(states.standing)
     end
   end,
+
+  takeHit = gotHitCommon,
 }
 
 states.hit1 = {
@@ -200,6 +218,7 @@ states.hit1 = {
   update = function(self, entity, dt)
     -- just for test for now
     if entity:commonUpdate(dt) == true then
+      entity.health = 0.5
       entity:moveState(states.standing)
     end
   end,
@@ -210,7 +229,27 @@ states.hit2 = {
   update = function(self, entity, dt)
     -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity:moveState(states.standing)
+      entity:moveState(states.falling)
+    end
+  end,
+}
+
+states.falling = {
+  animation = animations.falling,
+  update = function(self, entity, dt)
+    local xdelta, ydelta
+
+    if entity.forward then
+      xdelta = common_conf.fall_speed * dt
+    else
+      xdelta = -common_conf.fall_speed * dt
+    end
+    ydelta = -common_conf.fall_speed * dt
+
+    entity:move(xdelta, ydelta)
+
+    if entity:commonUpdate(dt) == true then
+      entity.health = 0
     end
   end,
 }

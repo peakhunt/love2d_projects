@@ -826,7 +826,7 @@ local asset_conf = {
         },
       },
       hit1 = {
-        duration = 0.25,
+        duration = 0.10,
         quads = {
           [1] = {
             pos_x = 380,
@@ -837,7 +837,7 @@ local asset_conf = {
         },
       },
       hit2 = {
-        duration = 0.25,
+        duration = 0.10,
         quads = {
           [1] = {
             pos_x = 427,
