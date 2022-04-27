@@ -25,6 +25,7 @@ return {
   -- game objects
   --
   entities = {},
+  scores = {},
 
   --
   -- for game management and dashboard
@@ -57,6 +58,7 @@ return {
     self.hero = nil
     self.held = 0
     self.entities = {}
+    self.scores = {}
 
     self.level = 1
     self.life_left = 3
@@ -67,7 +69,10 @@ return {
     self.enemy_energy = 100
   end,
 
-  incScore = function(self, inc)
+  incScore = function(self, inc, scoreObj)
     self.score = self.score + inc
+    if scoreObj then
+      table.insert(self.scores, scoreObj)
+    end
   end,
 }

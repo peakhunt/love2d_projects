@@ -47,6 +47,10 @@ function love.draw()
      end
   end
 
+  for _, entity in ipairs(state.scores) do
+    entity:draw()
+  end
+
   dashboard.draw()
   debug_draw()
 end
@@ -105,6 +109,20 @@ function love.update(dt)
 
     if entity.health == 0 then
       table.remove(state.entities, index)
+    else
+      index = index + 1
+    end
+  end
+
+  index = 1
+  while index <= #state.scores do
+    local entity = state.scores[index]
+    if entity.update then
+      entity:update(dt)
+    end
+
+    if entity.dead then
+      table.remove(state.scores, index)
     else
       index = index + 1
     end

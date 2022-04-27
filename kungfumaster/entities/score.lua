@@ -23,7 +23,7 @@ return function(vx, vy, score)
     draw = function(self)
       local px, py = viewport:virtualPointToScreenCoord(self.vx, self.vy)
 
-      love.graphics.setColor(love.math.colorFromBytes(0xad, 0xd8, 0xe6))
+      love.graphics.setColor(love.math.colorFromBytes(0xff, 0xa5, 0x00))
       love.graphics.print(self.score, resource.font, px, py)
     end,
   }
