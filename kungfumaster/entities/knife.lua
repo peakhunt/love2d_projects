@@ -31,23 +31,20 @@ local states = {}
 states.flying = {
   animation = animations.flying,
   update = function(self, entity, dt)
-    local x,y = entity:getPos()
+
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 4 then
+      entity.health = 0
+    end
+
+    local xdelta = common_conf.knife_speed * dt
 
     if entity.forward then
-      x = x - common_conf.knife_speed * dt
-    else
-      x = x + common_conf.knife_speed * dt
+      xdelta = -xdelta
     end
 
-    if x < 0 then
-      entity.forward = false
-    end
+    entity:move(xdelta, 0)
 
-    if x > 7 then
-      entity.forward = true
-    end
-
-    entity:setPos(x, y)
     entity:commonUpdate(dt)
   end,
 }
@@ -56,6 +53,7 @@ return function(pos_x, pos_y, forward)
   local entity = entity_common(pos_x, pos_y, states, animations, states.flying)
 
   entity.forward = forward
+  entity.timeAccumulated = 0
   entity.name = "knife"
 
   return entity

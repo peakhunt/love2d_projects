@@ -10,6 +10,8 @@ return {
   button_kick = false,
   button_debug = false,
 
+  paused = false,
+
   --
   -- current game level object
   --

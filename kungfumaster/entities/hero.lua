@@ -423,6 +423,7 @@ return function(pos_x, pos_y)
   entity.name = "hero"
   entity.prev_tremble_time = 0
   entity.ignore_input = false
+  entity.restrainPos = true
 
   entity.setPos = function(self, x, y)
     baseSetPos(entity, x, y)

@@ -7,6 +7,7 @@ local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
+local knife = require('entities/knife')
 
 local spriteSheet = resource.spriteSheet
 local assetGogo = asset_conf.gogo
@@ -44,20 +45,152 @@ local animations = {
 -- gogo state machine
 --
 --------------------------------------------------------------------------------
+function throwKnife(entity, y)
+  local distance = entity.vQuad.x - state.hero.vQuad.x
+  local forward = true
+
+  if distance < 0 then
+    forward = false
+  end
+
+  local k
+  local x
+
+  if forward then
+    x = entity.vQuad.x
+  else
+    x = entity.vQuad.x + entity.vQuad.width
+  end
+
+  k = knife(x, y, forward)
+  table.insert(state.entities, k)
+end
+
 local states = {}
 
-states.walking = {
-  animation = animations.walking,
+states.standing = {
+  animation = animations.standing,
   update = function(self, entity, dt)
+    local hero = state.hero
+    local r = love.math.random()
+    local distance = entity.vQuad.x - hero.vQuad.x
+
+    if r < 0.5 and math.abs(distance) > 0.42 then
+      entity:moveState(states.walkingTo)
+      return
+    elseif r < 0.5 and math.abs(distance) < 0.28 then
+      entity:moveState(states.walkingAway)
+      return
+    end
+
+    if distance < 0 then
+      entity.forward = false
+    else
+      entity.forward = true
+    end
+
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 1.0 then
+      if r < 0.3 then
+        entity:moveState(states.throwingHigh)
+      elseif r < 0.6 then
+        entity:moveState(states.throwingLow)
+      else
+        entity.timeAccumulated = 0
+      end
+    end
+
     entity:commonUpdate(dt)
   end,
-  hit = function(self, entity, hitQuad)
-    if entity.hitCount == 0 then
-      entity:moveState(states.hit1)
-      entity.hitCount = 1
+
+  enter = function(self, entity, oldState)
+    entity:commonStateEnter(animations.standing)
+    entity.timeAccumulated = 0
+  end,
+}
+
+--
+-- walking away from hero 
+--
+states.walkingAway = {
+  animation = animations.walking,
+  update = function(self, entity, dt)
+    local hero = state.hero
+    local distance = entity.vQuad.x - hero.vQuad.x
+
+    if math.abs(distance) > 0.4 then
+      entity:moveState(states.standing)
+      return
+    end
+
+    if distance < 0 then
+      entity.forward = true
     else
-      entity:moveState(states.hit2)
-      entity.hitCount = 0
+      entity.forward = false
+    end
+
+    local xdelta
+    if entity.forward then
+      xdelta =  -common_conf.gogo_speed * dt
+    else
+      xdelta =  common_conf.gogo_speed * dt
+    end
+
+    entity:move(xdelta, 0)
+
+    entity:commonUpdate(dt)
+  end,
+}
+
+--
+-- walking to hero
+--
+states.walkingTo = {
+  animation = animations.walking,
+  update = function(self, entity, dt)
+    local hero = state.hero
+    local distance = entity.vQuad.x - hero.vQuad.x
+
+    if math.abs(distance) < 0.3 then
+      entity:moveState(states.standing)
+      return
+    end
+
+    if distance < 0 then
+      entity.forward = fale
+    else
+      entity.forward = true
+    end
+
+    local xdelta
+    if entity.forward then
+      xdelta =  -common_conf.gogo_speed * dt
+    else
+      xdelta =  common_conf.gogo_speed * dt
+    end
+
+    entity:move(xdelta, 0)
+
+    entity:commonUpdate(dt)
+  end,
+}
+
+states.throwingHigh = {
+  animation = animations.throwingHigh,
+  update = function(self, entity, dt)
+    if entity:commonUpdate(dt) == true then
+      throwKnife(entity, entity.pos.y + (entity.vQuad.height * 7 / 8))
+      entity:moveState(states.standing)
+    end
+  end,
+}
+
+states.throwingLow = {
+  animation = animations.throwingLow,
+  update = function(self, entity, dt)
+    if entity:commonUpdate(dt) == true then
+      throwKnife(entity, entity.pos.y + entity.vQuad.height / 4)
+      entity:moveState(states.standing)
     end
   end,
 }
@@ -67,7 +200,7 @@ states.hit1 = {
   update = function(self, entity, dt)
     -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity:moveState(states.walking)
+      entity:moveState(states.standing)
     end
   end,
 }
@@ -77,17 +210,18 @@ states.hit2 = {
   update = function(self, entity, dt)
     -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity:moveState(states.walking)
+      entity:moveState(states.standing)
     end
   end,
 }
 
 return function(pos_x, pos_y)
-  local entity = entity_common(pos_x, pos_y, states, animations, states.walking)
+  local entity = entity_common(pos_x, pos_y, states, animations, states.standing)
 
-  entity.testDt = 0
   entity.name = "gogo"
-  entity.hitCount = 0
+  entity.restrainPos = true
+  entity.score = 200
+  entity.timeAccumulated = 0
 
   return entity
 end

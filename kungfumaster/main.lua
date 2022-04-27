@@ -59,6 +59,11 @@ function love.focus(focused)
 end
 
 function love.keypressed(pressed_key)
+  if pressed_key == 'p' then
+    state.paused = not state.paused
+    return
+  end
+
   gamelogic:keypressed(pressed_key)
 end
 
@@ -97,6 +102,10 @@ function update_test(dt)
 end
 
 function love.update(dt)
+  if state.paused or dt > 0.1 then
+    return
+  end
+
   local index = 1
 
   --update_test(dt)

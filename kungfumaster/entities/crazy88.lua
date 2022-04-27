@@ -224,6 +224,7 @@ return function(pos_x, pos_y)
   local entity = entity_common(pos_x, pos_y, states, animations, states.walking)
 
   entity.name = "crazy88"
+  entity.restrainPos = true
   entity.score = 100
 
   return entity

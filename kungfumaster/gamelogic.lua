@@ -3,6 +3,7 @@ local collision = require('collision')
 local viewport = require('viewport')
 local timer = require('timer')
 local crazy88 = require('entities/crazy88')
+local gogo = require('entities/gogo')
 local state = require('state')
 local input = require('input')
 
@@ -31,6 +32,39 @@ function()
   end
 
   local entity = crazy88(x, asset_conf.floor_bottom)
+
+  table.insert(state.entities, entity)
+end)
+
+-- FIXME, just for a quick test. invest a more rigid scheme
+local count = 0
+
+local gogo_spawn = timer(1/2,
+function()
+  if count ~= 0 or love.math.random() < 0.9 then
+    return
+  end
+
+  local lx, rx = viewport:spaceLeftRight(0.5)
+
+  if lx == -1 and rx == -1 then
+    return
+  end
+
+  if lx ~= -1 and rx ~= -1 then
+    if love.math.random() < 0.5 then
+      x = lx
+    else
+      x = rx
+    end
+  elseif lx ~= -1 then
+    x = lx
+  else
+    x = rx
+  end
+
+  count = count + 1
+  local entity = gogo(x, asset_conf.floor_bottom)
 
   table.insert(state.entities, entity)
 end)
@@ -75,10 +109,12 @@ game_states.level_playing = {
     state.hero:setPos(state.current_level.start.sx, state.current_level.start.sy)
     state.hero:stopWalking()
     crazy88_spawn:start()
+    gogo_spawn:start()
   end,
 
   exit = function(self)
     crazy88_spawn:stop()
+    gogo_spawn:stop()
   end,
 
   update = function(self, logic, dt)
@@ -104,6 +140,7 @@ game_states.level_playing = {
     end
 
     crazy88_spawn:update(dt)
+    gogo_spawn:update(dt)
   end,
 
   draw = function(self, logic)

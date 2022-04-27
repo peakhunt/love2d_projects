@@ -83,6 +83,7 @@ return function(pos_x, pos_y, states, animations, start_state)
     currentAnimTime = 0,
     spriteNum = 1,
     trembling = false,
+    restrainPos = false,
 
     -- current quad in virtual space
     -- x/y here is top/left corner of the quad in virtual space
@@ -93,7 +94,11 @@ return function(pos_x, pos_y, states, animations, start_state)
     vHitQuad = nil,
 
     setPos = function(self, x, y)
-      self.pos.x = clamp(x, state.current_level.limit.min, state.current_level.limit.max)
+      if self.restrainPos then
+        self.pos.x = clamp(x, state.current_level.limit.min, state.current_level.limit.max)
+      else
+        self.pos.x = x
+      end
       self.pos.y = y
     end,
 
@@ -134,9 +139,7 @@ return function(pos_x, pos_y, states, animations, start_state)
       self.trembling = false
 
       -- main update
-      if dt < 0.1 then
-        self.currentState:update(self, dt)
-      end
+      self.currentState:update(self, dt)
 
       -- post update
       self:updateQuad()
