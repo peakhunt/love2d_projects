@@ -7,6 +7,7 @@ local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
+local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
 local assetCrazy88 = asset_conf.crazy88
@@ -65,13 +66,14 @@ states.walking = {
     -- implement some walking logic here
     --
     local hero = state.hero
-    local distance = entity.vQuad.x - hero.vQuad.x
+    local distance, adistance = gameutil.distance(entity, hero)
 
-    if math.abs(distance) < 0.4 then
+    if adistance < 0.4 then
       entity:moveState(states.approaching)
+      return
     end
 
-    if math.abs(distance) > 0.3 then
+    if adistance > 0.3 then
       if distance < 0 then
         entity.forward = false
       else
@@ -100,13 +102,14 @@ states.approaching = {
     -- implement some walking logic here
     --
     local hero = state.hero
-    local distance = entity.vQuad.x - hero.vQuad.x
+    local distance, adistance = gameutil.distance(entity, hero)
 
-    if math.abs(distance) >= 0.4 then
+    if adistance >= 0.4 then
       entity:moveState(states.walking)
+      return
     end
 
-    if math.abs(distance) > 0.3 then
+    if adistance > 0.3 then
       if distance < 0 then
         entity.forward = false
       else
@@ -128,7 +131,7 @@ states.approaching = {
   takeHit = gotHitCommon,
 
   collideWithHero = function(self, entity, hero)
-    local distance = math.abs(entity.pos.x - hero.pos.x)
+    local distance, _ = gameutil.distance(entity, hero)
 
     if distance <=  hero.vQuad.width / 3 then
       entity:moveState(states.holding)

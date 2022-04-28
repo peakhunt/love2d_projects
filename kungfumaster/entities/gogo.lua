@@ -8,6 +8,7 @@ local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
 local knife = require('entities/knife')
+local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
 local assetGogo = asset_conf.gogo
@@ -50,7 +51,7 @@ local animations = {
 local states = {}
 
 function throwKnife(entity, y)
-  local distance = entity.vQuad.x - state.hero.vQuad.x
+  local distance = gameutil.distance(entity, state.hero)
   local forward = true
 
   if distance < 0 then
@@ -84,17 +85,17 @@ states.standing = {
   update = function(self, entity, dt)
     local hero = state.hero
     local r = love.math.random()
-    local distance = entity.vQuad.x - hero.vQuad.x
+    local distance, adistance = gameutil.distance(entity, hero)
 
     -- too far to throw a knife
-    if math.abs(distance) > targetRange then
+    if adistance > targetRange then
       -- too far
       entity:moveState(states.walkingTo)
       return
     end
 
     -- too close. have to run away
-    if math.abs(distance) < tooCloseStart and -- too close
+    if adistance < tooCloseStart and -- too close
        entity.timeAccumulated < 0.7 and       -- and not waited enough to aim
        r < 0.2 then                           -- then 20% chance
        entity:moveState(states.walkingAway)
@@ -136,9 +137,9 @@ states.walkingAway = {
   animation = animations.walking,
   update = function(self, entity, dt)
     local hero = state.hero
-    local distance = entity.vQuad.x - hero.vQuad.x
+    local distance, adistance = gameutil.distance(entity, hero)
 
-    if math.abs(distance) > tooCloseStop then
+    if adistance > tooCloseStop then
       entity:moveState(states.standing)
       return
     end
@@ -171,9 +172,9 @@ states.walkingTo = {
   animation = animations.walking,
   update = function(self, entity, dt)
     local hero = state.hero
-    local distance = entity.vQuad.x - hero.vQuad.x
+    local distance, adistance = gameutil.distance(entity, hero)
 
-    if math.abs(distance) < targetRange then
+    if adistance < targetRange then
       entity:moveState(states.standing)
       return
     end

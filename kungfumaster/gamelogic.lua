@@ -9,7 +9,7 @@ local input = require('input')
 
 local crazy88_spawn = timer(1/2,
 function()
-  if #state.entities > 10 or love.math.random() < 1.5 then
+  if #state.entities > 10 or love.math.random() < 0.5 then
     return
   end
 
