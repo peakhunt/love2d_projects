@@ -2,6 +2,7 @@ local common_conf = require('entities/common_conf')
 local viewport = require('viewport')
 local utils = require('utils')
 local state = require('state')
+local score = require('entities/score')
 
 function clamp(x, min, max)
   return math.min(math.max(min, x), max)
@@ -232,7 +233,23 @@ return function(pos_x, pos_y, states, animations, start_state)
       y = y + ydelta
 
       self:setPos(x, y)
-    end
+    end,
+
+    showScore = function(self, hero, hitQuad)
+      if hero.currentState.scoreX and self.score then
+        local s = hero.currentState.scoreX * self.score
+
+        local x, y
+
+        -- FIXME which one is better?
+        --x = entity.vQuad.x
+        --y = entity.vQuad.y + 0.05
+        x = hitQuad.x
+        y = hitQuad.y - hitQuad.height
+
+        state:incScore(s, score(x, y, s))
+      end
+    end,
   }
 
   entity:moveState(start_state)

@@ -7,7 +7,6 @@ local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
-local score = require('entities/score')
 
 local spriteSheet = resource.spriteSheet
 local assetCrazy88 = asset_conf.crazy88
@@ -56,19 +55,7 @@ function gotHitCommon(self, entity, from, hitQuad)
     entity:moveState(states.hitBottom)
   end
 
-  if from.currentState.scoreX and entity.score then
-    local s = from.currentState.scoreX * entity.score
-
-    local x, y
-
-    -- FIXME which one is better?
-    --x = entity.vQuad.x
-    --y = entity.vQuad.y + 0.05
-    x = hitQuad.x
-    y = hitQuad.y - hitQuad.height
-
-    state:incScore(s, score(x, y, s))
-  end
+  entity:showScore(from, hitQuad)
 end
 
 states.walking = {

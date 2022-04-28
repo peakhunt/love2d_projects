@@ -74,6 +74,7 @@ function gotHitCommon(self, entity, from, hitQuad)
   if entity.health == 1.0 then
     entity:moveState(states.hit1)
   else
+    entity:showScore(from, hitQuad)
     entity:moveState(states.hit2)
   end
 end
