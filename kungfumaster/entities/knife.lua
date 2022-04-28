@@ -47,6 +47,10 @@ states.flying = {
 
     entity:commonUpdate(dt)
   end,
+  collideWithHero = function(self, entity, hero)
+    self.health = 0
+    hero:takeHit(entity, entity.vQuad)
+  end,
 }
 
 return function(pos_x, pos_y, forward)

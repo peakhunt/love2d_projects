@@ -487,6 +487,69 @@ local asset_conf = {
           },
         },
       },
+      gotHit = {
+        duration = 0.2,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 1018,
+            width = 20,
+            height = 59,
+          },
+          [2] = {
+            pos_x = 68,
+            pos_y = 1015,
+            width = 13,
+            height = 62,
+          },
+        },
+      },
+      falling = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 113,
+            pos_y = 1018,
+            width = 31,
+            height = 59,
+          },
+          [2] = {
+            pos_x = 152,
+            pos_y = 1029,
+            width = 38,
+            height = 48,
+          },
+        },
+      },
+      stairUp = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 222,
+            pos_y = 1015,
+            width = 22,
+            height = 62,
+          },
+          [2] = {
+            pos_x = 252,
+            pos_y = 1016,
+            width = 18,
+            height = 61,
+          },
+          [3] = {
+            pos_x = 278,
+            pos_y = 1016,
+            width = 21,
+            height = 61,
+          },
+          [4] = {
+            pos_x = 307,
+            pos_y = 1016,
+            width = 18,
+            height = 61,
+          },
+        },
+      },
     },
   },
   crazy88 = {

@@ -131,9 +131,9 @@ states.approaching = {
   takeHit = gotHitCommon,
 
   collideWithHero = function(self, entity, hero)
-    local distance, _ = gameutil.distance(entity, hero)
+    local _, adistance = gameutil.distance(entity, hero)
 
-    if distance <=  hero.vQuad.width / 3 then
+    if adistance <=  hero.vQuad.width / 3 then
       entity:moveState(states.holding)
     end
   end,
@@ -142,8 +142,16 @@ states.approaching = {
 states.holding = {
   animation = animations.holding,
   update = function(self, entity, dt)
+    local _, adistance = gameutil.distance(entity, state.hero)
+
+    if adistance > entity.vQuad.width then
+      entity:moveState(states.approaching)
+      return
+    end
+
     entity:commonUpdate(dt)
   end,
+
   collideWithHero = function(self, entity, hero)
     if hero.trembling then
       if entity.health == 0.25 then
@@ -155,12 +163,12 @@ states.holding = {
   end,
 
   enter = function(self, entity, oldState)
-    state.held = state.held + 1
+    state:incHeld()
     entity:commonStateEnter(animations.holding)
   end,
 
   leave = function(self, entity)
-    state.held = state.held - 1
+    state:decHeld()
   end,
 }
 

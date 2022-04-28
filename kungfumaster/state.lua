@@ -77,4 +77,19 @@ return {
       table.insert(self.scores, scoreObj)
     end
   end,
+
+  incHeld = function(self)
+    self.held = self.held + 1
+  end,
+
+  decHeld = function(self)
+    self.held = self.held - 1
+  end,
+
+  isHeld = function(self)
+    if self.held == 0 then
+      return false
+    end
+    return true
+  end
 }

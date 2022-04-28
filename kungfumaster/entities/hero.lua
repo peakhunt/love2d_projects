@@ -41,13 +41,6 @@ function performJump(entity, dt, xspeed)
   entity:move(xdelta, ydelta)
 end
 
-function isHeld()
-  if state.held == 0 then
-    return false
-  end
-  return true
-end
-
 --------------------------------------------------------------------------------
 -- 
 -- hero sprite animations
@@ -67,6 +60,9 @@ local animations = {
   standJumpPunch = utils.newAnimationFromConf(spriteSheet, sprites.standJumpPunching, assetHero.refFrame),
   walkJumpKick = utils.newAnimationFromConf(spriteSheet, sprites.walkJumpKicking, assetHero.refFrame),
   walkJumpPunch = utils.newAnimationFromConf(spriteSheet, sprites.walkJumpPunching, assetHero.refFrame),
+  gotHit = utils.newAnimationFromConf(spriteSheet, sprites.gotHit, assetHero.refFrame),
+  falling = utils.newAnimationFromConf(spriteSheet, sprites.falling, assetHero.refFrame),
+  stairUp = utils.newAnimationFromConf(spriteSheet, sprites.stairUp, assetHero.refFrame),
 }
 
 --------------------------------------------------------------------------------
@@ -83,7 +79,7 @@ states.standing = {
   animation = animations.standing,
   update = function(self, entity, dt)
     if not entity.ignore_input then
-      if not isHeld() then
+      if not state:isHeld() then
         if state.button_kick then
           entity:moveState(states.standKicking)
           return
@@ -115,7 +111,7 @@ states.walking = {
   animation = animations.walking,
   update = function(self, entity, dt)
     if not entity.ignore_input then
-      if not isHeld() then
+      if not state:isHeld() then
         if state.button_kick then
           entity:moveState(states.standKicking)
           return
@@ -178,7 +174,7 @@ states.sitting = {
   update = function(self, entity, dt)
     if not entity.ignore_input then
       -- kick and punch
-      if not isHeld() then
+      if not state:isHeld() then
         if state.button_kick then
           entity:moveState(states.sitKicking)
           return
@@ -211,7 +207,7 @@ states.sitting = {
 states.standJumping = {
   update = function(self, entity, dt)
     if not entity.ignore_input then
-      if not isHeld() then
+      if not state:isHeld() then
         if state.button_kick and entity.currentAnimTime < (entity.currentAnim.duration  * 3 / 5) then
           entity:moveState(states.standJumpKicking)
           return
@@ -227,7 +223,6 @@ states.standJumping = {
     if entity:commonUpdate(dt) == true then
       -- animation over
       entity:moveState(states.standing)
-      entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
       performJump(entity, dt, 0)
     end
@@ -243,6 +238,10 @@ states.standJumping = {
 
     entity.currentAnim = animations.standJumping
   end,
+
+  leave = function(self, entity)
+    entity:setPos(entity.savedPos.x, entity.savedPos.y)
+  end,
 }
 
 --
@@ -251,7 +250,7 @@ states.standJumping = {
 states.walkJumping = {
   update = function(self, entity, dt)
     if not entity.ignore_input then
-      if not isHeld() then
+      if not state:isHeld() then
         if state.button_kick and entity.currentAnimTime < (entity.currentAnim.duration  * 3 / 5) then
           entity:moveState(states.walkJumpKicking)
           return
@@ -267,10 +266,6 @@ states.walkJumping = {
     if entity:commonUpdate(dt) == true then
       -- animation over
       entity:moveState(states.walking)
-
-      local x, _ = entity:getPos()
-
-      entity:setPos(x, entity.savedPos.y)
     else
       performJump(entity, dt, common_conf.move_speed)
     end
@@ -284,6 +279,13 @@ states.walkJumping = {
     entity.savedPos.y = y
     entity.currentAnim = animations.walkJumping
   end,
+
+  leave = function(self, entity)
+    local x, _ = entity:getPos()
+
+    entity:setPos(x, entity.savedPos.y)
+  end,
+
 }
 
 --
@@ -339,7 +341,6 @@ states.standJumpKicking = {
     if entity:commonUpdate(dt) == true then
       -- animation over
       entity:moveState(states.standing)
-      entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
       performJump(entity, dt, 0)
     end
@@ -347,6 +348,10 @@ states.standJumpKicking = {
 
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.standJumpKick
+  end,
+
+  leave = function(self, entity)
+    entity:setPos(entity.savedPos.x, entity.savedPos.y)
   end,
 }
 
@@ -359,7 +364,6 @@ states.standJumpPunching = {
     if entity:commonUpdate(dt) == true then
       -- animation over
       entity:moveState(states.standing)
-      entity:setPos(entity.savedPos.x, entity.savedPos.y)
     else
       performJump(entity, dt, 0)
     end
@@ -367,6 +371,10 @@ states.standJumpPunching = {
 
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.standJumpPunch
+  end,
+
+  leave = function(self, entity)
+    entity:setPos(entity.savedPos.x, entity.savedPos.y)
   end,
 }
 
@@ -379,10 +387,6 @@ states.walkJumpKicking = {
     if entity:commonUpdate(dt) == true then
       -- animation over
       entity:moveState(states.walking)
-
-      local x, _ = entity:getPos()
-
-      entity:setPos(x, entity.savedPos.y)
     else
       performJump(entity, dt, common_conf.move_speed)
     end
@@ -390,6 +394,11 @@ states.walkJumpKicking = {
 
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.walkJumpKick
+  end,
+
+  leave = function(self, entity)
+    local x, _ = entity:getPos()
+    entity:setPos(x, entity.savedPos.y)
   end,
 }
 
@@ -402,9 +411,6 @@ states.walkJumpPunching = {
     if entity:commonUpdate(dt) == true then
       -- animation over
       entity:moveState(states.walking)
-
-      local x, _ = entity:getPos()
-      entity:setPos(x, entity.savedPos.y)
     else
       performJump(entity, dt, common_conf.move_speed)
     end
@@ -412,6 +418,18 @@ states.walkJumpPunching = {
 
   enter = function(self, entity, oldState)
     entity.currentAnim = animations.walkJumpPunch
+  end,
+
+  leave = function(self, entity)
+    local x, _ = entity:getPos()
+    entity:setPos(x, entity.savedPos.y)
+  end
+}
+
+states.gotHit = {
+  animation = animations.gotHit,
+  update = function(self, entity, dt)
+    entity:updateOneshot(dt, states.standing)
   end,
 }
 
@@ -434,7 +452,7 @@ return function(pos_x, pos_y)
   end
 
   entity.move = function(self, dx, dy)
-    if isHeld() then
+    if state:isHeld() then
       dx = 0
     end
 
@@ -450,7 +468,7 @@ return function(pos_x, pos_y)
     -- print('check trembling ', delta)
 
     -- 100 msec seems reasonable or maybe not
-    if isHeld() and delta < 100 then
+    if state:isHeld() and delta < 100 then
       -- got tremble event
       self.trembling = true
     end
@@ -464,6 +482,10 @@ return function(pos_x, pos_y)
   entity.stopWalking = function(self)
     self.ignore_input = false
     self:moveState(states.standing)
+  end
+
+  entity.takeHit = function(self, from, hitQuad)
+    self:moveState(states.gotHit)
   end
 
   return entity
