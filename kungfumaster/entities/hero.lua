@@ -8,6 +8,7 @@ local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local state = require('state')
 local resource = require('resource')
+local hitmark = require('entities/hitmark')
 
 local spriteSheet = resource.spriteSheet
 local assetHero = asset_conf.hero
@@ -485,6 +486,14 @@ return function(pos_x, pos_y)
   end
 
   entity.takeHit = function(self, from, hitQuad)
+    local x, y
+
+    x = self.pos.x
+    y = hitQuad.y - hitQuad.height
+
+    local mark = hitmark(x, y)
+    table.insert(state.entities, mark)
+
     self:moveState(states.gotHit)
   end
 
