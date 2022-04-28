@@ -36,9 +36,10 @@ function()
   table.insert(state.entities, entity)
 end)
 
+local count = 0
 local gogo_spawn = timer(1/2,
 function()
-  if love.math.random() < 0.7 then
+  if count > 0 or love.math.random() < 0.0 then
     return
   end
 
@@ -60,6 +61,7 @@ function()
     x = rx
   end
 
+  count = count + 1
   local entity = gogo(x, asset_conf.floor_bottom)
 
   table.insert(state.entities, entity)

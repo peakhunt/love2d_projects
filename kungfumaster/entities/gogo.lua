@@ -13,7 +13,9 @@ local spriteSheet = resource.spriteSheet
 local assetGogo = asset_conf.gogo
 local sprites = assetGogo.sprites
 
-local testTime = 2
+local targetRange = 0.45
+local tooCloseStart = 0.2
+local tooCloseStop = 0.35
 
 --------------------------------------------------------------------------------
 -- 
@@ -83,12 +85,19 @@ states.standing = {
     local r = love.math.random()
     local distance = entity.vQuad.x - hero.vQuad.x
 
-    if math.abs(distance) > 0.9 then
+    -- too far to throw a knife
+    if math.abs(distance) > targetRange then
+      -- too far
       entity:moveState(states.walkingTo)
       return
-    --elseif r < 0.2 and math.abs(distance) < 0.1 then
-    --  entity:moveState(states.walkingAway)
-    --  return
+    end
+
+    -- too close. have to run away
+    if math.abs(distance) < tooCloseStart and -- too close
+       entity.timeAccumulated < 0.7 and       -- and not waited enough to aim
+       r < 0.2 then                           -- then 20% chance
+       entity:moveState(states.walkingAway)
+        return
     end
 
     if distance < 0 then
@@ -128,7 +137,7 @@ states.walkingAway = {
     local hero = state.hero
     local distance = entity.vQuad.x - hero.vQuad.x
 
-    if math.abs(distance) > 0.4 then
+    if math.abs(distance) > tooCloseStop then
       entity:moveState(states.standing)
       return
     end
@@ -163,7 +172,7 @@ states.walkingTo = {
     local hero = state.hero
     local distance = entity.vQuad.x - hero.vQuad.x
 
-    if math.abs(distance) < 0.3 then
+    if math.abs(distance) < targetRange then
       entity:moveState(states.standing)
       return
     end
@@ -194,7 +203,7 @@ states.throwingHigh = {
   update = function(self, entity, dt)
     if entity:commonUpdate(dt) == true then
       throwKnife(entity, entity.pos.y + (entity.vQuad.height * 7 / 8))
-      entity:moveState(states.standing)
+      entity:moveState(states.waiting)
     end
   end,
 
@@ -206,8 +215,29 @@ states.throwingLow = {
   update = function(self, entity, dt)
     if entity:commonUpdate(dt) == true then
       throwKnife(entity, entity.pos.y + entity.vQuad.height / 4)
-      entity:moveState(states.standing)
+      entity:moveState(states.waiting)
     end
+  end,
+
+  takeHit = gotHitCommon,
+}
+
+states.waiting = {
+  animation = animations.standing,
+  update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+
+    if entity.timeAccumulated > 0.5 + love.math.random() then
+      entity:moveState(states.standing)
+        return
+    end
+
+    entity:commonUpdate(dt);
+  end,
+
+  enter = function(self, entity, oldState)
+    entity:commonStateEnter(animations.standing)
+    entity.timeAccumulated = 0
   end,
 
   takeHit = gotHitCommon,
