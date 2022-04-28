@@ -188,6 +188,7 @@ states.falling = {
 
     if entity:commonUpdate(dt) == true then
       entity.health = 0
+      state.crazy88_count = state.crazy88_count - 1
     end
   end,
 }

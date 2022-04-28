@@ -937,8 +937,8 @@ local asset_conf = {
     refFrame = {
       pixelwidth = 11,
       pixelheight = 14,
-      height = 1 / 10,
-      width = 1 / 10,
+      height = 1 / 13,
+      width = 1 / 13,
     },
     sprites = {
       hit = {

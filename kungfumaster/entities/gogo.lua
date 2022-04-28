@@ -14,7 +14,8 @@ local spriteSheet = resource.spriteSheet
 local assetGogo = asset_conf.gogo
 local sprites = assetGogo.sprites
 
-local targetRange = 0.45
+local targetRangeStart = 0.45
+local targetRangeEnd = 0.4
 local tooCloseStart = 0.2
 local tooCloseStop = 0.35
 
@@ -88,7 +89,7 @@ states.standing = {
     local distance, adistance = gameutil.distance(entity, hero)
 
     -- too far to throw a knife
-    if adistance > targetRange then
+    if adistance > targetRangeStart then
       -- too far
       entity:moveState(states.walkingTo)
       return
@@ -174,7 +175,7 @@ states.walkingTo = {
     local hero = state.hero
     local distance, adistance = gameutil.distance(entity, hero)
 
-    if adistance < targetRange then
+    if adistance < targetRangeEnd then
       entity:moveState(states.standing)
       return
     end
@@ -282,6 +283,7 @@ states.falling = {
 
     if entity:commonUpdate(dt) == true then
       entity.health = 0
+      state.gogo_count = state.gogo_count - 1
     end
   end,
 }

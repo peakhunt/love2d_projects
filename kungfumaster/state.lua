@@ -23,6 +23,8 @@ return {
   hero = nil,
   held = 0,
 
+  crazy88_count = 0,
+  gogo_count = 0,
   --
   -- game objects
   --
