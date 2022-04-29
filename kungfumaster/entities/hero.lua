@@ -486,15 +486,18 @@ return function(pos_x, pos_y)
   end
 
   entity.takeHit = function(self, from, hitQuad)
-    local x, y
+    if hitQuad ~= nil then
+      local x, y
 
-    x = self.pos.x
-    y = hitQuad.y - hitQuad.height
+      x = self.pos.x
+      y = hitQuad.y - hitQuad.height
 
-    local mark = hitmark(x, y)
-    table.insert(state.entities, mark)
+      local mark = hitmark(x, y)
+      table.insert(state.entities, mark)
+    end
 
     self:moveState(states.gotHit)
+    state:decHeroEnergy(from.damage)
   end
 
   return entity

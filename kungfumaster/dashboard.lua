@@ -29,7 +29,7 @@ function drawHeroEnergy()
   love.graphics.setColor(love.math.colorFromBytes(0xff, 0x99, 0x33))
   love.graphics.print("PLAYER", resource.font, 30, 50)
 
-  local width = energy_bar_width * state.hero_energy / 100
+  local width = energy_bar_width * state.hero_energy
   love.graphics.rectangle("fill", 160, 50, width, 22)
 end
 
@@ -37,7 +37,7 @@ function drawBossEnergy()
   love.graphics.setColor(love.math.colorFromBytes(0xff, 0x00, 0xff))
   love.graphics.print("ENERMY", resource.font, 30, 80)
 
-  local width = energy_bar_width * state.enemy_energy / 100
+  local width = energy_bar_width * state.enemy_energy
   love.graphics.rectangle("fill", 160, 80, width, 22)
 end
 

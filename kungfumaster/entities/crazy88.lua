@@ -131,6 +131,12 @@ states.holding = {
       return
     end
 
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 1.0 then
+      entity.timeAccumulated = entity.timeAccumulated - 1
+      state:decHeroEnergy(0.05)
+    end
+
     entity:commonUpdate(dt)
   end,
 
@@ -146,6 +152,7 @@ states.holding = {
 
   enter = function(self, entity, oldState)
     state:incHeld()
+    entity.timeAccumulated = 0
     entity:commonStateEnter(animations.holding)
   end,
 
@@ -200,6 +207,8 @@ return function(pos_x, pos_y)
   entity.name = "crazy88"
   entity.restrainPos = true
   entity.score = 100
+  entity.damage = 0.05
+  entity.timeAccumulated = 0
 
   return entity
 end

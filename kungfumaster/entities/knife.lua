@@ -55,6 +55,7 @@ return function(pos_x, pos_y, forward)
   entity.forward = forward
   entity.timeAccumulated = 0
   entity.name = "knife"
+  entity.damage = 0.2
 
   return entity
 end

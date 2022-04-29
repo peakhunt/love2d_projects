@@ -39,8 +39,8 @@ return {
   time_left = 60,       -- seconds. 4 digit
   score = 0,            -- 6 digits
   top_score = 0,        -- 6 digits
-  hero_energy = 100,    -- 0 to 100 %
-  enemy_energy = 100,   -- 0 to 100 %. level boss' energy
+  hero_energy = 1,      -- 0 to 1
+  enemy_energy = 1,     -- 0 to 1. level boss' energy
 
   --
   -- for debugging and testing
@@ -69,8 +69,8 @@ return {
     self.time_left = 60
     self.score = 0
     self.top_score = 0
-    self.hero_energy = 100
-    self.enemy_energy = 100
+    self.hero_energy = 1
+    self.enemy_energy = 1
   end,
 
   incScore = function(self, inc, scoreObj)
@@ -93,5 +93,12 @@ return {
       return false
     end
     return true
-  end
+  end,
+
+  decHeroEnergy = function(self, delta)
+    self.hero_energy = self.hero_energy - delta
+    if self.hero_energy < 0 then
+      self.hero_energy = 0
+    end
+  end,
 }
