@@ -10,6 +10,7 @@ local input = require('input')
 local game_states = {}
 
 game_states.level_starting = {
+  name = "level_starting",
   timeAccumulated = 0,
   enter = function(self)
     self.timeAccumulated = 0
@@ -43,6 +44,7 @@ game_states.level_starting = {
 }
 
 game_states.level_playing = {
+  name = "level_playing",
   enter = function(self)
     state.hero:setPos(state.current_level.start.sx, state.current_level.start.sy)
     state.hero:stopWalking()
@@ -83,6 +85,10 @@ game_states.level_playing = {
     for _, obj in ipairs(state.current_level.objs) do
       obj:update(dt)
     end
+
+    if state.hero_energy == 0 then
+      logic:moveState(game_states.hero_falling)
+    end
   end,
 
   draw = function(self, logic)
@@ -97,7 +103,40 @@ game_states.level_playing = {
   end,
 }
 
+game_states.hero_falling = {
+  name = "hero_falling",
+  timeAccumulated = 0,
+
+  enter = function(self)
+    self.timeAccumulated = 0
+    state:decHeroLives(1)
+    state.hero:fall()
+  end,
+
+  exit = function(self)
+  end,
+
+  update = function(self, logic, dt)
+    self.timeAccumulated = self.timeAccumulated + dt
+    if self.timeAccumulated >= 1.0 then
+      state:restart()
+      logic:moveState(game_states.level_starting)
+      return
+    end
+  end,
+
+  draw = function(self, logic)
+  end,
+
+  keypressed = function(self, pressed_key)
+  end,
+
+  keyreleased = function(self, released_key)
+  end,
+}
+
 game_states.level_finishing = {
+  name = "level_finishing",
   enter = function(self)
   end,
 

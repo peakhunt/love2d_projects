@@ -57,7 +57,7 @@ return function(config)
     end,
 
     stop = function(self)
-      self.started = true
+      self.started = false
     end,
   }
 

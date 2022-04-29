@@ -505,7 +505,7 @@ local asset_conf = {
         },
       },
       falling = {
-        duration = 0.5,
+        duration = 1.0,
         quads = {
           [1] = {
             pos_x = 113,

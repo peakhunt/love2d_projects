@@ -61,6 +61,7 @@ return {
     self.current_level = nil
     self.hero = nil
     self.held = 0
+
     self.entities = {}
     self.scores = {}
 
@@ -71,6 +72,23 @@ return {
     self.top_score = 0
     self.hero_energy = 1
     self.enemy_energy = 1
+
+    self.gogo_count = 0
+    self.crazy88_count = 0
+  end,
+
+  restart = function(self)
+    self.hero_energy = 1
+    self.enemy_energy = 1
+    self.time_left = 60
+    self.held = 0
+    self.entities = {}
+    self.scores = {}
+
+    self.gogo_count = 0
+    self.crazy88_count = 0
+
+    self.current_level:restart()
   end,
 
   incScore = function(self, inc, scoreObj)
@@ -100,5 +118,9 @@ return {
     if self.hero_energy < 0 then
       self.hero_energy = 0
     end
+  end,
+
+  decHeroLives = function(self, d)
+    self.life_left = self.life_left - d
   end,
 }

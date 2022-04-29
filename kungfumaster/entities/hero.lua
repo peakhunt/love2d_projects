@@ -9,6 +9,7 @@ local common_conf = require('entities/common_conf')
 local state = require('state')
 local resource = require('resource')
 local hitmark = require('entities/hitmark')
+local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
 local assetHero = asset_conf.hero
@@ -434,6 +435,16 @@ states.gotHit = {
   end,
 }
 
+states.falling = {
+  animation = animations.falling,
+  update = function(self, entity, dt)
+    local _, ydelta = gameutil.calcFallDelta(entity.forward, common_conf.fall_speed, dt)
+
+    entity:move(0, ydelta)
+    entity:commonUpdate(dt) 
+  end,
+}
+
 return function(pos_x, pos_y)
   local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
   local baseSetPos = entity.setPos
@@ -466,8 +477,6 @@ return function(pos_x, pos_y)
 
     self.prev_tremble_time = now
 
-    -- print('check trembling ', delta)
-
     -- 100 msec seems reasonable or maybe not
     if state:isHeld() and delta < 100 then
       -- got tremble event
@@ -498,6 +507,10 @@ return function(pos_x, pos_y)
 
     self:moveState(states.gotHit)
     state:decHeroEnergy(from.damage)
+  end
+
+  entity.fall = function(self)
+    self:moveState(states.falling)
   end
 
   return entity

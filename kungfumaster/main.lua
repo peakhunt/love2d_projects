@@ -17,6 +17,7 @@ function debug_draw()
   -- is passed to update each frame).
   love.graphics.print("dt: " .. love.timer.getDelta(), 50, 170)
   love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 190)
+  love.graphics.print("gamelogic:" .. gamelogic.state.name, 50, 210)
 
   love.graphics.setColor(1, 0, 0, 1)
 

@@ -17,6 +17,12 @@ return function(level)
   local start = conf.start
   local limit = conf.limit
   local objs = {}
+  local vp = {
+    x = conf.viewport.x,
+    y = conf.viewport.y,
+    width = conf.viewport.width,
+    height = conf.viewport.height,
+  }
 
   --
   -- create game objs, aka, spawner
@@ -63,6 +69,14 @@ return function(level)
         viewport:updateX(far_left_x)
       end
     end,
+
+    restart = function(self)
+      state.hero = hero(conf.start.ix, conf.start.iy)
+      state.hero.forward = conf.forward
+      table.insert(state.entities, state.hero)
+
+      viewport:updateX(conf.viewport.x)
+    end,
   }
       
   if conf.door == 'left' then
@@ -83,13 +97,6 @@ return function(level)
   state.current_level = floor
 
   state.hero.forward = conf.forward
-
-  local vp = {
-    x = conf.viewport.x,
-    y = conf.viewport.y,
-    width = conf.viewport.width,
-    height = conf.viewport.height,
-  }
 
   viewport:init(vp, levelSize, background:getPixelWidth(), background:getPixelHeight())
 
