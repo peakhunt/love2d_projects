@@ -97,8 +97,8 @@ states.standing = {
 
     -- too close. have to run away
     if adistance < tooCloseStart and -- too close
-       entity.timeAccumulated < 0.7 and       -- and not waited enough to aim
-       r < 0.2 then                           -- then 20% chance
+       entity.timeAccumulated < 0.5 and       -- and not waited enough to aim
+       r < 0.1 then                           -- then 20% chance
        entity:moveState(states.walkingAway)
         return
     end
@@ -143,7 +143,7 @@ states.walkingAway = {
 
     entity.forward = not gameutil.forwardDirection(distance)
 
-    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.gogo_speed, dt)
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.gogo_speed1, dt)
 
     entity:move(xdelta, 0)
 
@@ -169,7 +169,7 @@ states.walkingTo = {
 
     entity.forward = gameutil.forwardDirection(distance)
 
-    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.gogo_speed, dt)
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.gogo_speed2, dt)
 
     entity:move(xdelta, 0)
 
@@ -208,7 +208,7 @@ states.waiting = {
   update = function(self, entity, dt)
     entity.timeAccumulated = entity.timeAccumulated + dt
 
-    if entity.timeAccumulated > 0.5 + love.math.random() then
+    if entity.timeAccumulated > 1 + love.math.random() then
       entity:moveState(states.standing)
         return
     end

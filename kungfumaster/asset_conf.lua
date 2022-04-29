@@ -1160,8 +1160,8 @@ local asset_conf = {
           name = "crazy88",
           config = {
             rate = 1/2,
-            max = 10,
-            missRate = 0.5,
+            max = 6,
+            missRate = 0.7,
           },
         },
         [2] = {
