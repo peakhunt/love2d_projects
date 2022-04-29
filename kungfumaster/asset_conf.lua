@@ -1035,6 +1035,14 @@ local asset_conf = {
             missRate = 0.5,
           },
         },
+        [2] = {
+          name = "gogo",
+          config = {
+            max = 1,
+            delay = 4,
+            missRate = 0.1,
+          },
+        },
       },
     },
     [2] = {
@@ -1068,6 +1076,14 @@ local asset_conf = {
             rate = 1/2,
             max = 10,
             missRate = 0.5,
+          },
+        },
+        [2] = {
+          name = "gogo",
+          config = {
+            max = 1,
+            delay = 4,
+            missRate = 0.1,
           },
         },
       },
@@ -1105,6 +1121,14 @@ local asset_conf = {
             missRate = 0.5,
           },
         },
+        [2] = {
+          name = "gogo",
+          config = {
+            max = 1,
+            delay = 4,
+            missRate = 0.1,
+          },
+        },
       },
     },
     [4] = {
@@ -1140,6 +1164,14 @@ local asset_conf = {
             missRate = 0.5,
           },
         },
+        [2] = {
+          name = "gogo",
+          config = {
+            max = 1,
+            delay = 4,
+            missRate = 0.1,
+          },
+        },
       },
     },
     [5] = {
@@ -1173,6 +1205,14 @@ local asset_conf = {
             rate = 1/2,
             max = 10,
             missRate = 0.5,
+          },
+        },
+        [2] = {
+          name = "gogo",
+          config = {
+            max = 1,
+            delay = 4,
+            missRate = 0.1,
           },
         },
       },

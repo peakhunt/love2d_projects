@@ -7,36 +7,6 @@ local gogo = require('entities/gogo')
 local state = require('state')
 local input = require('input')
 
-local gogo_spawn = timer(3,
-function()
-  if state.gogo_count >= 2 or love.math.random() < 0.2 then
-    return
-  end
-
-  local lx, rx = viewport:spaceLeftRight(0.5)
-
-  if lx == -1 and rx == -1 then
-    return
-  end
-
-  if lx ~= -1 and rx ~= -1 then
-    if love.math.random() < 0.5 then
-      x = lx
-    else
-      x = rx
-    end
-  elseif lx ~= -1 then
-    x = lx
-  else
-    x = rx
-  end
-
-  local entity = gogo(x, asset_conf.floor_bottom)
-
-  table.insert(state.entities, entity)
-  state.gogo_count = state.gogo_count + 1
-end)
-
 local game_states = {}
 
 game_states.level_starting = {
@@ -80,16 +50,12 @@ game_states.level_playing = {
     for _, obj in ipairs(state.current_level.objs) do
       obj:start()
     end
-
-    gogo_spawn:start()
   end,
 
   exit = function(self)
     for _, obj in ipairs(state.current_level.objs) do
       obj:stop()
     end
-
-    gogo_spawn:stop()
   end,
 
   update = function(self, logic, dt)
@@ -117,7 +83,6 @@ game_states.level_playing = {
     for _, obj in ipairs(state.current_level.objs) do
       obj:update(dt)
     end
-    gogo_spawn:update(dt)
   end,
 
   draw = function(self, logic)

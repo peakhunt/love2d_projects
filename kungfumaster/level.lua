@@ -5,6 +5,7 @@ local hero = require('entities/hero')
 local resource = require('resource')
 local door = require('entities/door')
 local crazy88_spawn = require('crazy88_spawn')
+local gogo_spawn = require('gogo_spawn')
 
 local door_left = door(true)
 local door_right = door(false)
@@ -23,6 +24,8 @@ return function(level)
   for _, obj in ipairs(conf.objs) do
     if obj.name == "crazy88" then
       table.insert(objs, crazy88_spawn(obj.config))
+    elseif obj.name == "gogo" then
+      table.insert(objs, gogo_spawn(obj.config))
     end
   end
 
