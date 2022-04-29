@@ -4,6 +4,7 @@ local viewport = require('viewport')
 local hero = require('entities/hero')
 local resource = require('resource')
 local door = require('entities/door')
+local crazy88_spawn = require('crazy88_spawn')
 
 local door_left = door(true)
 local door_right = door(false)
@@ -14,6 +15,16 @@ return function(level)
   local levelSize = conf.size
   local start = conf.start
   local limit = conf.limit
+  local objs = {}
+
+  --
+  -- create game objs, aka, spawner
+  --
+  for _, obj in ipairs(conf.objs) do
+    if obj.name == "crazy88" then
+      table.insert(objs, crazy88_spawn(obj.config))
+    end
+  end
 
   local floor = {
     background = background,
@@ -21,6 +32,7 @@ return function(level)
     start = start,
     limit = limit,
     current_door = nil,
+    objs = objs,
 
     update = function(self, dt)
       if self.current_door then

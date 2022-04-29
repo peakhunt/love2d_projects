@@ -7,36 +7,6 @@ local gogo = require('entities/gogo')
 local state = require('state')
 local input = require('input')
 
-local crazy88_spawn = timer(1/2,
-function()
-  if state.crazy88_count >= 10 or love.math.random() < 0.5 then
-    return
-  end
-
-  local lx, rx = viewport:spaceLeftRight(0.5)
-
-  if lx == -1 and rx == -1 then
-    return
-  end
-
-  if lx ~= -1 and rx ~= -1 then
-    if love.math.random() < 0.5 then
-      x = lx
-    else
-      x = rx
-    end
-  elseif lx ~= -1 then
-    x = lx
-  else
-    x = rx
-  end
-
-  local entity = crazy88(x, asset_conf.floor_bottom)
-
-  table.insert(state.entities, entity)
-  state.crazy88_count = state.crazy88_count + 1
-end)
-
 local gogo_spawn = timer(3,
 function()
   if state.gogo_count >= 2 or love.math.random() < 0.2 then
@@ -106,12 +76,19 @@ game_states.level_playing = {
   enter = function(self)
     state.hero:setPos(state.current_level.start.sx, state.current_level.start.sy)
     state.hero:stopWalking()
-    crazy88_spawn:start()
+
+    for _, obj in ipairs(state.current_level.objs) do
+      obj:start()
+    end
+
     gogo_spawn:start()
   end,
 
   exit = function(self)
-    crazy88_spawn:stop()
+    for _, obj in ipairs(state.current_level.objs) do
+      obj:stop()
+    end
+
     gogo_spawn:stop()
   end,
 
@@ -137,7 +114,9 @@ game_states.level_playing = {
       end
     end
 
-    crazy88_spawn:update(dt)
+    for _, obj in ipairs(state.current_level.objs) do
+      obj:update(dt)
+    end
     gogo_spawn:update(dt)
   end,
 

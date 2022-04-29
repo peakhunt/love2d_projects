@@ -1026,6 +1026,16 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
+      objs = {
+        [1] = {
+          name = "crazy88",
+          config = {
+            rate = 1/2,
+            max = 10,
+            missRate = 0.5,
+          },
+        },
+      },
     },
     [2] = {
       background = 'assets/floor2.png',
@@ -1050,6 +1060,16 @@ local asset_conf = {
       limit = {
         min = 0.15,
         max = 6.85,
+      },
+      objs = {
+        [1] = {
+          name = "crazy88",
+          config = {
+            rate = 1/2,
+            max = 10,
+            missRate = 0.5,
+          },
+        },
       },
     },
     [3] = {
@@ -1076,6 +1096,16 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
+      objs = {
+        [1] = {
+          name = "crazy88",
+          config = {
+            rate = 1/2,
+            max = 10,
+            missRate = 0.5,
+          },
+        },
+      },
     },
     [4] = {
       background = 'assets/floor4.png',
@@ -1101,6 +1131,16 @@ local asset_conf = {
         min = 0.15,
         max = 6.85,
       },
+      objs = {
+        [1] = {
+          name = "crazy88",
+          config = {
+            rate = 1/2,
+            max = 10,
+            missRate = 0.5,
+          },
+        },
+      },
     },
     [5] = {
       background = 'assets/floor5.png',
@@ -1125,6 +1165,16 @@ local asset_conf = {
       limit = {
         min = 0.15,
         max = 6.85,
+      },
+      objs = {
+        [1] = {
+          name = "crazy88",
+          config = {
+            rate = 1/2,
+            max = 10,
+            missRate = 0.5,
+          },
+        },
       },
     },
   },
