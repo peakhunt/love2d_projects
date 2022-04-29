@@ -21,4 +21,27 @@ return {
     end
     return true
   end,
+
+  calcXDelta = function(forward, speed, dt)
+    local xdelta = speed * dt
+
+    if forward then
+      xdelta = -xdelta
+    end
+
+    return xdelta
+  end,
+
+  calcFallDelta = function(forward, speed, dt)
+    local xdelta, ydelta
+
+    if forward then
+      xdelta = speed * dt
+    else
+      xdelta = -speed * dt
+    end
+    ydelta = -speed * dt
+
+    return xdelta, ydelta
+  end
 }

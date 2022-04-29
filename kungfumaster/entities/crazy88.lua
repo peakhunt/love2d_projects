@@ -77,12 +77,7 @@ states.walking = {
       entity.forward = gameutil.forwardDirection(distance)
     end
 
-    local xdelta
-    if entity.forward then
-      xdelta =  -common_conf.crazy88_speed * dt
-    else
-      xdelta =  common_conf.crazy88_speed * dt
-    end
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.crazy88_speed, dt)
 
     entity:move(xdelta, 0)
 
@@ -109,12 +104,7 @@ states.approaching = {
       entity.forward = gameutil.forwardDirection(distance)
     end
 
-    local xdelta
-    if entity.forward then
-      xdelta =  -common_conf.crazy88_speed * dt
-    else
-      xdelta =  common_conf.crazy88_speed * dt
-    end
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.crazy88_speed, dt)
 
     entity:move(xdelta, 0)
 
@@ -167,14 +157,7 @@ states.holding = {
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
-    local xdelta, ydelta
-
-    if entity.forward then
-      xdelta = common_conf.fall_speed * dt
-    else
-      xdelta = -common_conf.fall_speed * dt
-    end
-    ydelta = -common_conf.fall_speed * dt
+    local xdelta, ydelta = gameutil.calcFallDelta(entity.forward, common_conf.fall_speed, dt)
 
     entity:move(xdelta, ydelta)
 

@@ -143,12 +143,7 @@ states.walkingAway = {
 
     entity.forward = not gameutil.forwardDirection(distance)
 
-    local xdelta
-    if entity.forward then
-      xdelta =  -common_conf.gogo_speed * dt
-    else
-      xdelta =  common_conf.gogo_speed * dt
-    end
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.gogo_speed, dt)
 
     entity:move(xdelta, 0)
 
@@ -174,12 +169,7 @@ states.walkingTo = {
 
     entity.forward = gameutil.forwardDirection(distance)
 
-    local xdelta
-    if entity.forward then
-      xdelta =  -common_conf.gogo_speed * dt
-    else
-      xdelta =  common_conf.gogo_speed * dt
-    end
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.gogo_speed, dt)
 
     entity:move(xdelta, 0)
 
@@ -258,14 +248,7 @@ states.hit2 = {
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
-    local xdelta, ydelta
-
-    if entity.forward then
-      xdelta = common_conf.fall_speed * dt
-    else
-      xdelta = -common_conf.fall_speed * dt
-    end
-    ydelta = -common_conf.fall_speed * dt
+    local xdelta, ydelta = gameutil.calcFallDelta(entity.forward, common_conf.fall_speed, dt)
 
     entity:move(xdelta, ydelta)
 

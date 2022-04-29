@@ -7,6 +7,7 @@ local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
+local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
 local assetKnife = asset_conf.knife
@@ -37,12 +38,7 @@ states.flying = {
       entity.health = 0
     end
 
-    local xdelta = common_conf.knife_speed * dt
-
-    if entity.forward then
-      xdelta = -xdelta
-    end
-
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.knife_speed, dt)
     entity:move(xdelta, 0)
 
     entity:commonUpdate(dt)
