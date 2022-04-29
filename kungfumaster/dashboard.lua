@@ -2,9 +2,19 @@
 -- dashboard
 --
 local state = require('state')
+local asset_conf = require('asset_conf')
 local resource = require('resource')
 
 local energy_bar_width = 200
+local spriteSheet = resource.spriteSheet
+local lifeRect = asset_conf.lifeSprite
+local lifeQuad = love.graphics.newQuad(
+  lifeRect.pos_x,
+  lifeRect.pos_y,
+  lifeRect.width,
+  lifeRect.height,
+  spriteSheet:getDimensions()
+)
 
 function drawScore()
   local str
@@ -49,6 +59,20 @@ function drawCurrentLevel()
 end
 
 function drawLivesLeft()
+  love.graphics.setColor(love.math.colorFromBytes(0xff, 0xff, 0xff))
+
+  local px, py
+  local sx, sy
+
+  sx, sy = -1.5, 1.5 
+
+  px = 420
+  py = 100
+
+  for i = 1, state.life_left - 1 do
+    love.graphics.draw(spriteSheet, lifeQuad, px, py, 0, sx, sy)
+    px = px + 20
+  end
 end
 
 function drawTimeLeft()

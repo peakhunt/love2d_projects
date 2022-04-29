@@ -954,6 +954,12 @@ local asset_conf = {
       },
     },
   },
+  lifeSprite = {
+    pos_x = 21,
+    pos_y = 500,
+    width = 8,
+    height = 11,
+  },
   doors = {
     left = {
       duration = level_start_duration,
