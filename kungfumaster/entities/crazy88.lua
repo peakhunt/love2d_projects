@@ -74,11 +74,7 @@ states.walking = {
     end
 
     if adistance > 0.3 then
-      if distance < 0 then
-        entity.forward = false
-      else
-        entity.forward = true
-      end
+      entity.forward = gameutil.forwardDirection(distance)
     end
 
     local xdelta
@@ -110,11 +106,7 @@ states.approaching = {
     end
 
     if adistance > 0.3 then
-      if distance < 0 then
-        entity.forward = false
-      else
-        entity.forward = true
-      end
+      entity.forward = gameutil.forwardDirection(distance)
     end
 
     local xdelta

@@ -103,11 +103,7 @@ states.standing = {
         return
     end
 
-    if distance < 0 then
-      entity.forward = false
-    else
-      entity.forward = true
-    end
+    entity.forward = gameutil.forwardDirection(distance)
 
     entity.timeAccumulated = entity.timeAccumulated + dt
     if entity.timeAccumulated > 1.0 then
@@ -145,11 +141,7 @@ states.walkingAway = {
       return
     end
 
-    if distance < 0 then
-      entity.forward = true
-    else
-      entity.forward = false
-    end
+    entity.forward = not gameutil.forwardDirection(distance)
 
     local xdelta
     if entity.forward then
@@ -180,11 +172,7 @@ states.walkingTo = {
       return
     end
 
-    if distance < 0 then
-      entity.forward = fale
-    else
-      entity.forward = true
-    end
+    entity.forward = gameutil.forwardDirection(distance)
 
     local xdelta
     if entity.forward then
