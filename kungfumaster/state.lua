@@ -91,6 +91,13 @@ return {
   end,
 
   restart = function(self)
+    self.button_left = false
+    self.button_right = false
+    self.button_up = false
+    self.button_down = false
+    self.button_punch = false
+    self.button_kick = false
+
     self.hero_energy = 1
     self.enemy_energy = 1
     self.time_left = 60
