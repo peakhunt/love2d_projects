@@ -9,39 +9,38 @@ local input = require('input')
 
 local level_common = require('scenes/level_common')
 
-return function(manager)
-  return  {
-    name = "hero_falling",
-    timeAccumulated = 0,
+return  {
+  name = "hero_falling",
+  timeAccumulated = 0,
+  manager = nil,
 
-    enter = function(self)
-      self.timeAccumulated = 0
-      state:decHeroLives(1)
-      state.hero:fall()
-    end,
+  enter = function(self)
+    self.timeAccumulated = 0
+    state:decHeroLives(1)
+    state.hero:fall()
+  end,
 
-    exit = function(self)
-    end,
+  exit = function(self)
+  end,
 
-    update = function(self, dt)
-      self.timeAccumulated = self.timeAccumulated + dt
-      if self.timeAccumulated >= 1.0 then
-        state:restart()
-        manager:changeScene('level_starting')
-        return
-      end
+  update = function(self, dt)
+    self.timeAccumulated = self.timeAccumulated + dt
+    if self.timeAccumulated >= 1.0 then
+      state:restart()
+      self.manager:changeScene('level_starting')
+      return
+    end
 
-      level_common.update(dt)
-    end,
+    level_common.update(dt)
+  end,
 
-    draw = function(self)
-      level_common.draw()
-    end,
+  draw = function(self)
+    level_common.draw()
+  end,
 
-    keypressed = function(self, pressed_key)
-    end,
+  keypressed = function(self, pressed_key)
+  end,
 
-    keyreleased = function(self, released_key)
-    end,
-  }
-end
+  keyreleased = function(self, released_key)
+  end,
+}

@@ -11,69 +11,68 @@ local input = require('input')
 
 local level_common = require('scenes/level_common')
 
-return function(manager)
-  return {
-    name = "level_playing",
+return {
+  name = "level_playing",
+  manager = nil,
 
-    enter = function(self)
-      state.hero:setPos(state.current_level.start.sx, state.current_level.start.sy)
-      state.hero:stopWalking()
+  enter = function(self)
+    state.hero:setPos(state.current_level.start.sx, state.current_level.start.sy)
+    state.hero:stopWalking()
 
-      for _, obj in ipairs(state.current_level.objs) do
-        obj:start()
-      end
-    end,
+    for _, obj in ipairs(state.current_level.objs) do
+      obj:start()
+    end
+  end,
 
-    exit = function(self)
-      for _, obj in ipairs(state.current_level.objs) do
-        obj:stop()
-      end
-    end,
+  exit = function(self)
+    for _, obj in ipairs(state.current_level.objs) do
+      obj:stop()
+    end
+  end,
 
-    update = function(self, dt)
-      input.update(dt)
+  update = function(self, dt)
+    input.update(dt)
 
-      local hero = state.hero
+    local hero = state.hero
 
-      for _, entity in ipairs(state.entities) do
+    for _, entity in ipairs(state.entities) do
 
-        -- hero attack test
-        if hero.vHitQuad ~= nil and entity ~= hero then
-          if collision.check_entity_for_hit(entity, hero.vHitQuad) then
-            entity:takeHit(hero, hero.vHitQuad)
-          end
-        end
-
-        -- enemy attack test
-        if entity ~= hero then
-          if collision.check_entity_for_hit(hero, entity.vQuad) then
-            entity:collideWithHero(hero)
-          end
+      -- hero attack test
+      if hero.vHitQuad ~= nil and entity ~= hero then
+        if collision.check_entity_for_hit(entity, hero.vHitQuad) then
+          entity:takeHit(hero, hero.vHitQuad)
         end
       end
 
-      for _, obj in ipairs(state.current_level.objs) do
-        obj:update(dt)
+      -- enemy attack test
+      if entity ~= hero then
+        if collision.check_entity_for_hit(hero, entity.vQuad) then
+          entity:collideWithHero(hero)
+        end
       end
+    end
 
-      if state.hero_energy == 0 then
-        manager:changeScene('hero_falling')
-        return
-      end
+    for _, obj in ipairs(state.current_level.objs) do
+      obj:update(dt)
+    end
 
-      level_common.update(dt)
-    end,
+    if state.hero_energy == 0 then
+      self.manager:changeScene('hero_falling')
+      return
+    end
 
-    draw = function(self)
-      level_common.draw()
-    end,
+    level_common.update(dt)
+  end,
 
-    keypressed = function(self, pressed_key)
-      input.press(pressed_key)
-    end,
+  draw = function(self)
+    level_common.draw()
+  end,
 
-    keyreleased = function(self, released_key)
-      input.release(released_key)
-    end,
-  }
-end
+  keypressed = function(self, pressed_key)
+    input.press(pressed_key)
+  end,
+
+  keyreleased = function(self, released_key)
+    input.release(released_key)
+  end,
+}

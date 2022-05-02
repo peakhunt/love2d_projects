@@ -5,22 +5,25 @@
 --
 local state = require('state')
 
-local constructors = {
-  hero_falling = require('scenes/hero_falling'),
-  level_finishing = require('scenes/level_finishing'),
-  level_playing = require('scenes/level_playing'),
-  level_starting = require('scenes/level_starting'),
-}
+local hero_falling = require('scenes/hero_falling')
+local level_finishing = require('scenes/level_finishing')
+local level_playing = require('scenes/level_playing')
+local level_starting = require('scenes/level_starting')
 
 local manager = {
   currentScene = nil,
 }
 
+hero_falling.manager = manager
+level_finishing.manager = manager
+level_playing.manager = manager
+level_starting.manager = manager
+
 manager.scenes = {
-  hero_falling = constructors['hero_falling'](manager),
-  level_finishing = constructors['level_finishing'](manager),
-  level_playing = constructors['level_playing'](manager),
-  level_starting = constructors['level_starting'](manager),
+  [hero_falling.name] = hero_falling,
+  [level_finishing.name] = level_finishing,
+  [level_playing.name] = level_playing,
+  [level_starting.name] = level_starting,
 }
 
 manager.changeScene = function(self, scene)

@@ -9,42 +9,41 @@ local input = require('input')
 
 local level_common = require('scenes/level_common')
 
-return function(manager)
-  return {
-    name = "level_starting",
-    timeAccumulated = 0,
+return {
+  name = "level_starting",
+  timeAccumulated = 0,
+  manager = nil,
 
-    enter = function(self)
-      self.timeAccumulated = 0
-      state.hero:startWalking()
-    end,
+  enter = function(self)
+    self.timeAccumulated = 0
+    state.hero:startWalking()
+  end,
 
-    exit = function(self)
-    end,
+  exit = function(self)
+  end,
 
-    update = function(self, dt)
-      self.timeAccumulated = self.timeAccumulated + dt
-      if self.timeAccumulated >= asset_conf.levelStartDuration then
-        manager:changeScene('level_playing')
-        return
-      end
+  update = function(self, dt)
+    self.timeAccumulated = self.timeAccumulated + dt
+    if self.timeAccumulated >= asset_conf.levelStartDuration then
+      self.manager:changeScene('level_playing')
+      return
+    end
 
-      local dx = dt * 
-        ((state.current_level.start.sx - state.current_level.start.ix)/asset_conf.levelStartDuration)
+    local dx = dt * 
+      ((state.current_level.start.sx - state.current_level.start.ix)/asset_conf.levelStartDuration)
 
-      state.hero:move(dx, 0)
+    state.hero:move(dx, 0)
 
-      level_common.update(dt)
-    end,
+    level_common.update(dt)
+  end,
 
-    draw = function(self)
-      level_common.draw()
-    end,
+  draw = function(self)
+    level_common.draw()
+  end,
 
-    keypressed = function(self, pressed_key)
-    end,
+  keypressed = function(self, pressed_key)
+  end,
 
-    keyreleased = function(self, released_key)
-    end,
-  }
-end
+  keyreleased = function(self, released_key)
+  end,
+}

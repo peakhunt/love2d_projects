@@ -7,26 +7,25 @@ local gogo = require('entities/gogo')
 local state = require('state')
 local input = require('input')
 
-return function(manager)
-  return {
-    name = "level_finishing",
+return {
+  name = "level_finishing",
+  manager = nil,
 
-    enter = function(self)
-    end,
+  enter = function(self)
+  end,
 
-    exit = function(self)
-    end,
+  exit = function(self)
+  end,
 
-    update = function(self, logic, dt)
-    end,
+  update = function(self, logic, dt)
+  end,
 
-    draw = function(self, logic)
-    end,
+  draw = function(self, logic)
+  end,
 
-    keypressed = function(self, pressed_key)
-    end,
+  keypressed = function(self, pressed_key)
+  end,
 
-    keyreleased = function(self, released_key)
-    end,
-  }
-end
+  keyreleased = function(self, released_key)
+  end,
+}
