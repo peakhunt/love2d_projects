@@ -32,6 +32,7 @@
 --------------------------------------------------------------------------------
 local asset_conf = require('asset_conf')
 local collision = require('collision')
+local state = require('state')
 local window_width = asset_conf.screen_width
 local window_height = asset_conf.screen_height
 
@@ -81,6 +82,17 @@ return {
   updateViewQuad = function(self)
     local _, y, w, h = self.quad:getViewport()
     self.quad:setViewport(self.viewport.x * self.pixel_width_per_viewport, y, w, h)
+  end,
+
+  update = function(self)
+    local far_left_x, far_right_x
+    
+    far_left_x = state.hero.pos.x - self.viewport.width / 2;
+    far_right_x = state.hero.pos.x + self.viewport.width / 2;
+
+    if far_left_x > 0 and far_right_x < self.levelSize.width then
+      self:updateX(far_left_x)
+    end
   end,
 
   updateX = function(self, x)

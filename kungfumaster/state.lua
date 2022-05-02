@@ -1,3 +1,11 @@
+-------------------------------------------------------------------------------------
+--
+--
+-- XXX
+-- DO NOT REQUIRE ANYTHING HERE OR YOU WILL END UP FALLING INTO CIRCULAR REQUIRE HELL
+--
+--
+-------------------------------------------------------------------------------------
 return {
   --
   -- for game inputs
@@ -41,6 +49,11 @@ return {
   top_score = 0,        -- 6 digits
   hero_energy = 1,      -- 0 to 1
   enemy_energy = 1,     -- 0 to 1. level boss' energy
+
+  --
+  --
+  --
+  scene = "",
 
   --
   -- for debugging and testing

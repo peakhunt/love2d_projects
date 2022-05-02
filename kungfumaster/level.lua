@@ -59,17 +59,6 @@ return function(level)
       end
     end,
 
-    heroMove = function(self, hx, hy)
-      local far_left_x, far_right_x
-      
-      far_left_x = hx - viewport.viewport.width / 2;
-      far_right_x = hx + viewport.viewport.width / 2;
-
-      if far_left_x > 0 and far_right_x < self.levelSize.width then
-        viewport:updateX(far_left_x)
-      end
-    end,
-
     restart = function(self)
       state.hero = hero(conf.start.ix, conf.start.iy)
       state.hero.forward = conf.forward

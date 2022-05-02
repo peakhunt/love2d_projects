@@ -455,14 +455,6 @@ return function(pos_x, pos_y)
   entity.ignore_input = false
   entity.restrainPos = true
 
-  entity.setPos = function(self, x, y)
-    baseSetPos(entity, x, y)
-
-    if state.current_level then
-      state.current_level:heroMove(x, y)
-    end
-  end
-
   entity.move = function(self, dx, dy)
     if state:isHeld() then
       dx = 0

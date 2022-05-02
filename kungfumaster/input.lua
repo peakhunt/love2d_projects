@@ -17,6 +17,7 @@ local press_funcs = {
 
   up = function()
     state.button_up = true
+    trigger.up = 0
   end,
 
   down = function()
@@ -49,6 +50,7 @@ local release_funcs = {
 
   up = function()
     state.button_up = false
+    trigger.up = 0
   end,
 
   down = function()

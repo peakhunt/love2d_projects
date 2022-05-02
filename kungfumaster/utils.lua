@@ -1,4 +1,3 @@
-local state = require('state')
 local viewport = require('viewport')
 
 local module = {}
