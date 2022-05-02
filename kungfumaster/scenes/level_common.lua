@@ -1,7 +1,6 @@
 local state = require('state')
 local viewport = require('viewport')
 local dashboard = require('dashboard')
-local viewport = require('viewport')
 
 function debug_draw()
   if state.button_debug == false then

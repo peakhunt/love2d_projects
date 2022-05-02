@@ -1,4 +1,6 @@
 --
+-- XXX FIXME rewrite this using virtual coordinate unit!!!
+--
 -- dashboard
 --
 local state = require('state')
