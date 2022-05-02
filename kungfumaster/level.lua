@@ -9,6 +9,12 @@ local gogo_spawn = require('gogo_spawn')
 local door_left = factory.entities.door(true)
 local door_right = factory.entities.door(false)
 
+function setup_hero(x, y, forward)
+  state.hero = factory.entities.hero(x, y)
+  state.hero.forward = forward
+  table.insert(state.entities, state.hero)
+end
+
 return function(level)
   local conf = asset_conf.level[level]
   local background = love.graphics.newImage(conf.background)
@@ -59,10 +65,7 @@ return function(level)
     end,
 
     restart = function(self)
-      state.hero = factory.entities.hero(conf.start.ix, conf.start.iy)
-      state.hero.forward = conf.forward
-      table.insert(state.entities, state.hero)
-
+      setup_hero(conf.start.ix, conf.start.iy, conf.forward)
       viewport:updateX(conf.viewport.x)
     end,
   }
@@ -79,12 +82,9 @@ return function(level)
 
   state:reset()
 
-  state.hero = factory.entities.hero(conf.start.ix, conf.start.iy)
-  table.insert(state.entities, state.hero)
+  setup_hero(conf.start.ix, conf.start.iy, conf.forward)
   state.level = level
   state.current_level = floor
-
-  state.hero.forward = conf.forward
 
   viewport:init(vp, levelSize, background:getPixelWidth(), background:getPixelHeight())
 
