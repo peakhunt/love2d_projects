@@ -1,19 +1,29 @@
+---------------------------------------------------------------
+--
+-- XXX this should be the first line
+-- the effect is this line initializes the factory
+-- it seems like this is the only way to avoid all the 
+-- circular require hell
+--
+---------------------------------------------------------------
+require('init')
+
 local asset_conf = require('asset_conf')
 local level = require('level')
 local state = require('state')
 local viewport = require('viewport')
 local dashboard = require('dashboard')
-local scenemanager = require('scenes/scenemanager')
+local factory = require('factory')
 
 function love.load()
   level(4)
-  scenemanager:reset()
+  state:changeScene(factory.scenes.level_starting())
 end
 
 function love.draw()
   love.graphics.setColor(1, 1, 1, 1)
 
-  scenemanager:draw()
+  state.scene:draw()
 end
 
 function love.focus(focused)
@@ -25,11 +35,11 @@ function love.keypressed(pressed_key)
     return
   end
 
-  scenemanager:keypressed(pressed_key)
+  state.scene:keypressed(pressed_key)
 end
 
 function love.keyreleased(released_key)
-  scenemanager:keyreleased(released_key)
+  state.scene:keyreleased(released_key)
 end
 
 function love.update(dt)
@@ -37,5 +47,5 @@ function love.update(dt)
     return
   end
 
-  scenemanager:update(dt)
+  state.scene:update(dt)
 end

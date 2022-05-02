@@ -1,6 +1,6 @@
 local viewport = require('viewport')
 local timer = require('timer')
-local crazy88 = require('entities/crazy88')
+local factory = require('factory')
 local asset_conf = require('asset_conf')
 local state = require('state')
 
@@ -29,7 +29,7 @@ return function(config)
       x = rx
     end
 
-    local entity = crazy88(x, asset_conf.floor_bottom)
+    local entity = factory.entities.crazy88(x, asset_conf.floor_bottom)
 
     table.insert(state.entities, entity)
     state.crazy88_count = state.crazy88_count + 1

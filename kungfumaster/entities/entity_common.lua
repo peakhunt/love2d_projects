@@ -2,7 +2,7 @@ local common_conf = require('entities/common_conf')
 local viewport = require('viewport')
 local utils = require('utils')
 local state = require('state')
-local score = require('entities/score')
+local factory = require('factory')
 
 function clamp(x, min, max)
   return math.min(math.max(min, x), max)
@@ -247,7 +247,7 @@ return function(pos_x, pos_y, states, animations, start_state)
         x = hitQuad.x
         y = hitQuad.y - hitQuad.height
 
-        state:incScore(s, score(x, y, s))
+        state:incScore(s, factory.entities.score(x, y, s))
       end
     end,
   }

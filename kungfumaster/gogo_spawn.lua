@@ -1,6 +1,6 @@
 local viewport = require('viewport')
 local timer = require('timer')
-local gogo = require('entities/gogo')
+local factory = require('factory')
 local asset_conf = require('asset_conf')
 local state = require('state')
 
@@ -45,7 +45,7 @@ return function(config)
       end
 
       self.timeAccumulated = 0
-      local entity = gogo(x, asset_conf.floor_bottom)
+      local entity = factory.entities.gogo(x, asset_conf.floor_bottom)
 
       table.insert(state.entities, entity)
       state.gogo_count = state.gogo_count + 1

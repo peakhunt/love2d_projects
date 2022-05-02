@@ -8,7 +8,7 @@ local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local state = require('state')
 local resource = require('resource')
-local hitmark = require('entities/hitmark')
+local factory = require('factory')
 local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
@@ -493,7 +493,7 @@ return function(pos_x, pos_y)
       x = self.pos.x
       y = hitQuad.y - hitQuad.height
 
-      local mark = hitmark(x, y)
+      local mark = factory.entities.hitmark(x, y)
       table.insert(state.entities, mark)
     end
 

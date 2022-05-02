@@ -7,7 +7,7 @@ local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
-local knife = require('entities/knife')
+local factory = require('factory')
 local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
@@ -68,7 +68,7 @@ function throwKnife(entity, y)
     x = entity.vQuad.x + entity.vQuad.width
   end
 
-  k = knife(x, y, forward)
+  k = factory.entities.knife(x, y, forward)
   table.insert(state.entities, k)
 end
 

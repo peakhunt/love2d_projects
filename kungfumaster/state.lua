@@ -53,7 +53,7 @@ return {
   --
   --
   --
-  scene = "",
+  scene = nil,
 
   --
   -- for debugging and testing
@@ -142,5 +142,17 @@ return {
 
   decHeroLives = function(self, d)
     self.life_left = self.life_left - d
+  end,
+
+  changeScene = function(self, s)
+    if self.scene ~= nil then
+      self.scene:exit()
+    end
+
+    self.scene = s
+
+    if self.scene ~= nil then
+      self.scene:enter()
+    end
   end,
 }

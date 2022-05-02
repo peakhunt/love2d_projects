@@ -1,14 +1,13 @@
 local asset_conf = require('asset_conf')
 local state = require('state')
 local viewport = require('viewport')
-local hero = require('entities/hero')
 local resource = require('resource')
-local door = require('entities/door')
+local factory = require('factory')
 local crazy88_spawn = require('crazy88_spawn')
 local gogo_spawn = require('gogo_spawn')
 
-local door_left = door(true)
-local door_right = door(false)
+local door_left = factory.entities.door(true)
+local door_right = factory.entities.door(false)
 
 return function(level)
   local conf = asset_conf.level[level]
@@ -60,7 +59,7 @@ return function(level)
     end,
 
     restart = function(self)
-      state.hero = hero(conf.start.ix, conf.start.iy)
+      state.hero = factory.entities.hero(conf.start.ix, conf.start.iy)
       state.hero.forward = conf.forward
       table.insert(state.entities, state.hero)
 
@@ -80,7 +79,7 @@ return function(level)
 
   state:reset()
 
-  state.hero = hero(conf.start.ix, conf.start.iy)
+  state.hero = factory.entities.hero(conf.start.ix, conf.start.iy)
   table.insert(state.entities, state.hero)
   state.level = level
   state.current_level = floor
