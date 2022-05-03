@@ -1008,6 +1008,212 @@ local asset_conf = {
       }
     },
   },
+  boss1 = {
+    refFrame = {
+      pixelwidth = 28,
+      pixelheight = 64,
+      -- FIXME
+      height = 1 / 3.2,
+      width = 1 / 12,
+    },
+    sprites = {
+      standing = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 1201,
+            width = 28,
+            height = 64,
+          }
+        }
+      },
+      walking = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 1201,
+            width = 28,
+            height = 64,
+          },
+          [2] = {
+            pos_x = 52,
+            pos_y = 1201,
+            width = 27,
+            height = 64,
+          },
+          [3] = {
+            pos_x = 87,
+            pos_y = 1201,
+            width = 32,
+            height = 64,
+          },
+          [4] = {
+            pos_x = 127,
+            pos_y = 1201,
+            width = 27,
+            height = 64,
+          },
+        },
+      },
+      standAttachHigh = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 186,
+            pos_y = 1188,
+            width = 32,
+            height = 77,
+          },
+          [2] = {
+            pos_x = 226,
+            pos_y = 1202,
+            width = 26,
+            height = 63,
+          },
+          [3] = {
+            pos_x = 260,
+            pos_y = 1201,
+            width = 50,
+            height = 64,
+            -- FIXME hit point
+          },
+        },
+      },
+      standAttackMid = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 416,
+            pos_y = 1201,
+            width = 51,
+            height = 64,
+          },
+          [2] = {
+            pos_x = 475,
+            pos_y = 1202,
+            width = 26,
+            height = 63,
+          },
+          [3] = {
+            pos_x = 509,
+            pos_y = 1209,
+            width = 58,
+            height = 56,
+            -- FIXME hit point
+          },
+        },
+      },
+      sitting = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 1289,
+            width = 40,
+            height = 56,
+          },
+        },
+      },
+      sitAttack = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 88,
+            pos_y = 1289,
+            width = 40,
+            height = 56,
+          },
+          [2] = {
+            pos_x = 136,
+            pos_y = 1301,
+            width = 29,
+            height = 44,
+          },
+          [3] = {
+            pos_x = 173,
+            pos_y = 1302,
+            width = 56,
+            height = 43,
+            -- FIXME hit point
+          },
+        },
+      },
+      hit1 = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 16,
+            pos_y = 1484,
+            width = 32,
+            height = 69,
+          },
+        }
+      },
+      hit2 = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 80,
+            pos_y = 1478,
+            width = 41,
+            height = 75,
+          },
+        }
+      },
+      hit3 = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 153,
+            pos_y = 1472,
+            width = 38,
+            height = 81,
+          },
+        }
+      },
+      hit4 = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 223,
+            pos_y = 1497,
+            width = 40,
+            height = 56,
+          },
+        }
+      },
+      hit5 = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 295,
+            pos_y = 1494,
+            width = 43,
+            height = 59,
+          },
+        }
+      },
+      falling = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 365,
+            pos_y = 1382,
+            width = 30,
+            height = 66,
+          },
+          [2] = {
+            pos_x = 403,
+            pos_y = 1382,
+            width = 39,
+            height = 66,
+          },
+        },
+      },
+    },
+  },
   level = {
     [1] = {
       background = 'assets/floor1_b.png',
