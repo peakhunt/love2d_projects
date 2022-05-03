@@ -1013,8 +1013,8 @@ local asset_conf = {
       pixelwidth = 28,
       pixelheight = 64,
       -- FIXME
-      height = 1 / 3.2,
-      width = 1 / 12,
+      height = 1 / 3,
+      width = 1 / 11,
     },
     sprites = {
       standing = {
@@ -1259,7 +1259,7 @@ local asset_conf = {
       },
       boss = {
         name = "boss1",
-        x = 0.75,
+        x = 0.715,
         y = floor_bottom,
       },
     },

@@ -39,6 +39,12 @@ local states = {}
 states.standing = {
   animation = animations.standing,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.walking)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -46,6 +52,12 @@ states.standing = {
 states.walking = {
   animation = animations.walking,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.standAttackHigh)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -53,6 +65,12 @@ states.walking = {
 states.standAttackHigh = {
   animation = animations.standAttackHigh,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.standAttackMid)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -60,6 +78,12 @@ states.standAttackHigh = {
 states.standAttackMid = {
   animation = animations.standAttackMid,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.sitting)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -67,6 +91,12 @@ states.standAttackMid = {
 states.sitting = {
   animation = animations.sitting,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.sitAttack)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -74,6 +104,12 @@ states.sitting = {
 states.sitAttack = {
   animation = animations.sitAttack,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.hit1)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -81,6 +117,12 @@ states.sitAttack = {
 states.hit1 = {
   animation = animations.hit1,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.hit2)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -88,6 +130,12 @@ states.hit1 = {
 states.hit2 = {
   animation = animations.hit2,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.hit3)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -95,6 +143,12 @@ states.hit2 = {
 states.hit3 = {
   animation = animations.hit3,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.hit4)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -102,6 +156,12 @@ states.hit3 = {
 states.hit4 = {
   animation = animations.hit4,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.hit5)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -109,6 +169,12 @@ states.hit4 = {
 states.hit5 = {
   animation = animations.hit5,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.falling)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
@@ -116,6 +182,12 @@ states.hit5 = {
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
+    entity.timeAccumulated = entity.timeAccumulated + dt
+    if entity.timeAccumulated > 2 then
+      entity.timeAccumulated = 0
+      entity:moveState(states.standing)
+    end
+
     entity:commonUpdate(dt)
   end,
 }
