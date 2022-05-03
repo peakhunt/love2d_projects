@@ -53,8 +53,8 @@ states.standing = {
     else
       if adistance <= 0.4 then
         state.boss_activated = true
-        return
       end
+      return
     end
 
     if entity.randomTimer == 0 then
