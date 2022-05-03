@@ -24,16 +24,6 @@ local tooCloseStop = 0.35
 -- gogo sprite animations
 --
 --------------------------------------------------------------------------------
-local animKey = {
-  "standing",
-  "walking",
-  "throwingHigh",
-  "throwingLow",
-  "falling",
-  "hit1",
-  "hit2",
-}
-
 local animations = {
   standing = utils.newAnimationFromConf(spriteSheet, sprites.standing, assetGogo.refFrame),
   walking = utils.newAnimationFromConf(spriteSheet, sprites.walking, assetGogo.refFrame),

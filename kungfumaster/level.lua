@@ -9,7 +9,18 @@ local gogo_spawn = require('gogo_spawn')
 local door_left = factory.entities.door(true)
 local door_right = factory.entities.door(false)
 
-function setup_hero(x, y, forward)
+function setup_big(conf, x, y, forward)
+  --
+  -- create boss if present
+  --
+  if conf.boss then
+    local b = conf.boss
+    local boss = factory.entities[b.name](b.x, b.y)
+
+    boss.forward = not conf.forward
+    table.insert(state.entities, boss)
+  end
+
   state.hero = factory.entities.hero(x, y)
   state.hero.forward = forward
   table.insert(state.entities, state.hero)
@@ -76,7 +87,7 @@ return function(level)
     end,
 
     restart = function(self)
-      setup_hero(conf.start.ix, conf.start.iy, conf.forward)
+      setup_big(conf, conf.start.ix, conf.start.iy, conf.forward)
       viewport:updateX(conf.viewport.x)
     end,
   }
@@ -93,7 +104,7 @@ return function(level)
 
   state:reset()
 
-  setup_hero(conf.start.ix, conf.start.iy, conf.forward)
+  setup_big(conf, conf.start.ix, conf.start.iy, conf.forward)
   state.level = level
   state.current_level = floor
 

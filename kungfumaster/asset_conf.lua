@@ -1057,7 +1057,7 @@ local asset_conf = {
           },
         },
       },
-      standAttachHigh = {
+      standAttackHigh = {
         duration = 0.5,
         quads = {
           [1] = {
@@ -1256,6 +1256,11 @@ local asset_conf = {
             missRate = 0.1,
           },
         },
+      },
+      boss = {
+        name = "boss1",
+        x = 0.75,
+        y = floor_bottom,
       },
     },
     [2] = {

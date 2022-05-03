@@ -16,7 +16,7 @@ local dashboard = require('dashboard')
 local factory = require('factory')
 
 function love.load()
-  level(4)
+  level(2)
   state:changeScene(factory.scenes.level_starting())
 end
 
