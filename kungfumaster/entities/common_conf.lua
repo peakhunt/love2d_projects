@@ -6,4 +6,5 @@ return {
   gogo_speed2 = 10 / 30,
   knife_speed = 7.0 / 15,
   fall_speed = 0.3,
+  boss1_speed = 4.5 / 30,
 }

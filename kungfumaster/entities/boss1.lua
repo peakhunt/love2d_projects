@@ -10,6 +10,8 @@ local spriteSheet = resource.spriteSheet
 local assetBoss1 = asset_conf.boss1
 local sprites = assetBoss1.sprites
 
+local minDistanceForAttack = 0.2
+
 --------------------------------------------------------------------------------
 -- 
 -- boss1 sprite animations
@@ -40,17 +42,40 @@ local states = {}
 states.standing = {
   animation = animations.standing,
   update = function(self, entity, dt)
+    local _, adistance = gameutil.distance(entity, state.hero)
+
     if state.boss_activated == true then
-      entity.timeAccumulated = entity.timeAccumulated + dt
-      if entity.timeAccumulated > 2 then
-        entity.timeAccumulated = 0
+      if adistance > minDistanceForAttack then
+        entity.randomTimer = 0
         entity:moveState(states.walking)
+        return
       end
     else
-      local _, adistance = gameutil.distance(entity, state.hero)
-
       if adistance <= 0.4 then
         state.boss_activated = true
+        return
+      end
+    end
+
+    if entity.randomTimer == 0 then
+      entity.randomTimer = love.math.random() + 0.2
+      entity.timeAccumulated = 0
+    else
+      entity.timeAccumulated = entity.timeAccumulated + dt
+
+      if entity.timeAccumulated >= entity.randomTimer then
+        -- time out
+        entity.randomTimer = 0
+
+        local r = love.math.random()
+
+        if r < 0.3 then
+          entity:moveState(states.standAttackHigh)
+        elseif r < 0.6 then
+          entity:moveState(states.standAttackMid)
+        elseif r < 0.8 then
+          entity:moveState(states.sitting)
+        end
       end
     end
 
@@ -61,11 +86,18 @@ states.standing = {
 states.walking = {
   animation = animations.walking,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.standAttackHigh)
+    local distance, adistance = gameutil.distance(entity, state.hero)
+
+    if adistance <= minDistanceForAttack then
+      entity:moveState(states.standing)
+      return
     end
+
+    entity.forward = gameutil.forwardDirection(distance)
+
+    local xdelta = gameutil.calcXDelta(entity.forward, common_conf.boss1_speed, dt)
+
+    entity:move(xdelta, 0)
 
     entity:commonUpdate(dt)
   end,
@@ -74,36 +106,42 @@ states.walking = {
 states.standAttackHigh = {
   animation = animations.standAttackHigh,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.standAttackMid)
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.standing)
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.standAttackMid = {
   animation = animations.standAttackMid,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.sitting)
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.standing)
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.sitting = {
   animation = animations.sitting,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
+    if entity.randomTimer == 0 then
+      entity.randomTimer = love.math.random() + 0.2
       entity.timeAccumulated = 0
-      entity:moveState(states.sitAttack)
+    else
+      entity.timeAccumulated = entity.timeAccumulated + dt
+
+      if entity.timeAccumulated >= entity.randomTimer then
+        -- time out
+        entity.randomTimer = 0
+
+        local r = love.math.random()
+
+        if r < 0.5 then
+          entity:moveState(states.standing)
+        else
+          entity:moveState(states.sitAttack)
+        end
+      end
     end
 
     entity:commonUpdate(dt)
@@ -113,13 +151,9 @@ states.sitting = {
 states.sitAttack = {
   animation = animations.sitAttack,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.hit1)
+    if entity:commonUpdate(dt) == true then
+      entity:moveState(states.sitting)
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
@@ -206,8 +240,9 @@ return function(pos_x, pos_y)
 
   entity.name = "boss1"
   entity.restrainPos = true
-  entity.score = 200
+  entity.score = 1000
   entity.timeAccumulated = 0
+  entity.randomTimer = 0
 
   return entity
 end
