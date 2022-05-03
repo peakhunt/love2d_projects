@@ -243,6 +243,7 @@ return function(pos_x, pos_y)
   entity.score = 1000
   entity.timeAccumulated = 0
   entity.randomTimer = 0
+  entity.damage = 0.1
 
   return entity
 end

@@ -44,7 +44,11 @@ return function()
 
         -- enemy attack test
         if entity ~= hero then
-          if collision.check_entity_for_hit(hero, entity.vQuad) then
+          if entity.vHitQuad ~= nil then
+            if collision.check_entity_for_hit(hero, entity.vHitQuad) then
+              hero:takeHit(entity, entity.vHitQuad)
+            end
+          elseif collision.check_entity_for_hit(hero, entity.vQuad) then
             entity:collideWithHero(hero)
           end
         end
