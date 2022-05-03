@@ -14,6 +14,10 @@ return function(config)
         return
       end
 
+      if state.boss_activated == true then
+        return
+      end
+
       if state.gogo_count >= config.max then
         self.timeAccumulated = 0
         return

@@ -1012,7 +1012,6 @@ local asset_conf = {
     refFrame = {
       pixelwidth = 28,
       pixelheight = 64,
-      -- FIXME
       height = 1 / 3,
       width = 1 / 11,
     },
@@ -1077,7 +1076,12 @@ local asset_conf = {
             pos_y = 1201,
             width = 50,
             height = 64,
-            -- FIXME hit point
+            hitPoint = {
+              pos_x = 292,
+              pos_y = 1204,
+              width = 18,
+              height = 15,
+            },
           },
         },
       },
@@ -1101,7 +1105,12 @@ local asset_conf = {
             pos_y = 1209,
             width = 58,
             height = 56,
-            -- FIXME hit point
+            hitPoint = {
+              pos_x = 550,
+              pos_y = 1221,
+              width = 17,
+              height = 12,
+            },
           },
         },
       },
@@ -1136,7 +1145,12 @@ local asset_conf = {
             pos_y = 1302,
             width = 56,
             height = 43,
-            -- FIXME hit point
+            hitPoint = {
+              pos_x = 213,
+              pos_y = 1319,
+              width = 16,
+              height = 8,
+            },
           },
         },
       },

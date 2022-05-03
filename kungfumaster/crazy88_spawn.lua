@@ -7,6 +7,10 @@ local state = require('state')
 return function(config)
   local timer = timer(config.rate,
   function()
+    if state.boss_activated == true then
+      return
+    end
+
     if state.crazy88_count >= config.max or love.math.random() <= config.missRate then
       return
     end

@@ -4,6 +4,7 @@ local state = require('state')
 local entity_common = require('entities/entity_common')
 local common_conf = require('entities/common_conf')
 local resource = require('resource')
+local gameutil = require('gameutil')
 
 local spriteSheet = resource.spriteSheet
 local assetBoss1 = asset_conf.boss1
@@ -39,10 +40,18 @@ local states = {}
 states.standing = {
   animation = animations.standing,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.walking)
+    if state.boss_activated == true then
+      entity.timeAccumulated = entity.timeAccumulated + dt
+      if entity.timeAccumulated > 2 then
+        entity.timeAccumulated = 0
+        entity:moveState(states.walking)
+      end
+    else
+      local _, adistance = gameutil.distance(entity, state.hero)
+
+      if adistance <= 0.4 then
+        state.boss_activated = true
+      end
     end
 
     entity:commonUpdate(dt)

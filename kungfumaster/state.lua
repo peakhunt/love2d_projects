@@ -55,6 +55,9 @@ return {
   --
   scene = nil,
 
+  boss_activated = false,
+  boss_cleared = false,
+
   --
   -- for debugging and testing
   --
@@ -88,6 +91,9 @@ return {
 
     self.gogo_count = 0
     self.crazy88_count = 0
+
+    self.boss_activated = false
+    self.boss_cleared = false
   end,
 
   restart = function(self)
@@ -107,6 +113,9 @@ return {
 
     self.gogo_count = 0
     self.crazy88_count = 0
+
+    self.boss_activated = false
+    self.boss_cleared = false
 
     self.current_level:restart()
   end,
