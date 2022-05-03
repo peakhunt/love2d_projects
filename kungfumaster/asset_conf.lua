@@ -1010,7 +1010,8 @@ local asset_conf = {
   },
   level = {
     [1] = {
-      background = 'assets/floor1.png',
+      background = 'assets/floor1_b.png',
+      foreground = 'assets/floor1_f.png',
       start = {
         ix = 6.65,
         iy = floor_bottom,
@@ -1052,7 +1053,8 @@ local asset_conf = {
       },
     },
     [2] = {
-      background = 'assets/floor2.png',
+      background = 'assets/floor2_b.png',
+      foreground = 'assets/floor2_f.png',
       start = {
         ix = 0.35,
         iy = floor_bottom,
@@ -1095,7 +1097,8 @@ local asset_conf = {
       },
     },
     [3] = {
-      background = 'assets/floor3.png',
+      background = 'assets/floor3_b.png',
+      foreground = 'assets/floor3_f.png',
       start = {
         ix = 6.65,
         iy = floor_bottom,
@@ -1138,7 +1141,8 @@ local asset_conf = {
       },
     },
     [4] = {
-      background = 'assets/floor4.png',
+      background = 'assets/floor4_b.png',
+      foreground = 'assets/floor4_f.png',
       start = {
         ix = 0.35,
         iy = floor_bottom,
@@ -1181,7 +1185,8 @@ local asset_conf = {
       },
     },
     [5] = {
-      background = 'assets/floor5.png',
+      background = 'assets/floor5_b.png',
+      foreground = 'assets/floor5_f.png',
       start = {
         ix = 6.65,
         iy = floor_bottom,

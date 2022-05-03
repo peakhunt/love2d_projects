@@ -18,6 +18,8 @@ end
 return function(level)
   local conf = asset_conf.level[level]
   local background = love.graphics.newImage(conf.background)
+  local foreground = love.graphics.newImage(conf.foreground)
+
   local levelSize = conf.size
   local start = conf.start
   local limit = conf.limit
@@ -42,6 +44,7 @@ return function(level)
 
   local floor = {
     background = background,
+    foreground = foreground,
     levelSize = levelSize,
     start = start,
     limit = limit,
@@ -55,6 +58,7 @@ return function(level)
     end,
 
     draw = function(self)
+      love.graphics.setColor(1, 1, 1, 1)
       love.graphics.draw(self.background, viewport.quad, 
           viewport.screen.x, viewport.screen.y,
           0, viewport.sx, viewport.sy)
@@ -62,6 +66,13 @@ return function(level)
       if self.current_door then
         self.current_door:draw()
       end
+    end,
+
+    drawF = function(self)
+      love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.draw(self.foreground, viewport.quad, 
+          viewport.screen.x, viewport.screen.y,
+          0, viewport.sx, viewport.sy)
     end,
 
     restart = function(self)
@@ -86,7 +97,7 @@ return function(level)
   state.level = level
   state.current_level = floor
 
-  viewport:init(vp, levelSize, background:getPixelWidth(), background:getPixelHeight())
+  viewport:init(vp, levelSize, background:getDimensions())
 
   return floor
 end

@@ -43,6 +43,8 @@ function gameplay_common_draw()
     entity:draw()
   end
 
+  state.current_level:drawF()
+
   dashboard.draw()
   debug_draw()
 end
