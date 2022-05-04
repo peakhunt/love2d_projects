@@ -10,7 +10,7 @@ local spriteSheet = resource.spriteSheet
 local assetBoss1 = asset_conf.boss1
 local sprites = assetBoss1.sprites
 
-local minDistanceForAttack = 0.2
+local minDistanceForAttack = 0.1
 
 --------------------------------------------------------------------------------
 -- 
@@ -110,6 +110,20 @@ states.standAttackHigh = {
       entity:moveState(states.standing)
     end
   end,
+
+  enter = function(self, entity, oldState)
+    entity.attacking = true
+    entity:commonStateEnter(animations.standAttackHigh)
+  end,
+
+  leave = function(self, entity)
+    entity.attacking = false
+  end,
+
+  takeAttack = function(self, entity, hero, hitQuad)
+    entity.attacking = false
+    hero:takeHit(entity, hitQuad)
+  end,
 }
 
 states.standAttackMid = {
@@ -118,6 +132,20 @@ states.standAttackMid = {
     if entity:commonUpdate(dt) == true then
       entity:moveState(states.standing)
     end
+  end,
+
+  enter = function(self, entity, oldState)
+    entity.attacking = true
+    entity:commonStateEnter(animations.standAttackMid)
+  end,
+
+  leave = function(self, entity)
+    entity.attacking = false
+  end,
+
+  takeAttack = function(self, entity, hero, hitQuad)
+    entity.attacking = false
+    hero:takeHit(entity, hitQuad)
   end,
 }
 
@@ -154,6 +182,20 @@ states.sitAttack = {
     if entity:commonUpdate(dt) == true then
       entity:moveState(states.sitting)
     end
+  end,
+
+  enter = function(self, entity, oldState)
+    entity.attacking = true
+    entity:commonStateEnter(animations.sitAttack)
+  end,
+
+  leave = function(self, entity)
+    entity.attacking = false
+  end,
+
+  takeAttack = function(self, entity, hero, hitQuad)
+    entity.attacking = false
+    hero:takeHit(entity, hitQuad)
   end,
 }
 

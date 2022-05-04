@@ -7,6 +7,10 @@ local state = require('state')
 return function(config)
   local timer = timer(config.rate,
   function()
+    if state.test_mode then
+      return
+    end
+
     if state.boss_activated == true then
       return
     end

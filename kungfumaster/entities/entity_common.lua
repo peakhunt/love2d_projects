@@ -85,14 +85,16 @@ return function(pos_x, pos_y, states, animations, start_state)
     spriteNum = 1,
     trembling = false,
     restrainPos = false,
+    attacking = false,
 
     -- current quad in virtual space
     -- x/y here is top/left corner of the quad in virtual space
-    vQuad = nil,
+    vQuad = {},
 
     -- current hit quad in virtual space
     -- position in virtual space is already calculated by update
     vHitQuad = nil,
+    vHitQuadBuf = {},
 
     setPos = function(self, x, y)
       if self.restrainPos then
@@ -176,12 +178,11 @@ return function(pos_x, pos_y, states, animations, start_state)
     end,
 
     updateQuad = function(self)
-      self.vQuad = {
-        x = self.pos.x - self.currentAnim.virtSize[self.spriteNum].width/2,
-        y = self.pos.y + self.currentAnim.virtSize[self.spriteNum].height,
-        width = self.currentAnim.virtSize[self.spriteNum].width,
-        height = self.currentAnim.virtSize[self.spriteNum].height,
-      }
+      self.vQuad.x = self.pos.x - self.currentAnim.virtSize[self.spriteNum].width/2
+      self.vQuad.y = self.pos.y + self.currentAnim.virtSize[self.spriteNum].height
+      self.vQuad.width = self.currentAnim.virtSize[self.spriteNum].width
+      self.vQuad.height = self.currentAnim.virtSize[self.spriteNum].height
+
       self:updateHitPoint()
     end,
 
@@ -206,12 +207,12 @@ return function(pos_x, pos_y, states, animations, start_state)
 
       hy = top_y - hitPoint.ry
 
-      self.vHitQuad = {
-        x = hx,
-        y = hy,
-        width = hitPoint.width,
-        height =hitPoint.height,
-      }
+      self.vHitQuadBuf.x = hx
+      self.vHitQuadBuf.y = hy
+      self.vHitQuadBuf.width = hitPoint.width
+      self.vHitQuadBuf.height =hitPoint.height
+
+      self.vHitQuad = self.vHitQuadBuf
     end,
 
     takeHit = function(self, from, hitQuad)
@@ -248,6 +249,12 @@ return function(pos_x, pos_y, states, animations, start_state)
         y = hitQuad.y - hitQuad.height
 
         state:incScore(s, factory.entities.score(x, y, s))
+      end
+    end,
+
+    takeAttack = function(self, hero, hitQuad)
+      if self.currentState.takeAttack then
+        self.currentState:takeAttack(self, hero, hitQuad)
       end
     end,
   }

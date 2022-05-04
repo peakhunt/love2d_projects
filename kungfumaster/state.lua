@@ -61,7 +61,7 @@ return {
   --
   -- for debugging and testing
   --
-  test_enabled = false,
+  test_mode = false,
 
   --
   -- conveniences

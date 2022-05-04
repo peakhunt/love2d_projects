@@ -10,6 +10,10 @@ return function(config)
     started = false,
 
     update = function(self, dt)
+      if state.test_mode then
+        return
+      end
+
       if self.started == false then
         return
       end

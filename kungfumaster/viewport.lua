@@ -99,6 +99,7 @@ return {
     if x < 0 or x > (self.levelSize.width - self.viewport.width) then
       return
     end
+
     self.viewport.x = x
     self:updateViewQuad()
   end,

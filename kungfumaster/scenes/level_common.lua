@@ -49,44 +49,12 @@ function gameplay_common_draw()
   debug_draw()
 end
 
-function update_test(dt)
-  if state.test_enabled == false then
-    return
-  end
-
-  state.time_left = state.time_left - dt
-  if state.time_left < 0 then
-  state.time_left = 0
-  end
-
-  state.hero_energy = state.hero_energy + love.math.random(-30, 30) * dt
-  if state.hero_energy < 0 then
-    state.hero_energy = 0
-  end
-  if state.hero_energy > 100 then
-    state.hero_energy = 100 
-  end
-  state.enemy_energy = state.enemy_energy + love.math.random(-30, 30) * dt
-  if state.enemy_energy < 0 then
-    state.enemy_energy = 0
-  end
-  if state.enemy_energy > 100 then
-    state.enemy_energy = 100
-  end
-  state.score = state.score + love.math.random(-300, 300) * dt
-  if state.score < 0 or state.score > 999999 then
-    state.score = 0
-  end
-end
-
 function gameplay_common_update(dt)
   if state.paused or dt > 0.1 then
     return
   end
 
   local index = 1
-
-  update_test(dt)
 
   while index <= #state.entities do
     local entity = state.entities[index]
