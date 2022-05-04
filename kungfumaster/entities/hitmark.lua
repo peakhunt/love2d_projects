@@ -18,8 +18,8 @@ states.hit = {
   animation = animations.hit,
   update = function(self, entity, dt)
     entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 1.0 then
-      entity.health = 0
+    if entity.timeAccumulated > 0.2 then
+      entity.dead = true
     end
     entity:commonUpdate(dt)
   end,

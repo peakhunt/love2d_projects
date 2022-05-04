@@ -35,7 +35,7 @@ states.flying = {
 
     entity.timeAccumulated = entity.timeAccumulated + dt
     if entity.timeAccumulated > 4 then
-      entity.health = 0
+      entity.dead = true
     end
 
     local xdelta = gameutil.calcXDelta(entity.forward, common_conf.knife_speed, dt)
@@ -44,7 +44,7 @@ states.flying = {
     entity:commonUpdate(dt)
   end,
   collideWithHero = function(self, entity, hero)
-    entity.health = 0
+    entity.dead = true
     hero:takeHit(entity, entity.vQuad)
   end,
 }

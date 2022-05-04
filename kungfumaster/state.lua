@@ -48,7 +48,7 @@ return {
   score = 0,            -- 6 digits
   top_score = 0,        -- 6 digits
   hero_energy = 1,      -- 0 to 1
-  enemy_energy = 1,     -- 0 to 1. level boss' energy
+  boss_energy = 1,      -- 0 to 1. level boss' energy
 
   --
   --
@@ -87,7 +87,7 @@ return {
     self.score = 0
     self.top_score = 0
     self.hero_energy = 1
-    self.enemy_energy = 1
+    self.boss_energy = 1
 
     self.gogo_count = 0
     self.crazy88_count = 0
@@ -105,7 +105,7 @@ return {
     self.button_kick = false
 
     self.hero_energy = 1
-    self.enemy_energy = 1
+    self.boss_energy = 1
     self.time_left = 60
     self.held = 0
     self.entities = {}
@@ -149,9 +149,17 @@ return {
     end
   end,
 
+  decBossEnergy = function(self, delta)
+    self.boss_energy = self.boss_energy - delta
+    if self.boss_energy < 0 then
+      self.boss_energy = 0
+    end
+  end,
+
   decHeroLives = function(self, d)
     self.life_left = self.life_left - d
   end,
+
 
   changeScene = function(self, s)
     if self.scene ~= nil then

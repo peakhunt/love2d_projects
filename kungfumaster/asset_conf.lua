@@ -1155,7 +1155,7 @@ local asset_conf = {
         },
       },
       hit1 = {
-        duration = 0.5,
+        duration = 0.1,
         quads = {
           [1] = {
             pos_x = 16,
@@ -1166,7 +1166,7 @@ local asset_conf = {
         }
       },
       hit2 = {
-        duration = 0.5,
+        duration = 0.1,
         quads = {
           [1] = {
             pos_x = 80,
@@ -1177,7 +1177,7 @@ local asset_conf = {
         }
       },
       hit3 = {
-        duration = 0.5,
+        duration = 0.1,
         quads = {
           [1] = {
             pos_x = 153,
@@ -1188,7 +1188,7 @@ local asset_conf = {
         }
       },
       hit4 = {
-        duration = 0.5,
+        duration = 0.1,
         quads = {
           [1] = {
             pos_x = 223,
@@ -1199,7 +1199,7 @@ local asset_conf = {
         }
       },
       hit5 = {
-        duration = 0.5,
+        duration = 0.1,
         quads = {
           [1] = {
             pos_x = 295,

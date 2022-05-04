@@ -75,6 +75,7 @@ return function(pos_x, pos_y, states, animations, start_state)
     },
 
     health = 1,
+    dead = false,
 
     animations = animations,
     states = states,

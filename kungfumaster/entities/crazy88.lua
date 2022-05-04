@@ -142,7 +142,7 @@ states.holding = {
 
   collideWithHero = function(self, entity, hero)
     if hero.trembling then
-      if entity.health == 0.25 then
+      if entity.health == 0 then
         entity:moveState(states.falling)
       else
         entity.health = entity.health - 0.25
@@ -169,7 +169,7 @@ states.falling = {
     entity:move(xdelta, ydelta)
 
     if entity:commonUpdate(dt) == true then
-      entity.health = 0
+      entity.dead = true
       state.crazy88_count = state.crazy88_count - 1
     end
   end,

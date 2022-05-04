@@ -39,6 +39,48 @@ local animations = {
 --------------------------------------------------------------------------------
 local states = {}
 
+function standGotHitCommon(self, entity, from, hitQuad)
+  local mid1, mid2, a_quarter
+
+  entity.health = entity.health - 0.1
+  state:decBossEnergy(0.1)
+
+  a_quarter = entity.vQuad.height / 4
+
+  mid1 = entity.vQuad.y - a_quarter
+  mid2 = mid1 - 2 * a_quarter
+
+  if hitQuad.y > mid1 then
+    -- top hit
+    entity:moveState(states.hit1)
+  elseif hitQuad.y < mid1 and hitQuad.y > mid2 then
+    -- middle hit
+    entity:moveState(states.hit2)
+  else
+    -- bottom hit
+    entity:moveState(states.hit3)
+  end
+end
+
+function sitGotHitCommon(self, entity, from, hitQuad)
+  local mid1, mid2, a_quarter
+
+  entity.health = entity.health - 0.1
+  state:decBossEnergy(0.1)
+
+  a_quarter = entity.vQuad.height / 4
+
+  mid1 = entity.vQuad.y - a_quarter
+  mid2 = mid1 - 2 * a_quarter
+
+  if hitQuad.y > mid2 then
+    entity:moveState(states.hit4)
+  else
+    -- bottom hit
+    entity:moveState(states.hit5)
+  end
+end
+
 states.standing = {
   animation = animations.standing,
   update = function(self, entity, dt)
@@ -81,6 +123,8 @@ states.standing = {
 
     entity:commonUpdate(dt)
   end,
+
+  takeHit = standGotHitCommon,
 }
 
 states.walking = {
@@ -101,6 +145,8 @@ states.walking = {
 
     entity:commonUpdate(dt)
   end,
+
+  takeHit = standGotHitCommon,
 }
 
 states.standAttackHigh = {
@@ -174,6 +220,8 @@ states.sitting = {
 
     entity:commonUpdate(dt)
   end,
+
+  takeHit = sitGotHitCommon,
 }
 
 states.sitAttack = {
@@ -202,78 +250,79 @@ states.sitAttack = {
 states.hit1 = {
   animation = animations.hit1,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.hit2)
+    if entity:commonUpdate(dt) == true then
+      if entity.health <= 0 then
+        entity:moveState(states.falling)
+      else
+        entity:moveState(states.standing)
+      end
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.hit2 = {
   animation = animations.hit2,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.hit3)
+    if entity:commonUpdate(dt) == true then
+      if entity.health <= 0 then
+        entity:moveState(states.falling)
+      else
+        entity:moveState(states.standing)
+      end
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.hit3 = {
   animation = animations.hit3,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.hit4)
+    if entity:commonUpdate(dt) == true then
+      if entity.health <= 0 then
+        entity:moveState(states.falling)
+      else
+        entity:moveState(states.standing)
+      end
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.hit4 = {
   animation = animations.hit4,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.hit5)
+    if entity:commonUpdate(dt) == true then
+      if entity.health <= 0 then
+        entity:moveState(states.falling)
+      else
+        entity:moveState(states.sitting)
+      end
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.hit5 = {
   animation = animations.hit5,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.falling)
+    if entity:commonUpdate(dt) == true then
+      if entity.health <= 0 then
+        entity:moveState(states.falling)
+      else
+        entity:moveState(states.sitting)
+      end
     end
-
-    entity:commonUpdate(dt)
   end,
 }
 
 states.falling = {
   animation = animations.falling,
   update = function(self, entity, dt)
-    entity.timeAccumulated = entity.timeAccumulated + dt
-    if entity.timeAccumulated > 2 then
-      entity.timeAccumulated = 0
-      entity:moveState(states.standing)
-    end
+    local xdelta, ydelta = gameutil.calcFallDelta(entity.forward, common_conf.fall_speed, dt)
 
-    entity:commonUpdate(dt)
+    entity:move(xdelta, ydelta)
+
+    if entity:commonUpdate(dt) then
+      state.boss_cleared = true
+      entity.dead = true
+    end
   end,
 }
 

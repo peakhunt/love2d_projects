@@ -50,9 +50,9 @@ function gameplay_common_draw()
 end
 
 function gameplay_common_update(dt)
-  if state.paused or dt > 0.1 then
-    return
-  end
+  --if state.paused or dt > 0.1 then
+  --  return
+  --end
 
   local index = 1
 
@@ -62,7 +62,7 @@ function gameplay_common_update(dt)
       entity:update(dt)
     end
 
-    if entity.health == 0 then
+    if entity.dead  then
       table.remove(state.entities, index)
     else
       index = index + 1

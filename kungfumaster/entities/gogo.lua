@@ -63,7 +63,9 @@ function throwKnife(entity, y)
 end
 
 function gotHitCommon(self, entity, from, hitQuad)
-  if entity.health == 1.0 then
+  entity.health = entity.health - 0.5
+
+  if entity.health >= 0.5 then
     entity:moveState(states.hit1)
   else
     entity:showScore(from, hitQuad)
@@ -219,7 +221,6 @@ states.hit1 = {
   update = function(self, entity, dt)
     -- just for test for now
     if entity:commonUpdate(dt) == true then
-      entity.health = 0.5
       entity:moveState(states.standing)
     end
   end,
@@ -243,7 +244,7 @@ states.falling = {
     entity:move(xdelta, ydelta)
 
     if entity:commonUpdate(dt) == true then
-      entity.health = 0
+      entity.dead = true
       state.gogo_count = state.gogo_count - 1
     end
   end,
