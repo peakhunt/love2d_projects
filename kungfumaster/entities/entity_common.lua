@@ -123,6 +123,10 @@ return function(pos_x, pos_y, states, animations, start_state)
         oldState:leave(self)
       end
 
+      if type(newstate) == 'string' then
+        newstate = self.states[newstate]
+      end
+
       self.currentState = newstate
 
       if newstate.enter then

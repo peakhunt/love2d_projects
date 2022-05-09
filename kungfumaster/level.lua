@@ -32,7 +32,7 @@ function setup_entities(conf)
       local silvia = factory.entities.silvia(obj.pos.x, obj.pos.y)
 
       silvia.forward = obj.forward
-      silvia:moveState(silvia.states[obj.state])
+      silvia:moveState(obj.state)
       table.insert(state.entities, silvia)
     end
   end
