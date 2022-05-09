@@ -946,8 +946,8 @@ local asset_conf = {
   },
   silvia = {
     refFrame = {
-      pixelwidth = 16,
-      pixelheight = 57,
+      pixelwidth = 18,
+      pixelheight = 56,
       height = 1 / 3.2,
       width = 1 / 12,
     },
