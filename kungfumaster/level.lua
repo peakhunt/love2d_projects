@@ -33,6 +33,7 @@ function setup_entities(conf)
 
       silvia.forward = obj.forward
       silvia:moveState(obj.state)
+      state.silvia = silvia
       table.insert(state.entities, silvia)
     end
   end

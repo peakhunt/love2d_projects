@@ -65,6 +65,7 @@ local animations = {
   gotHit = utils.newAnimationFromConf(spriteSheet, sprites.gotHit, assetHero.refFrame),
   falling = utils.newAnimationFromConf(spriteSheet, sprites.falling, assetHero.refFrame),
   stairUp = utils.newAnimationFromConf(spriteSheet, sprites.stairUp, assetHero.refFrame),
+  hugging = utils.newAnimationFromConf(spriteSheet, sprites.hugging, assetHero.refFrame),
 }
 
 --------------------------------------------------------------------------------
@@ -452,6 +453,13 @@ states.stairUp = {
   end,
 }
 
+states.hugging = {
+  animation = animations.hugging,
+  update = function(self, entity, dt)
+    entity:commonUpdate(dt) 
+  end,
+}
+
 return function(pos_x, pos_y)
   local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
   local baseSetPos = entity.setPos
@@ -496,6 +504,12 @@ return function(pos_x, pos_y)
   entity.startStairUp = function(self)
     self.ignore_input = true
     self:moveState(states.stairUp)
+  end
+
+  entity.stand = function(self, x, y)
+    self.ignore_input = true
+    self:setPos(x, y)
+    self:moveState(states.standing)
   end
 
   entity.takeHit = function(self, from, hitQuad)

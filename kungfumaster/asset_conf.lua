@@ -550,6 +550,17 @@ local asset_conf = {
           },
         },
       },
+      hugging = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 357,
+            pos_y = 1014,
+            width = 16,
+            height = 63,
+          },
+        },
+      },
     },
   },
   crazy88 = {
@@ -937,7 +948,7 @@ local asset_conf = {
     refFrame = {
       pixelwidth = 16,
       pixelheight = 57,
-      height = 1 / 3.5,
+      height = 1 / 3.2,
       width = 1 / 12,
     },
     sprites = {

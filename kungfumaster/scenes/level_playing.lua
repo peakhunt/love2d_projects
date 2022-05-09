@@ -35,6 +35,9 @@ return function()
         if state.current_level.finish.type == "levelup" then
           state:changeScene(factory.scenes.level_finishing())
           return
+        elseif state.current_level.finish.type == "finish" then
+          state:changeScene(factory.scenes.game_ending())
+          return
         end
       end
 
