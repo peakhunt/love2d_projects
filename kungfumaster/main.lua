@@ -15,7 +15,22 @@ local viewport = require('viewport')
 local dashboard = require('dashboard')
 local factory = require('factory')
 
+function handle_cmd_args()
+  if #arg < 2 then
+    return
+  end
+
+  for l = 2, #arg do
+    if arg[l] == '--test-mode' then
+      state.test_mode = true
+    elseif arg[l] == '--debug' then
+      state.button_debug = true 
+    end
+  end
+end
 function love.load()
+  handle_cmd_args()
+
   level(1)
   state:changeScene(factory.scenes.level_starting())
 end
@@ -43,6 +58,7 @@ function love.keyreleased(released_key)
 end
 
 function love.update(dt)
+  -- XXX remove this
   if state.paused or dt > 0.1 then
     return
   end
