@@ -933,6 +933,73 @@ local asset_conf = {
       },
     },
   },
+  silvia = {
+    refFrame = {
+      pixelwidth = 16,
+      pixelheight = 57,
+      height = 1 / 3.5,
+      width = 1 / 12,
+    },
+    sprites = {
+      tiedDown = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 68,
+            pos_y = 1116,
+            width = 23,
+            height = 48,
+          },
+          [2] = {
+            pos_x = 99,
+            pos_y = 1117,
+            width = 22,
+            height = 47,
+          },
+        },
+      },
+      walking = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 153,
+            pos_y = 1106,
+            width = 12,
+            height = 58,
+          },
+          [2] = {
+            pos_x = 173,
+            pos_y = 1107,
+            width = 17,
+            height = 58,
+          },
+          [3] = {
+            pos_x = 198,
+            pos_y = 1106,
+            width = 12,
+            height = 58,
+          },
+          [4] = {
+            pos_x = 218,
+            pos_y = 1107,
+            width = 16,
+            height = 57,
+          },
+        },
+      },
+      hugging = {
+        duration = 0.5,
+        quads = {
+          [1] = {
+            pos_x = 266,
+            pos_y = 1108,
+            width = 18,
+            height = 56,
+          },
+        },
+      },
+    },
+  },
   hitMark = {
     refFrame = {
       pixelwidth = 11,
@@ -1243,6 +1310,7 @@ local asset_conf = {
         y = 1.0,
         width = 0.45,
         height = 1.0,
+        type = "levelup",
       },
       forward = true,
       viewport = {
@@ -1277,6 +1345,8 @@ local asset_conf = {
           },
         },
       },
+      entities = {
+      },
       boss = {
         name = "boss1",
         x = 0.715,
@@ -1297,6 +1367,7 @@ local asset_conf = {
         y = 1.0,
         width = 0.44,
         height = 1.0,
+        type = "levelup",
       },
       door = 'left',
       forward = false,
@@ -1332,6 +1403,8 @@ local asset_conf = {
           },
         },
       },
+      entities = {
+      },
       boss = {
         name = "boss1",
         x = 6.285,
@@ -1352,6 +1425,7 @@ local asset_conf = {
         y = 1.0,
         width = 0.45,
         height = 1.0,
+        type = "levelup",
       },
       door = 'right',
       forward = true,
@@ -1387,6 +1461,8 @@ local asset_conf = {
           },
         },
       },
+      entities = {
+      },
       boss = {
         name = "boss1",
         x = 0.715,
@@ -1407,6 +1483,7 @@ local asset_conf = {
         y = 1.0,
         width = 0.44,
         height = 1.0,
+        type = "levelup",
       },
       door = 'left',
       forward = false,
@@ -1442,6 +1519,8 @@ local asset_conf = {
           },
         },
       },
+      entities = {
+      },
       boss = {
         name = "boss1",
         x = 6.285,
@@ -1458,10 +1537,11 @@ local asset_conf = {
         sy = floor_bottom,
       },
       finish_quad = {
-        x = 0.05,
+        x = 0.00,
         y = 1.0,
-        width = 0.45,
+        width = 0.25,
         height = 1.0,
+        type = "finish",
       },
       door = 'right',
       forward = true,
@@ -1495,6 +1575,17 @@ local asset_conf = {
             delay = 4,
             missRate = 0.1,
           },
+        },
+      },
+      entities = {
+        [1] = {
+          type = "silvia",
+          state = "tiedDown",
+          pos = {
+            x = 0.2,
+            y = floor_bottom - 0.005,
+          },
+          forward = false,
         },
       },
       boss = {

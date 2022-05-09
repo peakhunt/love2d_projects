@@ -32,8 +32,10 @@ return function()
       local hero = state.hero
 
       if state.boss_cleared and collision.check_entity_for_hit(hero, state.current_level.finish) then
-        state:changeScene(factory.scenes.level_finishing())
-        return
+        if state.current_level.finish.type == "levelup" then
+          state:changeScene(factory.scenes.level_finishing())
+          return
+        end
       end
 
       input.update(dt)

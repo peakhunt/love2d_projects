@@ -26,6 +26,18 @@ function setup_big(conf, x, y, forward)
   table.insert(state.entities, state.hero)
 end
 
+function setup_entities(conf)
+  for _, obj in ipairs(conf.entities) do
+    if obj.type == "silvia" then
+      local silvia = factory.entities.silvia(obj.pos.x, obj.pos.y)
+
+      silvia.forward = obj.forward
+      silvia:moveState(silvia.states[obj.state])
+      table.insert(state.entities, silvia)
+    end
+  end
+end
+
 return function(level)
   local conf = asset_conf.level[level]
   local background = love.graphics.newImage(conf.background)
@@ -99,6 +111,7 @@ return function(level)
 
     restart = function(self)
       setup_big(conf, conf.start.ix, conf.start.iy, conf.forward)
+      setup_entities(conf)
       viewport:updateX(conf.viewport.x)
     end,
   }
@@ -116,6 +129,8 @@ return function(level)
   state:reset()
 
   setup_big(conf, conf.start.ix, conf.start.iy, conf.forward)
+  setup_entities(conf)
+
   state.level = level
   state.current_level = floor
 

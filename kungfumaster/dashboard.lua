@@ -19,6 +19,14 @@ local lifeQuad = love.graphics.newQuad(
   spriteSheet:getDimensions()
 )
 
+function setLevelColor(target)
+  if target < state.level then
+    love.graphics.setColor(love.math.colorFromBytes(0x66, 0xff, 0x00))
+  else
+    love.graphics.setColor(love.math.colorFromBytes(0x00, 0x50, 0x00))
+  end
+end
+
 function drawScore()
   local str
   str = string.format("1P-%06d", state.score)
@@ -57,8 +65,24 @@ end
 function drawCurrentLevel()
   love.graphics.setColor(love.math.colorFromBytes(0xff, 0xfe, 0xe0))
   love.graphics.print("1F 2F 3F 4F 5F", resource.font_small, 400, 50)
+
   love.graphics.setColor(love.math.colorFromBytes(0xff, 0x00, 0xff))
-  love.graphics.print("  →  →  →  →  ", resource.font_small, 400, 80)
+  love.graphics.print("  →  →  →  →  ", resource.font_small, 400, 76)
+
+  setLevelColor(1)
+  love.graphics.rectangle('fill', 410, 74, 12, 20)
+
+  setLevelColor(2)
+  love.graphics.rectangle('fill', 455, 74, 12, 20)
+
+  setLevelColor(3)
+  love.graphics.rectangle('fill', 500, 74, 12, 20)
+
+  setLevelColor(4)
+  love.graphics.rectangle('fill', 545, 74, 12, 20)
+
+  setLevelColor(5)
+  love.graphics.rectangle('fill', 590, 74, 12, 20)
 end
 
 function drawLivesLeft()
