@@ -47,7 +47,7 @@ return function()
           state.silvia:moveState('hugging')
         elseif self.step == 3 then
           -- step 3 finished
-          -- move state
+          -- FIXME move state
         end
 
         self.timeAccumulated = 0
