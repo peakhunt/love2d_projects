@@ -29,9 +29,14 @@ return function()
     end,
 
     update = function(self, dt)
-      input.update(dt)
-
       local hero = state.hero
+
+      if state.boss_cleared and collision.check_entity_for_hit(hero, state.current_level.finish) then
+        state:changeScene(factory.scenes.level_finishing())
+        return
+      end
+
+      input.update(dt)
 
       for _, entity in ipairs(state.entities) do
 

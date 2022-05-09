@@ -61,6 +61,8 @@ return function(level)
     limit = limit,
     current_door = nil,
     objs = objs,
+    conf = conf,
+    finish = conf.finish_quad,
 
     update = function(self, dt)
       if self.current_door then
@@ -76,6 +78,15 @@ return function(level)
 
       if self.current_door then
         self.current_door:draw()
+      end
+
+      if state.button_debug then
+        local px, py = viewport:virtualPointToScreenCoord(self.finish.x, self.finish.y)
+        local w, h = viewport:toScreenDim(self.finish)
+
+        love.graphics.setColor(0, 1, 0, 1)
+        love.graphics.rectangle("line", px, py, w, h)
+        love.graphics.setColor(1, 1, 1, 1)
       end
     end,
 

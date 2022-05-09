@@ -445,6 +445,13 @@ states.falling = {
   end,
 }
 
+states.stairUp = {
+  animation = animations.stairUp,
+  update = function(self, entity, dt)
+    entity:commonUpdate(dt) 
+  end,
+}
+
 return function(pos_x, pos_y)
   local entity =  entity_common(pos_x, pos_y, states, animations, states.standing)
   local baseSetPos = entity.setPos
@@ -484,6 +491,11 @@ return function(pos_x, pos_y)
   entity.stopWalking = function(self)
     self.ignore_input = false
     self:moveState(states.standing)
+  end
+
+  entity.startStairUp = function(self)
+    self.ignore_input = true
+    self:moveState(states.stairUp)
   end
 
   entity.takeHit = function(self, from, hitQuad)

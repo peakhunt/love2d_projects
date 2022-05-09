@@ -46,6 +46,13 @@ local screenTarget = {
   height = window_height * 4 / 5 - 20,
 }
 
+local dashboardTarget = {
+  x = 0,
+  y = 0,
+  width = window_width,
+  height = window_height / 5,
+}
+
 --
 -- viewport width is 1/7 of the total background image
 --
@@ -60,6 +67,7 @@ return {
   levelSize = nil,
   viewport = nil,
   screen = screenTarget,
+  dashboard = dashboardTarget,
 
   -- initialize viewport object
   init = function(self, viewport, levelSize, background_width, background_height)

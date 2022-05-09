@@ -15,6 +15,8 @@ local viewport = require('viewport')
 local dashboard = require('dashboard')
 local factory = require('factory')
 
+local start_level = 1
+
 function handle_cmd_args()
   if #arg < 2 then
     return
@@ -25,13 +27,24 @@ function handle_cmd_args()
       state.test_mode = true
     elseif arg[l] == '--debug' then
       state.button_debug = true 
+    elseif arg[l] == '--level1' then
+      start_level = 1
+    elseif arg[l] == '--level2' then
+      start_level = 2
+    elseif arg[l] == '--level3' then
+      start_level = 3
+    elseif arg[l] == '--level4' then
+      start_level = 4
+    elseif arg[l] == '--level5' then
+      start_level = 5
     end
   end
 end
+
 function love.load()
   handle_cmd_args()
 
-  level(1)
+  level(start_level)
   state:changeScene(factory.scenes.level_starting())
 end
 

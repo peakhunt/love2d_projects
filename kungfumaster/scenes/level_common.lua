@@ -12,9 +12,11 @@ function debug_draw()
   love.graphics.print("FPS: " .. love.timer.getFPS(), 50, 150)
   -- Draw the current delta-time. (The same value
   -- is passed to update each frame).
-  love.graphics.print("dt: " .. love.timer.getDelta(), 50, 170)
+  love.graphics.print("dt: " .. string.format('%.5f', love.timer.getDelta()), 50, 170)
   love.graphics.print("z: kick, x: punch, arrow keys for move, space: debug", 50, 190)
   love.graphics.print("scene:" .. state.scene.name, 50, 210)
+  love.graphics.print("hero:" .. string.format('%.3f',state.hero.pos.x) .. "," 
+      .. string.format('%.3f', state.hero.pos.y), 50, 230)
 
   love.graphics.setColor(1, 0, 0, 1)
 

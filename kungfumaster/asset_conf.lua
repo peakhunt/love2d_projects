@@ -522,7 +522,7 @@ local asset_conf = {
         },
       },
       stairUp = {
-        duration = 0.5,
+        duration = 0.6,
         quads = {
           [1] = {
             pos_x = 222,
@@ -1238,6 +1238,12 @@ local asset_conf = {
         sx = 6.5,
         sy = floor_bottom,
       },
+      finish_quad = {
+        x = 0.05,
+        y = 1.0,
+        width = 0.45,
+        height = 1.0,
+      },
       forward = true,
       viewport = {
         width = 1.0,
@@ -1286,6 +1292,12 @@ local asset_conf = {
         sx = 0.5,
         sy = floor_bottom,
       },
+      finish_quad = {
+        x = 6.48,
+        y = 1.0,
+        width = 0.44,
+        height = 1.0,
+      },
       door = 'left',
       forward = false,
       viewport = {
@@ -1320,6 +1332,11 @@ local asset_conf = {
           },
         },
       },
+      boss = {
+        name = "boss1",
+        x = 6.285,
+        y = floor_bottom,
+      },
     },
     [3] = {
       background = 'assets/floor3_b.png',
@@ -1329,6 +1346,12 @@ local asset_conf = {
         iy = floor_bottom,
         sx = 6.5,
         sy = floor_bottom,
+      },
+      finish_quad = {
+        x = 0.05,
+        y = 1.0,
+        width = 0.45,
+        height = 1.0,
       },
       door = 'right',
       forward = true,
@@ -1364,6 +1387,11 @@ local asset_conf = {
           },
         },
       },
+      boss = {
+        name = "boss1",
+        x = 0.715,
+        y = floor_bottom,
+      },
     },
     [4] = {
       background = 'assets/floor4_b.png',
@@ -1373,6 +1401,12 @@ local asset_conf = {
         iy = floor_bottom,
         sx = 0.5,
         sy = floor_bottom,
+      },
+      finish_quad = {
+        x = 6.48,
+        y = 1.0,
+        width = 0.44,
+        height = 1.0,
       },
       door = 'left',
       forward = false,
@@ -1408,6 +1442,11 @@ local asset_conf = {
           },
         },
       },
+      boss = {
+        name = "boss1",
+        x = 6.285,
+        y = floor_bottom,
+      },
     },
     [5] = {
       background = 'assets/floor5_b.png',
@@ -1417,6 +1456,12 @@ local asset_conf = {
         iy = floor_bottom,
         sx = 6.5,
         sy = floor_bottom,
+      },
+      finish_quad = {
+        x = 0.05,
+        y = 1.0,
+        width = 0.45,
+        height = 1.0,
       },
       door = 'right',
       forward = true,
@@ -1451,6 +1496,11 @@ local asset_conf = {
             missRate = 0.1,
           },
         },
+      },
+      boss = {
+        name = "boss1",
+        x = 0.715,
+        y = floor_bottom,
       },
     },
   },

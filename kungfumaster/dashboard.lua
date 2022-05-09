@@ -6,6 +6,7 @@
 local state = require('state')
 local asset_conf = require('asset_conf')
 local resource = require('resource')
+local viewport = require('viewport')
 
 local energy_bar_width = 200
 local spriteSheet = resource.spriteSheet
@@ -90,6 +91,13 @@ function update(dt)
 end
 
 function draw()
+  love.graphics.setColor(0, 0, 0, 1)
+  love.graphics.rectangle("fill",
+      viewport.dashboard.x,
+      viewport.dashboard.y,
+      viewport.dashboard.width,
+      viewport.dashboard.height)
+
   drawScore()
   drawTopScore()
   drawHeroEnergy()
