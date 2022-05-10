@@ -1,5 +1,4 @@
 local viewport = require('viewport')
-local timer = require('timer')
 local factory = require('factory')
 local asset_conf = require('asset_conf')
 local state = require('state')
