@@ -9,7 +9,7 @@ local gogo_spawn = require('gogo_spawn')
 local door_left = factory.entities.door(true)
 local door_right = factory.entities.door(false)
 
-function setup_big(conf, x, y, forward)
+function setup_boss_and_hero(conf, x, y, forward)
   --
   -- create boss if present
   --
@@ -54,6 +54,8 @@ return function(level)
     width = conf.viewport.width,
     height = conf.viewport.height,
   }
+
+  viewport:init(vp, levelSize, background:getDimensions())
 
   --
   -- create game objs, aka, spawner
@@ -111,8 +113,11 @@ return function(level)
     end,
 
     restart = function(self)
-      setup_big(conf, conf.start.ix, conf.start.iy, conf.forward)
+      state:restart()
+      setup_boss_and_hero(conf, conf.start.ix, conf.start.iy, conf.forward)
       setup_entities(conf)
+      state.level = level
+      state.current_level = self
       viewport:updateX(conf.viewport.x)
     end,
   }
@@ -127,15 +132,7 @@ return function(level)
     floor.current_door = nil
   end
 
-  state:reset()
-
-  setup_big(conf, conf.start.ix, conf.start.iy, conf.forward)
-  setup_entities(conf)
-
-  state.level = level
-  state.current_level = floor
-
-  viewport:init(vp, levelSize, background:getDimensions())
+  floor:restart()
 
   return floor
 end

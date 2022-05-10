@@ -11,3 +11,4 @@
 require('factory')
 require('entities/factory')
 require('scenes/factory')
+require('top_factory')

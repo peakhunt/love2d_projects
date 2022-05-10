@@ -1,10 +1,7 @@
 local asset_conf = require('asset_conf')
 local collision = require('collision')
-local viewport = require('viewport')
-local timer = require('timer')
 local state = require('state')
-local input = require('input')
-local factory = require('factory')
+local game = require('game')
 
 local level_common = require('scenes/level_common')
 
@@ -57,7 +54,7 @@ return function()
     update = function(self, dt)
       self.timeAccumulated = self.timeAccumulated + dt
       if self.timeAccumulated >= target_duration then
-        -- state:changeScene(factory.scenes.level_playing())
+        game.nextLevel()
         return
       end
 

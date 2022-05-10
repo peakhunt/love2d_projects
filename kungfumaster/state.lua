@@ -71,58 +71,55 @@ return {
   --
   -- conveniences
   --
-  reset = function(self)
+  reset_input = function(self)
     self.button_left = false
     self.button_right = false
     self.button_up = false
     self.button_down = false
     self.button_punch = false
     self.button_kick = false
+  end,
 
-    self.current_level = nil
+  reset_entities = function(self)
     self.hero = nil
+    self.silvia = nil
     self.held = 0
 
     self.entities = {}
     self.scores = {}
 
-    self.level = 1
-    self.life_left = 3
-    self.time_left = 60
-    self.score = 0
-    self.top_score = 0
-    self.hero_energy = 1
-    self.boss_energy = 1
-
     self.gogo_count = 0
     self.crazy88_count = 0
 
+    self.hero_energy = 1
+    self.boss_energy = 1
+  end,
+
+  reset_level = function(self)
+    self.current_level = nil
+    self.level = 1
     self.boss_activated = false
     self.boss_cleared = false
+    self.time_left = 60
+  end,
+
+  reset_energy = function(self)
+  end,
+
+  reset = function(self)
+    self:reset_input()
+    self:reset_entities()
+    self:reset_level()
+
+    self.life_left = 3
+    self.score = 0
+    self.top_score = 0
   end,
 
   restart = function(self)
-    self.button_left = false
-    self.button_right = false
-    self.button_up = false
-    self.button_down = false
-    self.button_punch = false
-    self.button_kick = false
-
-    self.hero_energy = 1
-    self.boss_energy = 1
-    self.time_left = 60
-    self.held = 0
-    self.entities = {}
-    self.scores = {}
-
-    self.gogo_count = 0
-    self.crazy88_count = 0
-
-    self.boss_activated = false
-    self.boss_cleared = false
-
-    self.current_level:restart()
+    self:reset_input()
+    self:reset_entities()
+    self:reset_level()
   end,
 
   incScore = function(self, inc, scoreObj)

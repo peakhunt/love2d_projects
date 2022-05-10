@@ -25,7 +25,7 @@ return function()
     update = function(self, dt)
       self.timeAccumulated = self.timeAccumulated + dt
       if self.timeAccumulated >= 1.0 then
-        state:restart()
+        state.current_level:restart()
         state:changeScene(factory.scenes.level_starting())
         return
       end

@@ -9,11 +9,8 @@
 require('init')
 
 local asset_conf = require('asset_conf')
-local level = require('level')
 local state = require('state')
-local viewport = require('viewport')
-local dashboard = require('dashboard')
-local factory = require('factory')
+local game = require('game')
 
 local start_level = 1
 
@@ -43,9 +40,7 @@ end
 
 function love.load()
   handle_cmd_args()
-
-  level(start_level)
-  state:changeScene(factory.scenes.level_starting())
+  game.newGame(start_level)
 end
 
 function love.draw()
