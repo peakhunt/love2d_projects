@@ -12,7 +12,7 @@ local asset_conf = {
     refFrame = {
       pixelwidth = 24,      -- reference pixel width  24 pixel = 1 unit = 1/3 width in viewport dimension
       pixelheight = 56,     -- reference pixel height 56 pixel = 1 unit = 1/12 height in viewport dimension
-      height = 1 / 3.2,       -- height in viewport dimension
+      height = 1 / 3.2,     -- height in viewport dimension
       width = 1 / 12,       -- width in viewport dimension
     },
     sprites = {
@@ -1594,7 +1594,7 @@ local asset_conf = {
           state = "tiedDown",
           pos = {
             x = 0.2,
-            y = floor_bottom - 0.005,
+            y = floor_bottom,
           },
           forward = false,
         },
