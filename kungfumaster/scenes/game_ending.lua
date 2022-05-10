@@ -5,6 +5,7 @@ local timer = require('timer')
 local state = require('state')
 local input = require('input')
 local factory = require('factory')
+local game = require('game')
 
 local level_common = require('scenes/level_common')
 
@@ -47,7 +48,7 @@ return function()
           state.silvia:moveState('hugging')
         elseif self.step == 3 then
           -- step 3 finished
-          -- FIXME move state
+          game.newGame(1)
         end
 
         self.timeAccumulated = 0
